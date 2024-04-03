@@ -14,7 +14,7 @@ class MindMasters(db.Model):
     def __repr__(self):
         return '<MindMasters %r>' % self.name
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
