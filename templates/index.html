@@ -1,10 +1,30 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Home</title>
+    <title>Mind Masters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    
 {% endblock %}
 
 {% block body %}
-    <h1>Home</h1>
-    <p>Benvenuto su questo sito!</p>
+
+    <div class="container-fluid">
+        <div class="leftpane">
+            <h3>Left pane, game board.</h3>
+        </div>
+        <div class="rightpane">
+            <div class="right-toppane">
+                <h3>Game motto.</h3>
+            </div> 
+            <div class="right-middlepane">
+                <h3>Play Online.</h3>
+            </div> 
+            <div class="right-bottompane">
+                <h3>Play Computer.</h3>
+            </div> 
+        </div>
+    </div>
+
 {% endblock %}
+
+

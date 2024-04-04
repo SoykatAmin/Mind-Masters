@@ -1,0 +1,4 @@
+# Ignora i file collegati alle chiavi API
+.env
+
+env
