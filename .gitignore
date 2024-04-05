@@ -1,4 +1,6 @@
 # Ignora i file collegati alle chiavi API
+.env
 .venv
-
+env
+__pycache__/app.cpython-310.pyc
 instance
