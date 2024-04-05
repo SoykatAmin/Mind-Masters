@@ -18,6 +18,8 @@ li {
     list-style: none;
 }
 
+/* Main content */
+
 .container-fluid{
     display: flex; /* Enable flexbox layout */
     flex-direction: row; /* Default to vertical direction */
@@ -35,6 +37,8 @@ li {
     margin-right: 10%; /* Set left and right margins */
     background-color: #4d4d4d;
 }
+
+/* Responsive layout */
 
 @media (max-width: 1080px) {
     .container-fluid {

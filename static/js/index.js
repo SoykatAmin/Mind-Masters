@@ -1,24 +1,26 @@
 
 document.addEventListener("DOMContentLoaded", function() {
+
+    // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
     
     const toggleSidebarButton = document.getElementById('sidebar-button');
     const sidebar = document.getElementById('sidebar');
     toggle = true;
 
-    // Funzione per gestire il click sul bottone
+    // Fuction for the sidebar toggle button
     toggleSidebarButton.addEventListener('click', function() {
-        // Toggle della classe 'collapsed' sulla sidebar
+        // Toggle of class 'collapsed' of sidebar
         sidebar.classList.toggle('collapsed');
 
         toggle = !toggle;
 
         //console.log("toggle: " + toggle);
 
-        // Salva lo stato della sidebar nello storage locale
+        // Save the state of the sidebar in the local storage
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     });
 
-    // Funzione per ripristinare lo stato della sidebar quando la finestra viene caricata
+    // Function to manage the sidebar state on page load
     window.addEventListener('load', function() {
         const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (isSidebarCollapsed) {
@@ -26,26 +28,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Funzione per gestire la riduzione della finestra
+    // Fuction to manage the sidebar state on window resize
     window.addEventListener('resize', function() {
         
         const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         // console.log(isSidebarCollapsed);
         if (window.innerWidth <= 1080) {
-            // Se la finestra è ridotta a 600px o meno
+            // If the window is smaller than 1080px
             if (!isSidebarCollapsed) {
-                // Se la sidebar è aperta, chiudila e memorizza lo stato
+                // If the sidebar is open, close it and save the state
                 sidebar.classList.add('collapsed');
                 localStorage.setItem('sidebarCollapsed', 'true');
             }
         } else {
-            // Se la finestra è più grande di 600px
+            // If the window is larger than 1080px
             if (isSidebarCollapsed && toggle) {
-                // Se la sidebar è chiusa, aprila e memorizza lo stato
+                // If the sidebar is closed and the user has manually opened it, reopen it and save the state
                 sidebar.classList.remove('collapsed');
                 localStorage.setItem('sidebarCollapsed', 'false');
             }
         }
     });
+
+    // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
 
 });
