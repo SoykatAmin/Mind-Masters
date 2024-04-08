@@ -1,0 +1,24 @@
+.form-body{
+    margin: 0 12%; /* 12% margin on left and right 0 margin on top and bottom*/
+    margin-bottom: 5%;
+    padding: 5%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-header{
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.form-entry{
+    margin: 0 15%; /* 15% margin on left and right 0 margin on top and bottom*/
+}
+
+.form-control{
+    margin: 1% 0; /* 5px margin on top and bottom 0 margin on left and right*/
+}
+
+#login-button{
+    margin: 5px 0;
+}

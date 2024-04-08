@@ -14,6 +14,9 @@
 
         <!-- Game board. It will disappear when width is reduced to a certain amount. -->
 
+        {% if session['username'] %}
+            ciao {{ session['username'] }}
+        {% endif %}
         <div class="leftpane">
             <h3>Left pane, game board.</h3>
         </div>

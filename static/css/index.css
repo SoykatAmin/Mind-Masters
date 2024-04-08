@@ -27,7 +27,7 @@ li {
 
 @media (max-width: 1080px) {
     .container-fluid {
-      flex-direction: column; /* Switch to horizontal direction for smaller screens */
+      flex-direction: column-reverse; /* Switch to horizontal direction for smaller screens */
     }
     .rightpane {
         flex: 50%; /* Set flex basis to 35% */

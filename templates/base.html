@@ -34,18 +34,32 @@
                             Regole
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a href="{{ url_for('register') }}" class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
-                            Registrati
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="{{ url_for('login') }}" class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
-                            Accedi
-                        </a>
-                    </li>
+                    <!-- If the user is not logged in, show the register and login buttons.-->
+                    {% if not session['username'] %}
+                        <li class="sidebar-item">
+                            <a href="{{ url_for('register') }}" class="sidebar-link">
+                                <i class="fa-solid fa-list pe-2"></i>
+                                Registrati
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url_for('login') }}" class="sidebar-link">
+                                <i class="fa-solid fa-list pe-2"></i>
+                                Accedi
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- If the user is logged in, show the logout button. -->
+
+                    {% if session['username'] %}
+                        <li class="sidebar-item">
+                            <a href="{{ url_for('logout') }}" class="sidebar-link">
+                                <i class="fa-solid fa-list pe-2"></i>
+                                Logout
+                            </a>
+                        </li>
+                    {% endif %}
                     
                 </ul>
             </div>
