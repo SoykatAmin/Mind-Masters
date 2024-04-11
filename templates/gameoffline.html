@@ -8,11 +8,20 @@
     <script>
         //salvare nella variabile di sessione il codice generato
         var codice = startPVE()
+        console.log(codice)
     </script>
 
 {% endblock %}
 
 {% block body %}
+
+    <button onclick="creasta()">crea stanza</button>
+    <label for="password">pin</label>
+    <input type="number" name="game_code" id="game_code"  required>
+    <button class="btn btn-primary" onclick="entrasta()">Login</button>
+    <div id="g1"></div>
+    <div id="g2"></div>
+    <div id="chat"></div>
 
     <div class="game_board">
         
@@ -25,4 +34,9 @@
         </div>
         
     </div>
+
+    <br>
+
+    
 {% endblock %}
+
