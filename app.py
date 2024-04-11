@@ -117,7 +117,7 @@ def rules():
 @app.route('/gioco', methods=['GET', 'POST'])
 
 def game():
-    return render_template('game.html')
+    return render_template('gameoffline.html')
 
 
 if __name__ == "__main__":
