@@ -33,6 +33,7 @@ function confrontaCodici() {
         document.getElementById("risultato").innerHTML = `Posizione corretta: ${posizioneCorretta} - Posizione errata: ${posizioneErrata}- sbagliato: ${sbagliato}`;
         x=x+4;
         Colorful=[0,0,0,0];
+        avviaEventi();
     }
     //cambiare "nome giusto"
     
@@ -100,6 +101,7 @@ function avviaEventi(){
         if(Colorful[0]==1){
             itemElement.style.backgroundColor = 'white';
             Colorful[0] = 0; 
+            console.log(x+"rimosso");
         }
         
     });
@@ -112,6 +114,7 @@ function avviaEventi(){
             if(Colorful[1] ==1){
                 itemElement2.style.backgroundColor = 'white';
                 Colorful[1] = 0; 
+                console.log("rimosso");
             }
         });
     });
@@ -123,6 +126,7 @@ function avviaEventi(){
         if(Colorful[2] ==1){
             itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0; 
+            console.log("rimosso");
         }
         });
 
@@ -133,6 +137,7 @@ function avviaEventi(){
         if(Colorful[3] ==1){
             itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0; 
+            console.log("rimosso");
         }
     });
     
