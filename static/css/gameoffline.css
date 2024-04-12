@@ -4,137 +4,39 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: 9.46% 5.79% 9.18% 5.79% 9.18% 5.79% 9.18% 5.79% 9.18% 5.79% 6.5% 12% 6.5%;
+  grid-template-columns: 9.46% 65.67% 6.5% 12% 6.5%;
   grid-template-rows: 5% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08% 2.324295011% 
-                        1.08% 7.05% 1.08%
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21% 2.324295011% 
+                        9.21%
                       5.05%;
   background-color: lightgray;
+  grid-gap: 1px;
   margin: 0 20%;
   aspect-ratio: 1 / 1.3;  
 }
 
-/* First line */
-.grid-container div:nth-child(n+15):nth-child(-n+23) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(15) {
-  border-top-left-radius: 10%;
-}
-.grid-container div:nth-child(23) {
-  border-top-right-radius: 10%;
-}
-.grid-container div:nth-child(n+28):nth-child(-n+36) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+41):nth-child(-n+49) {
-  background-color: #C19569;
+.grid-item {
+  background-color: white;
+  border: 1px solid;
+  text-align: center;
 }
 
-.grid-container div:nth-child(41) {
-  border-bottom-left-radius: 10%;
-}
-.grid-container div:nth-child(49) {
-  border-bottom-right-radius: 10%;
-}
-
-/* Second line */
-
-.grid-container div:nth-child(n+67):nth-child(-n+75) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+80):nth-child(-n+88) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+93):nth-child(-n+101) {
-  background-color: #C19569;
+.balls-container {
+  background-color: lightcoral;
+  -moz-border-radius: 15px; 
+  -webkit-border-radius: 15px; 
+  border-radius: 15px;
 }
 
-/* Third line */
-
-.grid-container div:nth-child(n+119):nth-child(-n+127) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+132):nth-child(-n+140) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+145):nth-child(-n+153) {
-  background-color: #C19569;
-}
-
-/* Fourth line */
-
-.grid-container div:nth-child(n+171):nth-child(-n+179) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+184):nth-child(-n+192) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+197):nth-child(-n+205) {
-  background-color: #C19569;
-}
-
-/* Fifth line */
-
-.grid-container div:nth-child(n+223):nth-child(-n+231) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+236):nth-child(-n+244) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+249):nth-child(-n+257) {
-  background-color: #C19569;
-}
-
-/* Sixth line */
-
-.grid-container div:nth-child(n+275):nth-child(-n+283) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+288):nth-child(-n+296) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+301):nth-child(-n+309) {
-  background-color: #C19569;
-}
-
-/* Seventh line */
-
-.grid-container div:nth-child(n+327):nth-child(-n+335) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+340):nth-child(-n+348) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+353):nth-child(-n+361) {
-  background-color: #C19569;
-}
-
-/* Eighth line */
-
-.grid-container div:nth-child(n+379):nth-child(-n+387) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+392):nth-child(-n+400) {
-  background-color: #C19569;
-}
-.grid-container div:nth-child(n+405):nth-child(-n+413) {
-  background-color: #C19569;
-}
-
-.grid-item-balls{
-  background-color: black;
-  border-radius: 50%; /* Makes the element a circle */
-  width: 100%; /* Sets the width to 100% of the parent container */
-  height: 100%; /* Sets the height to 100% of the parent container */
-}
-
-#item-3-3{
-  background-color: black;
+.suggestion-container {
+  background-color: lightcoral;
+  -moz-border-radius: 15px; 
+  -webkit-border-radius: 15px; 
+  border-radius: 15px;
 }
