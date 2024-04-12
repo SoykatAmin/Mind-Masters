@@ -1,10 +1,66 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt 
+import random
+
+
+#classe per connessione partita
+class Partita:
+    def __init__(self):
+        self.player=[]#dentro player ci sono gli username dei giocatori
+        self.game_code=random.randint(1000,9999)#codice partita per collegarsi
+        self.vincitore=None
+        self.mosse=[]
+        self.tempi=[]
+
+    def creaStanza(self, player):
+        if len(self.player)==0:
+            self.player.append(player)
+            return self.game_code
+        else:
+            return False
+    
+    def entraStanza(self, player, code):
+        if len(self.player)==1 and code==str(self.game_code):
+            self.player.append(player)
+            return True
+        else:
+            return False
+
+    
+    def fine_gioco(self):
+        if len(self.mosse)==len(self.player) and len(self.tempi)==len(self.player):
+            if self.mosse[0]<self.mosse[1]:
+                self.vincitore=self.player[0]
+            elif self.mosse[0]>self.mosse[1]:
+                self.vincitore=self.player[1]
+            else:
+                if self.tempi[0]<self.tempi[1]:
+                    self.vincitore=self.player[0]
+                elif self.tempi[0]>self.tempi[1]:
+                    self.vincitore=self.player[1]
+                else:
+                    self.vincitore=None
+        else:
+            return False
+        return self.vincitore
+
+    def player_end(self, mossa, tempo, player):
+        index = self.player.index(player)
+        self.mosse.insert(index, mossa)
+        self.tempi.insert(index, tempo)
+        return self.fine_gioco()
+        
+    def player_ingame(self, player):
+        return player in self.player
+
+
+
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
+partite=[]#lista delle partite in corso
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
@@ -105,9 +161,44 @@ def login():
 
 @app.route('/logout')
 
+
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+#creo funzione per il dialogo con il client 
+
+
+@app.route('/creaStanza', methods=['GET', 'POST'])
+
+def create_room():
+    p=Partita()
+    msg=p.creaStanza(session['username'])
+    if msg==False:
+        jsonResp = {'msg': 'Stanza già piena'}
+        return jsonify(jsonResp)
+    print(msg)
+    jsonResp = {'msg': session['username'], 'game_code': msg}
+    partite.append(p)
+    return jsonify(jsonResp)
+
+@app.route('/entraStanza', methods=['GET', 'POST'])
+def enter_room():
+    
+    if request.method == 'POST':
+        game_code = request.get_json()
+        print(game_code)
+        
+    if 'pin' in game_code:
+        pin = game_code['pin']
+        for p in partite:
+            if p.entraStanza(session['username'], pin):
+                jsonResp = {'u1': p.player[0], 'u2': p.player[1]}
+                return jsonify(jsonResp)
+    print(game_code)
+    
+    return jsonify("nessuna stanza con questo codice")
+
 
 @app.route('/regole', methods=['GET', 'POST'])
 
@@ -117,7 +208,7 @@ def rules():
 @app.route('/gioco', methods=['GET', 'POST'])
 
 def game():
-    return render_template('game.html')
+    return render_template('gameoffline.html')
 
 
 if __name__ == "__main__":

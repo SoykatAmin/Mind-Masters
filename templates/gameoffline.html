@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Gioco Computer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gameoffline.css') }}"
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script>
+        //salvare nella variabile di sessione il codice generato
+        var codice = startPVE()
+        console.log(codice)
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+    <button onclick="creasta()">crea stanza</button>
+    <label for="password">pin</label>
+    <input type="number" name="game_code" id="game_code"  required>
+    <button class="btn btn-primary" onclick="entrasta()">Login</button>
+    <div id="g1"></div>
+    <div id="g2"></div>
+    <div id="chat"></div>
+
+    <div class="game_board">
+        
+        <div class="grid-container">
+            {% for x in range(1, 34) %}
+                {% for y in range(1, 14) %}
+                    <div class="item{{ x }}-{{ y }}">{{ y }}</div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        
+    </div>
+
+    <br>
+
+    
+{% endblock %}
+
