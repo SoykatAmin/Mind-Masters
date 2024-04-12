@@ -63,3 +63,10 @@ function entrasta(){
     })
 }
 
+function changeColor() {
+    // Select the div element by its ID
+    var targetDiv = document.getElementById('item-3-3');
+    
+    // Change the background color of the div
+    targetDiv.style.backgroundColor = 'blue'; // Change 'blue' to any color you want
+}

@@ -205,7 +205,7 @@ def enter_room():
 def rules():
     return render_template('rules.html')
 
-@app.route('/gioco', methods=['GET', 'POST'])
+@app.route('/gioco-computer', methods=['GET', 'POST'])
 
 def game():
     return render_template('gameoffline.html')
