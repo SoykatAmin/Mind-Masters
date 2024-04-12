@@ -109,6 +109,9 @@ class Statistic(db.Model):
 with app.app_context():
     db.create_all()
 
+
+
+#funzioni per la chiamata delle pagini html
 @app.route('/', methods=['GET', 'POST'])
 
 def index():
@@ -161,16 +164,28 @@ def login():
 
 @app.route('/logout')
 
-
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+@app.route('/regole', methods=['GET', 'POST'])
+
+def rules():
+    return render_template('rules.html')
+
+@app.route('/gioco-computer', methods=['GET', 'POST'])
+
+def game():
+    return render_template('gameoffline.html')
+
+@app.route('/gioco-online', methods=['GET', 'POST'])
+
+def gameonline():
+    return render_template('gameonline.html')
+
+#funzioni per dialogo client-server
 #creo funzione per il dialogo con il client 
-
-
 @app.route('/creaStanza', methods=['GET', 'POST'])
-
 def create_room():
     p=Partita()
     msg=p.creaStanza(session['username'])
@@ -198,17 +213,6 @@ def enter_room():
     print(game_code)
     
     return jsonify("nessuna stanza con questo codice")
-
-
-@app.route('/regole', methods=['GET', 'POST'])
-
-def rules():
-    return render_template('rules.html')
-
-@app.route('/gioco-computer', methods=['GET', 'POST'])
-
-def game():
-    return render_template('gameoffline.html')
 
 
 if __name__ == "__main__":

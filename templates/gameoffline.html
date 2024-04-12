@@ -17,17 +17,18 @@
     <div class="color-buttons"></div>
 
     <div class="game_board">
-        <button onclick="changeColor('red')">rosso</button>
-        <button onclick="changeColor('green')">verde</button>
-        <button onclick="changeColor('blue')">blu</button>
-        <button onclick="changeColor('yellow')">giallo</button>
-        <button onclick="changeColor('orange')">arancione</button>
-        <button onclick="changeColor('purple')">viola</button>
-        <button onclick="changeColor('gold')">oro</button>
-        <button onclick="changeColor('skyblue')">celeste</button>
+        <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
+        <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
+        <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
+        <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
+        <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
+        <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
+        <button onclick="changeColor('gold')" class="input-color-button" style="background-color: gold;"></button>
+        <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
         <br>
-        <button onclick="confrontaCodici()">conferma codice</button>
+        <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
         <div id="risultato"></div>
+        <div id="countdown">Tempo alla fine della partita: 15:00</div>
         <div class="grid-container">
             {% for x in range(1, 34) %}
                 {% for y in range(1, 14) %}
