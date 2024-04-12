@@ -7,27 +7,24 @@
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
         //salvare nella variabile di sessione il codice generato
-        startPVE()
+        var codice = startPVE()
+        console.log(codice)
     </script>
 
 {% endblock %}
 
 {% block body %}
 
-    <div class="color-buttons"></div>
+    <button onclick="creasta()">crea stanza</button>
+    <label for="password">pin</label>
+    <input type="number" name="game_code" id="game_code"  required>
+    <button class="btn btn-primary" onclick="entrasta()">Login</button>
+    <div id="g1"></div>
+    <div id="g2"></div>
+    <div id="chat"></div>
 
     <div class="game_board">
-        <button onclick="changeColor('red')">rosso</button>
-        <button onclick="changeColor('green')">verde</button>
-        <button onclick="changeColor('blue')">blu</button>
-        <button onclick="changeColor('yellow')">giallo</button>
-        <button onclick="changeColor('orange')">arancione</button>
-        <button onclick="changeColor('purple')">viola</button>
-        <button onclick="changeColor('gold')">oro</button>
-        <button onclick="changeColor('skyblue')">celeste</button>
-        <br>
-        <button onclick="confrontaCodici()">conferma codice</button>
-        <div id="risultato"></div>
+        <button onclick="changeColor()">Change Color</button>
         <div class="grid-container">
             {% for x in range(1, 34) %}
                 {% for y in range(1, 14) %}
@@ -44,10 +41,6 @@
     </div>
 
     <br>
-    <script>
-        //va messo alla fine senno i div non esistono e da errore undefined
-        avviaEventi()
-    </script>
 
     
 {% endblock %}

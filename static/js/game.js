@@ -1,36 +1,50 @@
-function confrontaCodici(codice1, codice2) {
-    let posizioneCorretta = 0;
-    let posizioneErrata = 0;
-    let sbagliato = 0;
-    const codice2Copy = [...codice2]; // create a copy of codice2 to avoid modifying the original array
-    for (let i = 0; i < codice1.length; i++) {
-        if (codice1[i] === codice2Copy[i]) {
+var x=3;
+var Colorful=[0,0,0,0];
+var secret_code=[];
+var colors = ["white", "red", "green", "blue", "yellow", "orange","purple","gold","skyblue"];
+function confrontaCodici() {
+    var posizioneCorretta = 0;
+    var posizioneErrata = 0;
+    var sbagliato = 0;
+    var player_code = [];
+    for (let i = 0; i < 4; i++) {
+        var codelm = document.getElementById(`item-${x}-${i*2+3}`);
+        player_code.push(colors.indexOf(codelm.style.backgroundColor));
+    }
+    const copysc = [...secret_code]; // create a copy of codice2 to avoid modifying the original array
+    for (let i = 0; i < player_code.length; i++) {
+        if (player_code[i] === copysc[i]) {
             posizioneCorretta++;
-            codice2Copy[i] = null; // mark the element as used to avoid counting it as an error again
-        } else if (codice2Copy.includes(codice1[i])) {
+            copysc[i] = null; // mark the element as used to avoid counting it as an error again
+        } else if (copysc.includes(player_code[i])) {
             posizioneErrata++;
-            const index = codice2Copy.indexOf(codice1[i]);
-            codice2Copy[index] = null; // mark the element as used to avoid counting it as an error again
+            const index = copysc.indexOf(player_code[i]);
+            copysc[index] = null; // mark the element as used to avoid counting it as an error again
         }else{
             sbagliato++;
         }
     }
 
     if(posizioneCorretta === 4){
-        document.getElementById("codice").innerHTML = `Hai vinto!`;
+        document.getElementById("risultato").innerHTML = `Hai vinto!`;
+    }else if(x==31){
+        document.getElementById("risultato").innerHTML = `Hai perso!`;
+    }else{
+        document.getElementById("risultato").innerHTML = `Posizione corretta: ${posizioneCorretta} - Posizione errata: ${posizioneErrata}- sbagliato: ${sbagliato}`;
+        x=x+4;
+        Colorful=[0,0,0,0];
     }
     //cambiare "nome giusto"
-    document.getElementById("codice").innerHTML = `Posizione corretta: ${posizioneCorretta} - Posizione errata: ${posizioneErrata}- sbagliato: ${sbagliato}`;
+    
 }
 
 
 function startPVE() {
-  const pin = [];
+  
   for (let i = 0; i < 4; i++) {
-    pin.push(Math.floor(Math.random() * 10));
+    secret_code.push(Math.floor(Math.random() * 9));
   }
-  console.log(pin);
-  return pin;
+    console.log(secret_code);
 }
 
 function creasta() {
@@ -63,10 +77,66 @@ function entrasta(){
     })
 }
 
-function changeColor() {
+function changeColor(color) {
     // Select the div element by its ID
-    var targetDiv = document.getElementById('item-3-3');
-    
-    // Change the background color of the div
-    targetDiv.style.backgroundColor = 'blue'; // Change 'blue' to any color you want
+    var targetDiv
+    for (let i = 0; i < 4; i++) {
+        if(Colorful[i] === 0){
+            Colorful[i] = 1; // Set the colored flag
+            targetDiv = document.getElementById(`item-${x}-${i*2+3}`);
+            targetDiv.style.backgroundColor = color;
+            console.log("colorato"+(i*2+3));
+            break;
+        }
+        
+    }
 }
+
+function avviaEventi(){
+    console.log("avviaEventi");
+   
+    const itemElement = document.getElementById(`item-${x}-3`);
+    itemElement.addEventListener('click', () => {
+        if(Colorful[0]==1){
+            itemElement.style.backgroundColor = 'white';
+            Colorful[0] = 0; 
+        }
+        
+    });
+
+
+    var itemElement2 = document.getElementById(`item-${x}-5`);
+
+    itemElement2.addEventListener('click', () => {
+        itemElement2.addEventListener('click', () => {
+            if(Colorful[1] ==1){
+                itemElement2.style.backgroundColor = 'white';
+                Colorful[1] = 0; 
+            }
+        });
+    });
+
+
+
+    var itemElement3 = document.getElementById(`item-${x}-7`);
+    itemElement3.addEventListener('click', () => {
+        if(Colorful[2] ==1){
+            itemElement3.style.backgroundColor = 'white';
+            Colorful[2] = 0; 
+        }
+        });
+
+
+
+    var itemElement4 = document.getElementById(`item-${x}-9`);
+    itemElement4.addEventListener('click', () => {
+        if(Colorful[3] ==1){
+            itemElement4.style.backgroundColor = 'white';
+            Colorful[3] = 0; 
+        }
+    });
+    
+}
+
+
+
