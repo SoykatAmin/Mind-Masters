@@ -1,4 +1,4 @@
-var x=3;
+var x=1;
 var Colorful=[0,0,0,0];
 var secret_code=[];//mettere a false
 var debug = true;
@@ -24,7 +24,7 @@ function confrontaCodici() {
     }, 1000);
     //legge i valori dei colori inseriti dal giocatore
     for (let i = 0; i < 4; i++) {
-        var codelm = document.getElementById(`item-${x}-${i*2+3}`);
+        var codelm = document.getElementById(`ball-${x}-${i+1}`);
         player_code.push(colors.indexOf(codelm.style.backgroundColor));
     }
     //confronta i valori inseriti dal giocatore con il codice segreto
@@ -43,26 +43,89 @@ function confrontaCodici() {
     }
     //vede se il giocatore ha vinto o perso e passa al prossimo turno
     if(posizioneCorretta === 4){
-        end_game = true;
-        document.getElementById("risultato").innerHTML = `Hai vinto!`;
+        suggerimenti(posizioneCorretta,posizioneErrata);
         //chiamata alla funzione termina partita
         terminaPartita("Hai vinto!");
-    }else if(x>31 ){
-        x=0;
-        end_game = true;
-        document.getElementById("risultato").innerHTML = `Hai perso!`;
+    }else if(x==8 ){
+        suggerimenti(posizioneCorretta,posizioneErrata);
         //chiamata alla funzione termina partita
         terminaPartita("Hai perso!");
     }else{
-        document.getElementById("risultato").innerHTML = `Posizione corretta: ${posizioneCorretta} - Posizione errata: ${posizioneErrata}- sbagliato: ${sbagliato}`;
-        x=x+4;
+        scrollWin();
+        suggerimenti(posizioneCorretta,posizioneErrata);
         Colorful=[0,0,0,0];
-     
+        x++;
         avviaEventi();
     }
 }
-
-
+//funzione per inserire i suggerimenti
+function suggerimenti(correct,color) {
+    var suggestionItem1 = document.getElementById(`suggestion-${x}-1`);
+    var suggestionItem2 = document.getElementById(`suggestion-${x}-2`);
+    var suggestionItem3 = document.getElementById(`suggestion-${x}-3`);
+    var suggestionItem4 = document.getElementById(`suggestion-${x}-4`);
+    var occ=[0,0,0,0];
+    //riempe l'arry in modo casuola con 1 per per ogni colore coretto ma in posizione errata e 2 per ogni colore coretto e in posizione corretta
+    for (let i = 0; i < correct; i++) {
+        var r = Math.floor(Math.random() * 4);
+        if(occ[r]==0){
+            occ[r]=2;
+        }else{
+            i--;
+        }
+    }
+    for (let i = 0; i < color; i++) {
+        var r = Math.floor(Math.random() * 4);
+        if(occ[r]==0){
+            occ[r]=1;
+        }else{
+            i--;
+        }
+    }
+    console.log(occ);
+    //selezione un item cusuale per il suggerimento
+    if(occ[0]==2){
+        suggestionItem1.style.backgroundColor = "black";
+        suggestionItem1.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+    }else if(occ[0]==1){
+        suggestionItem1.style.backgroundColor = "black";
+        suggestionItem1.style.borderRadius = "50%";
+    }else{
+        suggestionItem1.style.backgroundColor = "black";
+    }
+    if(occ[1]==2){
+        suggestionItem2.style.backgroundColor = "black";
+        suggestionItem2.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+    }
+    else if(occ[1]==1){
+        suggestionItem2.style.backgroundColor = "black";
+        suggestionItem2.style.borderRadius = "50%";
+    }else{
+        suggestionItem2.style.backgroundColor = "black";
+    }
+    if(occ[2]==2){
+        suggestionItem3.style.backgroundColor = "black";
+        suggestionItem3.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+    }
+    else if(occ[2]==1){
+        suggestionItem3.style.backgroundColor = "black";
+        suggestionItem3.style.borderRadius = "50%";
+    }else{
+        suggestionItem3.style.backgroundColor = "black";
+    }
+    if(occ[3]==2){
+        suggestionItem4.style.backgroundColor = "black";
+        suggestionItem4.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+    }
+    else if(occ[3]==1){
+        suggestionItem4.style.backgroundColor = "black";
+        suggestionItem4.style.borderRadius = "50%";
+    }else{
+        suggestionItem4.style.backgroundColor = "black";
+    }
+    
+}
+//funzione per iniziare la partita
 function startPVE() {
     if (debug) {
         secret_code = [1, 1, 2, 3];//il codiece di debug è red red green blue
@@ -73,11 +136,11 @@ function startPVE() {
          console.log(secret_code);
     }
     Colorful=[0,0,0,0];
-    x=3;
+    x=1;
     end_game = false;
     game_timer();
 }
-
+//funzione per il timer
 function game_timer() {
     if (debug) {
         timeleft = 120; // 1 minute in seconds
@@ -93,7 +156,7 @@ function game_timer() {
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
             var formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById("countdown").innerHTML ="Tempo alla fine della partita: "+ formattedTime;
+            document.getElementById("countdown").innerHTML =formattedTime;
         }
         timeleft--;
         if (end_game) {
@@ -101,7 +164,7 @@ function game_timer() {
         }
     }, 1000);
 }
-
+//funzione per inserire i colori
 function changeColor(color) {
     // Select the div element by its ID
     var targetDiv
@@ -112,22 +175,23 @@ function changeColor(color) {
     for (let i = 0; i < 4; i++) {
         if(Colorful[i] === 0){
             Colorful[i] = 1; // Set the colored flag
-            targetDiv = document.getElementById(`item-${x}-${i*2+3}`);
+            console.log("colorato"+(i));
+            targetDiv = document.getElementById(`ball-${x}-${i+1}`);
             targetDiv.style.backgroundColor = color;
-            console.log("colorato"+(i*2+3));
+            
             break;
         }
         
     }
 }
-
+//funzione per rimuovere i colori
 function avviaEventi(){
     console.log("avviaEventi");
     var xatt=x
     //rimozione colori
    
    
-    var itemElement1 = document.getElementById(`item-${x}-3`);
+    var itemElement1 = document.getElementById(`ball-${x}-1`);
     itemElement1.addEventListener('click', () => {
         if(Colorful[0]==1 && xatt==x){
             itemElement1.style.backgroundColor = 'white';
@@ -139,7 +203,7 @@ function avviaEventi(){
     });
 
 
-    var itemElement2 = document.getElementById(`item-${x}-5`);
+    var itemElement2 = document.getElementById(`ball-${x}-2`);
 
     itemElement2.addEventListener('click', () => {
         itemElement2.addEventListener('click', () => {
@@ -153,7 +217,7 @@ function avviaEventi(){
 
 
 
-    var itemElement3 = document.getElementById(`item-${x}-7`);
+    var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
         if(Colorful[2] ==1&& xatt==x){
             itemElement3.style.backgroundColor = 'white';
@@ -164,7 +228,7 @@ function avviaEventi(){
 
 
 
-    var itemElement4 = document.getElementById(`item-${x}-9`);
+    var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
         if(Colorful[3] ==1 && xatt==x){
             itemElement4.style.backgroundColor = 'white';
@@ -176,7 +240,7 @@ function avviaEventi(){
     //mause over per far apparire la scritta rimuovi colore
     
     /*
-    let test = document.getElementById(`item-${x}-3`);
+    let test = document.getElementById(`ball-${x}-3`);
     test.addEventListener("mouseleave", () => { 
         test.textContent = test.style.backgroundColor;
     }, false);
@@ -186,12 +250,26 @@ function avviaEventi(){
     */
 }
 
-
+//funzione che fa scorrere lo schermo al div dopo
+function scrollWin() {
+    if(x>2){
+        const targetElement = document.getElementById(`rig-${x-2}`);
+        targetElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+}
 //TODO funzione termina partita
 function terminaPartita(msg){
     x=0;
     end_game = true;
     console.log("termina partita");
     document.getElementById("invcod").disabled = true;
-    alert(msg);
+    //aggiungi un dilay per far vedere il risultato
+    setTimeout(()=> {
+        // Abilita il pulsante
+        alert(msg);
+        
+    }, 1000);
+   
 }

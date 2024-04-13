@@ -48,19 +48,36 @@
 
 .ball{
   border: 1px solid;
-  background-color: #D9D9D9;
+  background-color: #ffffff;
   border-radius: 50%;
 }
 
 .suggestion{
   border: 1px solid;
-  background-color: #D9D9D9;
+  background-color: #ffffff;
 }
 
-#ball-8-2{
-  background-color: #C19569;
+.input-color-button {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
 
-#suggestion-8-3{
-  background-color: #C19569;
+@media (max-width: 768px) {
+  .input-color-button {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+
+
+.button-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 7%;
+  height: 100vh;
+  background-color: #333131;
+  text-align: center;
 }
