@@ -1,7 +1,7 @@
 var x=1;
 var Colorful=[0,0,0,0];
 var secret_code=[];//mettere a false
-var debug = true;
+var debug = false;
 var colors = ["white", "red", "green", "blue", "yellow", "orange","purple","gold","skyblue"];
 var end_game = false;
 var timeleft = 900; // 15 minuti in secondi
@@ -61,11 +61,13 @@ function confrontaCodici() {
     if(posizioneCorretta === 4){
         suggerimenti(posizioneCorretta,posizioneErrata);
         //chiamata alla funzione termina partita
-        terminaPartita("Hai vinto!");
+        let msg = "Hai vinto!";
+        terminaPartita(msg.concat(" ", secret_code.toString()));
     }else if(x==8 ){
         suggerimenti(posizioneCorretta,posizioneErrata);
         //chiamata alla funzione termina partita
-        terminaPartita("Hai perso!");
+        let msg = "Hai perso!";
+        terminaPartita(msg.concat(" ", secret_code.toString()));
     }else{
         scrollWin();
         suggerimenti(posizioneCorretta,posizioneErrata);

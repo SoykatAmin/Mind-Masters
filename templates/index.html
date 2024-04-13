@@ -18,7 +18,53 @@
             ciao {{ session['username'] }}
         {% endif %}
         <div class="leftpane">
-            <h3>Left pane, game board.</h3>
+            <div class="grid-container">
+                {% set ballRow = namespace(value=1) %}
+                {% for x in range(1, 18) %}
+                    {% for y in range(1, 6) %}
+    
+                        {% if y == 2 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for balls -->
+                            <div class="grid-item balls-container" id="rig-{{ ballRow.value }}">
+                                
+                                {% for z in range(1, 4) %}
+                                    {% set ballCol = namespace(value=1) %}
+                                    {% for v in range(1, 10) %}
+                                        {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                            {% set ballCol.value = ballCol.value + 1 %}
+                                            {% if v == 8 %}
+                                                {% set ballRow.value = ballRow.value + 1 %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="ball-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% elif y == 4 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for suggestion -->
+                            <div class="grid-item suggestion-container">
+                                {% set suggCol = namespace(value=1) %}
+                                {% for z in range(1, 6) %}
+                                    {% for v in range(1, 6) %}
+                                        {% if (z == 2 or z == 4) and (v == 2 or v == 4)  %}
+                                            <div class="suggestion" id="suggestion-{{ ballRow.value-1 }}-{{ suggCol.value }}"></div>
+                                            {% set suggCol.value = suggCol.value + 1 %}
+                                        {% else %}
+                                            <div class="suggestion-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="grid-item"></div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                {% endfor %}
+                
+                </div>
         </div>
 
         <!-- This part will persist even when the left pane disappears. Contains a catch-phrase and two buttons to play. -->
