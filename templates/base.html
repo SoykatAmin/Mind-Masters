@@ -14,6 +14,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script>
+        //quano si apre la pagine per sicureza ed evitare bug si mette lo schemo al inizio della pagina
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+    </script>
     {% block head %}{% endblock %}
 </head>
 <body>

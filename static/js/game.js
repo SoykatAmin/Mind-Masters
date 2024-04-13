@@ -1,10 +1,14 @@
 var x=1;
 var Colorful=[0,0,0,0];
 var secret_code=[];//mettere a false
-var debug = false;
-var colors = ["white", "red", "green", "blue", "yellow", "orange","purple","gold","skyblue"];
+var debug = true;
+//il primo elemento è vuoto per far si che l'indice del colore corrisponda al suo valore nel codice
+var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
+var colori = ["Non sei l'unico", "rosso", "verde", "blu", "giallo", "arancione", "viola", "rosa", "azzurro"];
 var end_game = false;
 var timeleft = 900; // 15 minuti in secondi
+
+var win=false;
 
 function confrontaCodici() {
     //fix con colori uguali non va 
@@ -27,8 +31,13 @@ function confrontaCodici() {
     //legge i valori dei colori inseriti dal giocatore
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i+1}`);
-        if(codelm.style.backgroundColor == ""){
-            player_code.push(colors.indexOf("white"));
+        if(codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white"){
+            
+            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+            const modal = new bootstrap.Modal('#md_err');
+            modal.show();
+            return;
+            
         }else{
             player_code.push(colors.indexOf(codelm.style.backgroundColor));
         }
@@ -61,13 +70,18 @@ function confrontaCodici() {
     if(posizioneCorretta === 4){
         suggerimenti(posizioneCorretta,posizioneErrata);
         //chiamata alla funzione termina partita
-        let msg = "Hai vinto!";
-        terminaPartita(msg.concat(" ", secret_code.toString()));
+        win=true;
+        if(x==1){
+            terminaPartita("che giga chad hai vinto al primo turno!");
+        }else{
+            terminaPartita("complimenti hai vinto in " +x+ " turni!");
+        }
+        
     }else if(x==8 ){
         suggerimenti(posizioneCorretta,posizioneErrata);
+        var str=colori[secret_code[0]]+","+colori[secret_code[1]]+","+colori[secret_code[2]]+","+colori[secret_code[3]];
         //chiamata alla funzione termina partita
-        let msg = "Hai perso!";
-        terminaPartita(msg.concat(" ", secret_code.toString()));
+        terminaPartita("Mi dispiace hai perso il codice era " + str);
     }else{
         scrollWin();
         suggerimenti(posizioneCorretta,posizioneErrata);
@@ -109,7 +123,8 @@ function suggerimenti(correct,color) {
         suggestionItem1.style.backgroundColor = "black";
         suggestionItem1.style.borderRadius = "50%";
     }else{
-        suggestionItem1.style.backgroundColor = "black";
+        suggestionItem1.style.backgroundColor = "#C19569";
+        suggestionItem1.style.border = "1px solid #C19569";
     }
     if(occ[1]==2){
         suggestionItem2.style.backgroundColor = "black";
@@ -119,7 +134,8 @@ function suggerimenti(correct,color) {
         suggestionItem2.style.backgroundColor = "black";
         suggestionItem2.style.borderRadius = "50%";
     }else{
-        suggestionItem2.style.backgroundColor = "black";
+        suggestionItem2.style.backgroundColor = "#C19569";
+        suggestionItem2.style.border = "1px solid #C19569";
     }
     if(occ[2]==2){
         suggestionItem3.style.backgroundColor = "black";
@@ -129,7 +145,8 @@ function suggerimenti(correct,color) {
         suggestionItem3.style.backgroundColor = "black";
         suggestionItem3.style.borderRadius = "50%";
     }else{
-        suggestionItem3.style.backgroundColor = "black";
+        suggestionItem3.style.backgroundColor = "#C19569";
+        suggestionItem3.style.border = "1px solid #C19569";
     }
     if(occ[3]==2){
         suggestionItem4.style.backgroundColor = "black";
@@ -139,7 +156,8 @@ function suggerimenti(correct,color) {
         suggestionItem4.style.backgroundColor = "black";
         suggestionItem4.style.borderRadius = "50%";
     }else{
-        suggestionItem4.style.backgroundColor = "black";
+        suggestionItem4.style.backgroundColor = "#C19569";
+        suggestionItem4.style.border = "1px solid #C19569";
     }
     
 }
@@ -149,7 +167,7 @@ function startPVE() {
         secret_code = [1, 1, 2, 3];//il codiece di debug è red red green blue
     }else{
         for (let i = 0; i < 4; i++) {
-            secret_code.push(Math.floor(Math.random() * 9));
+            secret_code.push(Math.floor(Math.random() * 8)+1);
         }
          
     }
@@ -170,7 +188,8 @@ function game_timer() {
             //ciamera la funzione termina partita TODO
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
-            terminaPartita("Tempo scaduto!");
+            var str=colori[secret_code[0]]+","+colori[secret_code[1]]+","+colori[secret_code[2]]+","+colori[secret_code[3]];    
+            terminaPartita("Mi dispiace tempo finito il codice era " + str);
         } else {
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
@@ -283,12 +302,23 @@ function terminaPartita(msg){
     x=0;
     end_game = true;
     console.log("termina partita");
+   
     document.getElementById("invcod").disabled = true;
     //aggiungi un dilay per far vedere il risultato
     setTimeout(()=> {
         // Abilita il pulsante
-        alert(msg);
+        if(win){
+            document.getElementById("md_title").innerHTML = "Complimeti hai vinto";
+        }else{
+            document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
+        }
+        document.getElementById("md_body").innerHTML = msg;
         
-    }, 1000);
+        
+        const modal = new bootstrap.Modal('#md_end');
+        modal.show();
+       
+        
+    }, 500);
    
 }
