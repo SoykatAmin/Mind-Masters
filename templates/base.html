@@ -23,7 +23,12 @@
         <aside id="sidebar">
             <div class="h-100">
                 <div class="sidebar-logo">
-                    <a href="{{ url_for('index') }}">Mind Masters</a>
+                    <div class="logo">
+                        <a href="{{ url_for('index') }}">Mind Masters</a>
+                    </div>
+                    <div class="close-button">
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close" id="close-sidebar-button"></button>
+                    </div>
                 </div>
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
