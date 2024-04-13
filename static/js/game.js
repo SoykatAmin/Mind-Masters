@@ -7,6 +7,8 @@ var end_game = false;
 var timeleft = 900; // 15 minuti in secondi
 
 function confrontaCodici() {
+    //fix con colori uguali non va 
+    var postrov=[0,0,0,0];
     var posizioneCorretta = 0;
     var posizioneErrata = 0;
     var sbagliato = 0;
@@ -25,22 +27,36 @@ function confrontaCodici() {
     //legge i valori dei colori inseriti dal giocatore
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i+1}`);
-        player_code.push(colors.indexOf(codelm.style.backgroundColor));
+        if(codelm.style.backgroundColor == ""){
+            player_code.push(colors.indexOf("white"));
+        }else{
+            player_code.push(colors.indexOf(codelm.style.backgroundColor));
+        }
+      
     }
+    console.log("Codice giocarore " +player_code);
     //confronta i valori inseriti dal giocatore con il codice segreto
     const copysc = [...secret_code]; // create a copy of codice2 to avoid modifying the original array
     for (let i = 0; i < player_code.length; i++) {
         if (player_code[i] === copysc[i]) {
+            postrov[i]=1;
             posizioneCorretta++;
             copysc[i] = null; // mark the element as used to avoid counting it as an error again
-        } else if (copysc.includes(player_code[i])) {
-            posizioneErrata++;
-            const index = copysc.indexOf(player_code[i]);
-            copysc[index] = null; // mark the element as used to avoid counting it as an error again
-        }else{
-            sbagliato++;
         }
     }
+    for(let i = 0; i < 4; i++){
+        if(postrov[i]===0){
+            if (copysc.includes(player_code[i])) {
+                posizioneErrata++;
+                const index = copysc.indexOf(player_code[i]);
+                copysc[index] = null; // mark the element as used to avoid counting it as an error again
+            }else{
+                sbagliato++;
+            }
+        }
+       
+    }
+    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata + " sbagliato: " + sbagliato);
     //vede se il giocatore ha vinto o perso e passa al prossimo turno
     if(posizioneCorretta === 4){
         suggerimenti(posizioneCorretta,posizioneErrata);
@@ -68,7 +84,7 @@ function suggerimenti(correct,color) {
     //riempe l'arry in modo casuola con 1 per per ogni colore coretto ma in posizione errata e 2 per ogni colore coretto e in posizione corretta
     for (let i = 0; i < correct; i++) {
         var r = Math.floor(Math.random() * 4);
-        if(occ[r]==0){
+        if(occ[r]===0){
             occ[r]=2;
         }else{
             i--;
@@ -76,7 +92,7 @@ function suggerimenti(correct,color) {
     }
     for (let i = 0; i < color; i++) {
         var r = Math.floor(Math.random() * 4);
-        if(occ[r]==0){
+        if(occ[r]===0){
             occ[r]=1;
         }else{
             i--;
@@ -133,8 +149,9 @@ function startPVE() {
         for (let i = 0; i < 4; i++) {
             secret_code.push(Math.floor(Math.random() * 9));
         }
-         console.log(secret_code);
+         
     }
+    console.log(secret_code);
     Colorful=[0,0,0,0];
     x=1;
     end_game = false;
@@ -156,7 +173,7 @@ function game_timer() {
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
             var formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById("countdown").innerHTML =formattedTime;
+            document.getElementById("countdown").innerHTML ="Tempo rimasto "+ formattedTime;
         }
         timeleft--;
         if (end_game) {

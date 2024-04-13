@@ -13,32 +13,7 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class="game_board">
-        
-        
-        <div class="button-bar">
-            <div>Tempo rimasto <p id="countdown">15:00</p></div>
-            <br>
-            <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
-            <br>
-            <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
-            <br>
-            <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
-            <br>
-            <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
-            <br>
-            <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
-            <br>
-            <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
-            <br>
-            <button onclick="changeColor('gold')" class="input-color-button" style="background-color: gold;"></button>
-            <br>
-            <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
-            <br>
-            <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
-        </div>
-        
+    <div class="game_board"></div>
         <div class="grid-container">
             {% set ballRow = namespace(value=1) %}
             {% for x in range(1, 18) %}
@@ -84,6 +59,29 @@
                     
                 {% endfor %}
             {% endfor %}
+            
+            </div>
+            <!--bottoni per inserire i colori-->
+            <div class="button-bar">
+                <div id="countdown">Tempo rimasto 15:00</div>
+                
+                <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
+                
+                <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
+                
+                <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
+                
+                <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
+                
+                <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
+                
+                <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
+                
+                <button onclick="changeColor('gold')" class="input-color-button" style="background-color: gold;"></button>
+                
+                <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
+                <br>
+                <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
         </div>
        
     </div>
