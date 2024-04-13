@@ -11,6 +11,17 @@ function confrontaCodici() {
     var posizioneErrata = 0;
     var sbagliato = 0;
     var player_code = [];
+    //dirattiva il bottone per evitari eventuale doppio click
+    document.getElementById("invcod").disabled = true;
+
+    //riattiva il bottone dopo 1 secondo
+    setTimeout(()=> {
+        // Abilita il pulsante
+        if(!end_game){
+            document.getElementById("invcod").disabled = false;
+        }
+        
+    }, 1000);
     //legge i valori dei colori inseriti dal giocatore
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`item-${x}-${i*2+3}`);
@@ -35,14 +46,18 @@ function confrontaCodici() {
         end_game = true;
         document.getElementById("risultato").innerHTML = `Hai vinto!`;
         //chiamata alla funzione termina partita
-    }else if(x==31 ){
+        terminaPartita("Hai vinto!");
+    }else if(x>31 ){
+        x=0;
         end_game = true;
         document.getElementById("risultato").innerHTML = `Hai perso!`;
         //chiamata alla funzione termina partita
+        terminaPartita("Hai perso!");
     }else{
         document.getElementById("risultato").innerHTML = `Posizione corretta: ${posizioneCorretta} - Posizione errata: ${posizioneErrata}- sbagliato: ${sbagliato}`;
         x=x+4;
         Colorful=[0,0,0,0];
+     
         avviaEventi();
     }
 }
@@ -65,7 +80,7 @@ function startPVE() {
 
 function game_timer() {
     if (debug) {
-        timeleft = 30; // 1 minute in seconds
+        timeleft = 120; // 1 minute in seconds
     }
     var downloadTimer = setInterval(()=>{
         if(timeleft <= 0){
@@ -73,6 +88,7 @@ function game_timer() {
             //ciamera la funzione termina partita TODO
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
+            terminaPartita("Tempo scaduto!");
         } else {
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
@@ -107,15 +123,17 @@ function changeColor(color) {
 
 function avviaEventi(){
     console.log("avviaEventi");
-
+    var xatt=x
     //rimozione colori
    
-    const itemElement = document.getElementById(`item-${x}-3`);
-    itemElement.addEventListener('click', () => {
-        if(Colorful[0]==1){
-            itemElement.style.backgroundColor = 'white';
+   
+    var itemElement1 = document.getElementById(`item-${x}-3`);
+    itemElement1.addEventListener('click', () => {
+        if(Colorful[0]==1 && xatt==x){
+            itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0; 
-            console.log(x+"rimosso");
+            console.log(x + " rimosso");
+            
         }
         
     });
@@ -125,7 +143,7 @@ function avviaEventi(){
 
     itemElement2.addEventListener('click', () => {
         itemElement2.addEventListener('click', () => {
-            if(Colorful[1] ==1){
+            if(Colorful[1] ==1 && xatt==x){
                 itemElement2.style.backgroundColor = 'white';
                 Colorful[1] = 0; 
                 console.log("rimosso");
@@ -137,7 +155,7 @@ function avviaEventi(){
 
     var itemElement3 = document.getElementById(`item-${x}-7`);
     itemElement3.addEventListener('click', () => {
-        if(Colorful[2] ==1){
+        if(Colorful[2] ==1&& xatt==x){
             itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0; 
             console.log("rimosso");
@@ -148,7 +166,7 @@ function avviaEventi(){
 
     var itemElement4 = document.getElementById(`item-${x}-9`);
     itemElement4.addEventListener('click', () => {
-        if(Colorful[3] ==1){
+        if(Colorful[3] ==1 && xatt==x){
             itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0; 
             console.log("rimosso");
@@ -170,4 +188,10 @@ function avviaEventi(){
 
 
 //TODO funzione termina partita
-
+function terminaPartita(msg){
+    x=0;
+    end_game = true;
+    console.log("termina partita");
+    document.getElementById("invcod").disabled = true;
+    alert(msg);
+}
