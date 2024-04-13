@@ -54,10 +54,12 @@
                     {% elif y == 4 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
                         <!-- Container for suggestion -->
                         <div class="grid-item suggestion-container">
+                            {% set suggCol = namespace(value=1) %}
                             {% for z in range(1, 6) %}
                                 {% for v in range(1, 6) %}
                                     {% if (z == 2 or z == 4) and (v == 2 or v == 4)  %}
-                                        <div class="suggestion"></div>
+                                        <div class="suggestion" id="suggestion-{{ ballRow.value-1 }}-{{ suggCol.value }}"></div>
+                                        {% set suggCol.value = suggCol.value + 1 %}
                                     {% else %}
                                         <div class="suggestion-padding"></div>
                                     {% endif %}
