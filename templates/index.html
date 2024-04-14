@@ -3,6 +3,7 @@
 {% block head %}
     <title>Mind Masters</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/online.js') }}"></script>
     
 {% endblock %}
 
@@ -14,9 +15,7 @@
 
         <!-- Game board. It will disappear when width is reduced to a certain amount. -->
 
-        {% if session['username'] %}
-            ciao {{ session['username'] }}
-        {% endif %}
+        
         <div class="leftpane">
             <div class="grid-container">
                 {% set ballRow = namespace(value=1) %}
@@ -71,10 +70,20 @@
 
         <div class="rightpane">
             <div class="right-toppane">
-                <h3>Game motto.</h3>
+                {% if session['username'] %}
+                    <h2>ciao {{ session['username'] }}</h2>
+                {% else %}
+                    <a href="{{ url_for('login') }}">
+                        <h3>Accedi per giocare online</h3>
+                    </a>
+                {% endif %}
             </div> 
-            <div class="right-middlepane">
-                <h3> Online.</h3>
+            <div class="right-middlepane" >
+                {% if session['username'] %}
+                    <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
+                        <h3>Play Online.</h3>
+                    </a>
+                {% endif %}
             </div> 
             <div class="right-bottompane">
                 <!--Sistemare si vede il link blu-->
@@ -83,6 +92,22 @@
                 </a> 
                
             </div> 
+        </div>
+    </div>
+    <div id="md_online" class="modal fade " data-bs-backdrop='static'>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-header">
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-header">
+                    <h2 class="modal-title " id="md_body">Gioca online con i tuoi amici</h2>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby') }}`">Crea una stanza</button>
+                    <button class="btn btn-info"  id="right-bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                </div>
+            </div>
         </div>
     </div>
 

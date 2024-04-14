@@ -122,6 +122,7 @@ function suggerimenti(correct,color) {
     }else if(occ[0]==1){
         suggestionItem1.style.backgroundColor = "black";
         suggestionItem1.style.borderRadius = "50%";
+        suggestionItem1.style.border = "1px solid black";
     }else{
         suggestionItem1.style.backgroundColor = "#C19569";
         suggestionItem1.style.border = "1px solid #C19569";
@@ -133,6 +134,7 @@ function suggerimenti(correct,color) {
     else if(occ[1]==1){
         suggestionItem2.style.backgroundColor = "black";
         suggestionItem2.style.borderRadius = "50%";
+        suggestionItem2.style.border = "1px solid black";
     }else{
         suggestionItem2.style.backgroundColor = "#C19569";
         suggestionItem2.style.border = "1px solid #C19569";
@@ -144,6 +146,7 @@ function suggerimenti(correct,color) {
     else if(occ[2]==1){
         suggestionItem3.style.backgroundColor = "black";
         suggestionItem3.style.borderRadius = "50%";
+        suggestionItem3.style.border = "1px solid black";
     }else{
         suggestionItem3.style.backgroundColor = "#C19569";
         suggestionItem3.style.border = "1px solid #C19569";
@@ -155,6 +158,7 @@ function suggerimenti(correct,color) {
     else if(occ[3]==1){
         suggestionItem4.style.backgroundColor = "black";
         suggestionItem4.style.borderRadius = "50%";
+        suggestionItem4.style.border = "1px solid black";
     }else{
         suggestionItem4.style.backgroundColor = "#C19569";
         suggestionItem4.style.border = "1px solid #C19569";

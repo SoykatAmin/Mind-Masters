@@ -15,17 +15,16 @@ class Partita:
         self.tempi=[]
 
     def creaStanza(self, player):
-        if len(self.player)==0:
-            self.player.append(player)
-            return self.game_code
-        else:
-            return False
+        self.player.append(player)
+        return self.game_code
+    
     
     def entraStanza(self, player, code):
         if len(self.player)==1 and code==str(self.game_code):
             self.player.append(player)
             return True
         else:
+            #stanza piena
             return False
 
     
@@ -41,8 +40,10 @@ class Partita:
                 elif self.tempi[0]>self.tempi[1]:
                     self.vincitore=self.player[1]
                 else:
+                    #pareggio
                     self.vincitore=None
         else:
+            #non hanno finito entrambi
             return False
         return self.vincitore
 
@@ -183,22 +184,33 @@ def game():
 def gameonline():
     return render_template('gameonline.html')
 
+@app.route('/lobby', methods=['GET', 'POST'])
+
+def lobby():
+    return render_template('lobby.html')
+
 #funzioni per dialogo client-server
 #creo funzione per il dialogo con il client 
 @app.route('/creaStanza', methods=['GET', 'POST'])
 def create_room():
+    #for p in partite:
+    #    if p.player_ingame(session['username']):
+    #        jsonResp = {'err': 'Sei già in una stanza'}
+    #        return jsonify(jsonResp)
+    #
     p=Partita()
-    msg=p.creaStanza(session['username'])
-    if msg==False:
-        jsonResp = {'msg': 'Stanza già piena'}
-        return jsonify(jsonResp)
-    print(msg)
-    jsonResp = {'msg': session['username'], 'game_code': msg}
+    code = p.creaStanza(session['username'])
+    jsonResp = {'game_code': code}
     partite.append(p)
     return jsonify(jsonResp)
 
 @app.route('/entraStanza', methods=['GET', 'POST'])
 def enter_room():
+
+    for p in partite:
+        if p.player_ingame(session['username']):
+            jsonResp = {'err': 'Sei già in una stanza'}
+            return jsonify(jsonResp)
     
     if request.method == 'POST':
         game_code = request.get_json()
@@ -208,11 +220,11 @@ def enter_room():
         pin = game_code['pin']
         for p in partite:
             if p.entraStanza(session['username'], pin):
-                jsonResp = {'u1': p.player[0], 'u2': p.player[1]}
+                jsonResp = {'u': p.player[0]}
                 return jsonify(jsonResp)
     print(game_code)
-    
-    return jsonify("nessuna stanza con questo codice")
+    jsonResp = {'err': 'Nessuna stanza con questo codice'}
+    return jsonify(jsonResp)
 
 
 if __name__ == "__main__":

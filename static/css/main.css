@@ -107,11 +107,14 @@ a.sidebar-link {
 .logo{
     flex: 95%;
 }
+
 #sidebar-close-button{
     flex: 5%;
     visibility: visible;
 }
-
+.clickable{
+    cursor: pointer;
+}
 /* Responsive */
 
 @media (min-width:768px) {
