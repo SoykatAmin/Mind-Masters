@@ -49,20 +49,34 @@ function confrontaCodici() {
     }, 1000);
     //potrei fare una funzione a parte?
     // Legge i valori dei colori inseriti dal giocatore se non sono stati inseriti tutti avvia un modal per seganlare l'errore al utente
+    //for (let i = 0; i < 4; i++) {
+    //    var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+    //    if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {
+//
+    //        document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+    //        const modal = new bootstrap.Modal('#md_err');
+    //        modal.show();
+    //        return;
+//
+    //    } else {
+    //        player_code.push(colors.indexOf(codelm.style.backgroundColor));
+    //    }
+//
+    //}
+    var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
-        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {
-
+        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
             document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
             const modal = new bootstrap.Modal('#md_err');
             modal.show();
             return;
-
         } else {
-            player_code.push(colors.indexOf(codelm.style.backgroundColor));
+            color_code.push(codelm.style.backgroundColor);
         }
-
     }
+    console.log(color_code);
+    player_code = stringToCodice(color_code);
     console.log("Codice giocatore " + player_code);
 
     // Confronta i valori inseriti dal giocatore con il codice segreto
@@ -379,4 +393,22 @@ function terminaPartita(msg){
         const modal = new bootstrap.Modal('#md_end');
         modal.show();
     }, 500);
+}
+
+//Funzione per convertire il codice in stringa di colori
+function codiceToString(codice){
+    var str = colori[codice[0]] + "," + colori[codice[1]] + "," + colori[codice[2]] + "," + colori[codice[3]];
+    return str;
+}
+
+//Funzione per convertire colori in codice dato un array di colori genera il codice corrispondente
+function stringToCodice(col){
+    var codice = [];
+    if (col.length != 4) {
+        return "Errore";
+    }
+    for (let i = 0; i < col.length; i++) {
+        codice.push(colors.indexOf(col[i]));
+    }
+    return codice;
 }

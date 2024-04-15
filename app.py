@@ -5,7 +5,9 @@ import bcrypt
 import random
 
 
-#classe per connessione partita
+#classe per connessione partita  
+#TODO: implementare le partite nel database
+
 class Partita:
     def __init__(self):
         self.player=[]#dentro player ci sono gli username dei giocatori
@@ -71,14 +73,14 @@ class Partita:
         return len(self.player)==2
        
 
-
-
-
+#variabili globali e inizializzazione
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 partite=[]#lista delle partite in corso
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
+
+
 
 # DATABASE CONFIGURATION
 
