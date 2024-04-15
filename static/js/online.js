@@ -1,5 +1,5 @@
 var colors = ["Sono copiato", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
-
+//funzioni da finire poi vanno commentate
 
 function creasta() {
     const url = 'http://127.0.0.1:5000/creaStanza'
@@ -31,12 +31,13 @@ function entrasta(){
     })
 }
 
+
 function iserisciCodice(){
     var body = document.getElementById("md_body");
     //inserisci un form html per inserire il codice
-    body.innerHTML = '<form class="Ci Pensa AMIN"id="form" method="post" action="/entraStanza"><input type="text" id="game_code" name="game_code" >AMIN FAI IL CSS Inserisci il codice della stanza<input type="submit" value="Entra"></form>';
+    body.innerHTML = '<div>Inserisci il codice della stanza</div><input type="text" id="game_code" name="game_code" ></input>';
     var left = document.getElementById("left_bn");
-    var right = document.getElementById("right_bn");
+    var right = document.getElementById("right-bn");
     //cambia gli elemeti della classe di sinistra
     left.className = "btn btn-danger";
     left.innerHTML = "Annulla";
@@ -56,5 +57,5 @@ function annulla(){
         left.setAttribute("onclick","window.location.href = `{{ url_for('lobby') }}`");
         right.innerHTML = "Entra in una stanza";
         right.setAttribute("onclick","iserisciCodice()");
-    }, 1000);
+    }, 600);
 }

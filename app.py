@@ -9,7 +9,7 @@ import random
 class Partita:
     def __init__(self):
         self.player=[]#dentro player ci sono gli username dei giocatori
-        self.game_code=random.randint(1000,9999)#codice partita per collegarsi
+        self.game_code=random.randint(100000,999999)#codice partita per collegarsi
         self.vincitore=None
         self.mosse=[]
         self.tempi=[]
@@ -55,6 +55,21 @@ class Partita:
         
     def player_ingame(self, player):
         return player in self.player
+
+    def get_adm(self):
+        return self.player[0]
+    
+    def esci_stanza(self, player):
+        if self.player[0]==player:
+            self.player.remove(player)
+            return False
+        else:
+            self.player.remove(player)
+            return True
+        
+    def game_check(self):
+        return len(self.player)==2
+       
 
 
 
@@ -226,6 +241,41 @@ def enter_room():
     jsonResp = {'err': 'Nessuna stanza con questo codice'}
     return jsonify(jsonResp)
 
+@app.route('/ottieniAdm', methods=['GET', 'POST'])
+def get_adm():
+    for p in partite:
+        if p.player_ingame(session['username']):
+            jsonResp = {'u': p.get_adm()}
+            return jsonify(jsonResp)
+    jsonResp = {'err': 'Non sei in una stanza'}
+    return jsonify(jsonResp)
+
+@app.route('/uscitaStanza', methods=['GET', 'POST'])
+def exit_room():
+    for p in partite:
+        if p.player_ingame(session['username']):
+            if p.esci_stanza(session['username']):
+                partite.remove(p)
+                jsonResp = {'err': 'Stanza chiusa'}
+                return jsonify(jsonResp)
+            else:
+                jsonResp = {'msg': 'Uscito dalla stanza'}
+                return jsonify(jsonResp)
+    jsonResp = {'err': 'Non sei in una stanza'}
+    return jsonify(jsonResp)
+
+@app.route('/controlloStanza', methods=['GET', 'POST'])
+def check_room():
+    for p in partite:
+        if p.player_ingame(session['username']):
+            if p.game_check():
+                jsonResp = {'msg': 'Stanza piena'}
+                return jsonify(jsonResp)
+            else:
+                jsonResp = {'msg': 'Termina la partita'}
+                return jsonify(jsonResp)
+    jsonResp = {'err': 'Qualcosa è andato storto'}
+    return jsonify(jsonResp)
 
 if __name__ == "__main__":
     app.run(debug=True)
