@@ -1,5 +1,27 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .game_board{
-    margin: 5% 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 30%; /* Altezza del footer */
+  margin: 5% 0;
+}
+
+.game-controller{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  padding: 20px;
 }
 
 .grid-container {
@@ -73,17 +95,6 @@
   }
 }
 
-
-
-.button-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 9%;
-  height: 100vh;
-  background-color: #333131;
-  text-align: center;
-}
 /*se sto da telefono deve stare in basso */
 @media (max-width: 620px) {
   .button-bar {

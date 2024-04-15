@@ -12,6 +12,7 @@ body {
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: cover;
+    overflow-x:hidden;
 }
 
 
@@ -23,6 +24,62 @@ body {
     width: 100%;
     color: #fff;
     background-color: #363636;
+}
+
+/* The following code defines the styles for the footer section */
+
+.footer{
+    background:#363636; /* Sets the background color of the footer */
+    padding:30px 0px; /* Sets the padding of the footer */
+    font-family: 'Play', sans-serif; /* Sets the font family of the footer */
+    text-align:center; /* Aligns the content of the footer to the center */
+}
+
+.footer .row{
+    width:100%; /* Sets the width of the row element inside the footer */
+    margin:1% 0%; /* Sets the margin of the row element */
+    padding:0.6% 0%; /* Sets the padding of the row element */
+    color:gray; /* Sets the text color of the row element */
+    font-size:0.8em; /* Sets the font size of the row element */
+}
+
+.footer .row a{
+    text-decoration:none; /* Removes the underline from the links inside the row element */
+    color:gray; /* Sets the text color of the links inside the row element */
+    transition:0.5s; /* Adds a smooth transition effect to the links */
+}
+    
+.footer .row a:hover{
+    color:#fff; /* Changes the text color of the links when hovered */
+}
+
+.footer .row ul{
+    width:100%; /* Sets the width of the unordered list inside the row element */
+}
+
+.footer .row ul li{
+    display:inline-block; /* Displays the list items horizontally */
+    margin:0px 30px; /* Sets the margin of the list items */
+}
+
+.footer .row a i{
+    font-size:2em; /* Sets the font size of the icons inside the links */
+    margin:0% 1%; /* Sets the margin of the icons inside the links */
+}
+
+@media (max-width:720px){
+    .footer{
+    text-align:left;
+    padding:5%;
+}
+.footer .row ul li{
+    display:block;
+    margin:10px 0px;
+    text-align:left;
+}
+.footer .row a i{
+    margin:0% 3%;
+}
 }
 
 #sidebar {

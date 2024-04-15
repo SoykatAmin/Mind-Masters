@@ -16,104 +16,109 @@
 {% endblock %}
 
 {% block body %}
-<!--modal he mosatra il risultato della partita vittoria/sconfitta -->
-<div id="md_end" class="modal fade " data-bs-backdrop='static'>
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: #4d4d4d;">
-            <div class="modal-header">
-                <h2 class="modal-title " id="md_title"></h2>
-            </div>
-            <div class="modal-body" id="md_body"></div>
-            <div class="modal-footer">
-                <button class="btn btn-info" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
-                <button class="btn btn-info" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Inizia una nuova partita</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
-<div id="md_err" class="modal fade " data-bs-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: #4d4d4d;">
-            <div class="modal-body" id="md_err_body"></div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;">ok</button>
+    <!--modal he mosatra il risultato della partita vittoria/sconfitta -->
+    <div id="md_end" class="modal fade " data-bs-backdrop='static'>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-header">
+                    <h2 class="modal-title " id="md_title"></h2>
+                </div>
+                <div class="modal-body" id="md_body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
+                    <button class="btn btn-info" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Inizia una nuova partita</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
+    <div id="md_err" class="modal fade " data-bs-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-body" id="md_err_body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="game_board">
+            <div class="grid-container">
+                {% set ballRow = namespace(value=1) %}
+                {% for x in range(1, 18) %}
+                    {% for y in range(1, 6) %}
 
-    <div class="game_board">
-        <div class="grid-container">
-            {% set ballRow = namespace(value=1) %}
-            {% for x in range(1, 18) %}
-                {% for y in range(1, 6) %}
-
-                    {% if y == 2 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
-                        <!-- Container for balls -->
-                        <div class="grid-item balls-container" id="rig-{{ ballRow.value }}">
-                            
-                            {% for z in range(1, 4) %}
-                                {% set ballCol = namespace(value=1) %}
-                                {% for v in range(1, 10) %}
-                                    {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
-                                        <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
-                                        {% set ballCol.value = ballCol.value + 1 %}
-                                        {% if v == 8 %}
-                                            {% set ballRow.value = ballRow.value + 1 %}
+                        {% if y == 2 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for balls -->
+                            <div class="grid-item balls-container" id="rig-{{ ballRow.value }}">
+                                
+                                {% for z in range(1, 4) %}
+                                    {% set ballCol = namespace(value=1) %}
+                                    {% for v in range(1, 10) %}
+                                        {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                            {% set ballCol.value = ballCol.value + 1 %}
+                                            {% if v == 8 %}
+                                                {% set ballRow.value = ballRow.value + 1 %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="ball-padding"></div>
                                         {% endif %}
-                                    {% else %}
-                                        <div class="ball-padding"></div>
-                                    {% endif %}
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </div>
-                    {% elif y == 4 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
-                        <!-- Container for suggestion -->
-                        <div class="grid-item suggestion-container">
-                            {% set suggCol = namespace(value=1) %}
-                            {% for z in range(1, 6) %}
-                                {% for v in range(1, 6) %}
-                                    {% if (z == 2 or z == 4) and (v == 2 or v == 4)  %}
-                                        <div class="suggestion" id="suggestion-{{ ballRow.value-1 }}-{{ suggCol.value }}"></div>
-                                        {% set suggCol.value = suggCol.value + 1 %}
-                                    {% else %}
-                                        <div class="suggestion-padding"></div>
-                                    {% endif %}
+                            </div>
+                        {% elif y == 4 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for suggestion -->
+                            <div class="grid-item suggestion-container">
+                                {% set suggCol = namespace(value=1) %}
+                                {% for z in range(1, 6) %}
+                                    {% for v in range(1, 6) %}
+                                        {% if (z == 2 or z == 4) and (v == 2 or v == 4)  %}
+                                            <div class="suggestion" id="suggestion-{{ ballRow.value-1 }}-{{ suggCol.value }}"></div>
+                                            {% set suggCol.value = suggCol.value + 1 %}
+                                        {% else %}
+                                            <div class="suggestion-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="grid-item"></div>
-                    {% endif %}
-                    
+                            </div>
+                        {% else %}
+                            <div class="grid-item"></div>
+                        {% endif %}
+                        
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            
-        </div>
-            <!--bottoni per inserire i colori-->
-            <div class="button-bar">
-                <div id="countdown">Tempo rimasto 15:00</div>
                 
-                <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
-                
-                <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
-                
-                <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
-                
-                <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
-                
-                <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
-                
-                <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
-                
-                <button onclick="changeColor('pink')" class="input-color-button" style="background-color: pink;"></button>
-                
-                <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
-                <br>
-                <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
             </div>
-       
+                
+        </div>
+        <div class="game-controller">
+            <div class="controller-container">
+                <!--bottoni per inserire i colori-->
+                <div class="button-bar">
+                    <div id="countdown">Tempo rimasto 15:00</div>
+                    
+                    <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
+                    
+                    <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
+                    
+                    <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
+                    
+                    <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
+                    
+                    <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
+                    
+                    <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
+                    
+                    <button onclick="changeColor('pink')" class="input-color-button" style="background-color: pink;"></button>
+                    
+                    <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
+                    <br>
+                    <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <br>
