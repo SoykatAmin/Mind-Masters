@@ -35,7 +35,7 @@ body, html {
                         5.88235% auto;
   grid-template-rows: 9.677% 32.25806% 16.12903% 32.25806% auto;  
   grid-gap: 1px;
-  margin: 0 20%;
+  margin: 0 25%;
 }
 
 .grid-container {
@@ -104,17 +104,20 @@ body, html {
 
 .input-color-button {
   border-radius: 50%; /* Crea un cerchio */
- 
-  width: 100%; /* Larghezza massima di 30px */
-  height: 100%; /* Altezza massima di 30px */
-  aspect-ratio: 1 / 1; /* Mantiene un rapporto d'aspetto 1:1 (cerchio perfetto) */
+}
+
+#cancCol, #invcod, #dx-btn, #sx-btn{
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+}
+
+.btn-close {
+  background-color: #fff; /* Set white background color with !important */
 }
 
 @media (max-width: 620px) {
-  .input-color-button {
-    width: 100%; /* Larghezza massima di 30px */
-    height: 100%; /* Altezza massima di 30px */
-  }
+  
   .grid-container {
     margin: 0;
   }
@@ -125,7 +128,7 @@ body, html {
     margin: 0;
   }
   .controller-container{
-    margin: 10px 0%;
+    margin: 0 10%;
   }
 }
 
@@ -142,5 +145,51 @@ body, html {
   100% {
     border-color: #fff;
     border-width: 2px;
+  }
+}
+
+/* Responsiveness of game controller.*/
+
+@media (max-width: 500px){
+  .input-color-button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 700px){
+  .input-color-button {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 900px){
+  .input-color-button {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1300px){
+  .input-color-button {
+    width: 72px;
+    height: 72px;
+  }
+  .controller-container{
+    margin: 0 15%;
+  }
+}
+
+@media (min-width: 1300px) and (max-width: 1600px){
+  .controller-container{
+    margin: 0 20%;
+  }
+}
+
+@media (min-width: 900px){
+  .input-color-button {
+    width: 72px;
+    height: 72px;
   }
 }
