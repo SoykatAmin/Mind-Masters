@@ -1,6 +1,7 @@
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
 var x = 1;
-
+//variabile per tenere traccia della colonna
+var y = 1;
 // Array per tenere traccia delle colonne selezionate
 var Colorful = [0, 0, 0, 0];
 
@@ -47,25 +48,10 @@ function confrontaCodici() {
         }
 
     }, 1000);
-    //potrei fare una funzione a parte?
-    // Legge i valori dei colori inseriti dal giocatore se non sono stati inseriti tutti avvia un modal per seganlare l'errore al utente
-    //for (let i = 0; i < 4; i++) {
-    //    var codelm = document.getElementById(`ball-${x}-${i + 1}`);
-    //    if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {
-//
-    //        document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
-    //        const modal = new bootstrap.Modal('#md_err');
-    //        modal.show();
-    //        return;
-//
-    //    } else {
-    //        player_code.push(colors.indexOf(codelm.style.backgroundColor));
-    //    }
-//
-    //}
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+        //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
         if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
             document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
             const modal = new bootstrap.Modal('#md_err');
@@ -118,6 +104,8 @@ function confrontaCodici() {
         // Chiamata alla funzione terminaPartita
         terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
     } else {
+        var ball_selected = document.getElementById(`ball-${x}-${y}`);
+        ball_selected.classList.remove("ball-selected");
         scrollWin();
         suggerimenti(posizioneCorretta, posizioneErrata);
         Colorful = [0, 0, 0, 0];
@@ -279,29 +267,46 @@ function changeColor(color) {
     if (end_game) {
         return;
     }
-    
     // Seleziona l'elemento div tramite il suo ID
     var targetDiv;
-    
     // Cerca il primo elemento Colorful[i] che sia uguale a 0
     // e imposta il flag a 1 per indicare che è stato colorato
     for (let i = 0; i < 4; i++) {
-        if (Colorful[i] === 0) {
+        if (Colorful[i] === 0 || (i+1)===y) {
             Colorful[i] = 1;
             console.log("Colorato " + (i));
             
             // Seleziona l'elemento div corrispondente e imposta il colore di sfondo
-            targetDiv = document.getElementById(`ball-${x}-${i+1}`);
+            targetDiv = document.getElementById(`ball-${x}-${y}`);
             targetDiv.style.backgroundColor = color;
-            
+            //rimuove la classe ball-selected
             break;
         }
     }
+    //numero di palle colorate
+    var flag = 0;
+    //imposta la y alla prossima palla vuota
+    for (let i = 0; i < 4; i++) {
+        if (Colorful[i] === 0) {
+            moveBall(i+1);
+            break;
+        }else{
+            flag++;
+        }
+    }
+    if(flag==4){
+        moveBall(1);
+    }
+
+
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
 function avviaEventi() {
     console.log("avviaEventi");
     var xatt = x;
+    y=1;
+    var startball = document.getElementById(`ball-${x}-1`);
+    startball.classList.add("ball-selected");
     
     // Rimozione dei colori
     var itemElement1 = document.getElementById(`ball-${x}-1`);
@@ -309,6 +314,7 @@ function avviaEventi() {
         if (Colorful[0] == 1 && xatt == x) {
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
+            moveBall(1);
             console.log(x + " rimosso");
         }
     });
@@ -318,6 +324,7 @@ function avviaEventi() {
         if (Colorful[1] == 1 && xatt == x) {
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
+            moveBall(2);
             console.log("rimosso");
         }
     });
@@ -327,6 +334,7 @@ function avviaEventi() {
         if (Colorful[2] == 1 && xatt == x) {
             itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0;
+            moveBall(3);
             console.log("rimosso");
         }
     });
@@ -336,6 +344,7 @@ function avviaEventi() {
         if (Colorful[3] == 1 && xatt == x) {
             itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0;
+            moveBall(4);
             console.log("rimosso");
         }
     });
@@ -411,4 +420,23 @@ function stringToCodice(col){
         codice.push(colors.indexOf(col[i]));
     }
     return codice;
+}
+
+//funzione per spostare la palla selezionata 
+function moveBall(y_suc) {
+    // Verifica se la partita è terminata, non fa nulla
+    if (end_game) {
+        return;
+    }
+
+    // Rimuove la classe "ball-selected" dalla palla precedente
+    var prevBall = document.getElementById(`ball-${x}-${y}`);
+    prevBall.classList.remove("ball-selected");
+
+    // Aggiorna la variabile y con il nuovo valore
+    y = y_suc;
+
+    // Aggiunge la classe "ball-selected" alla nuova palla selezionata
+    var nextBall = document.getElementById(`ball-${x}-${y}`);
+    nextBall.classList.add("ball-selected");
 }
