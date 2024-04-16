@@ -3,7 +3,7 @@ body, html {
   margin: 0;
 }
 
-.container{
+.main-container{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -12,16 +12,30 @@ body, html {
 .game_board{
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 30%; /* Altezza del footer */
-  margin: 5% 0;
+  padding-bottom: 10%; /* Altezza del footer */
 }
 
 .game-controller{
+  display: grid;
+  grid-template-rows: 10% 80% auto;
   position: fixed;
   bottom: 0;
   width: 100%;
   background-color: #333;
-  padding: 20px;
+  min-height: 30%;
+}
+
+.controller-container{
+  display: grid;
+  grid-template-columns: 11.7647%
+                        5.88235% 11.7647%
+                        5.88235% 11.7647%
+                        5.88235% 11.7647%
+                        5.88235% 11.7647%
+                        5.88235% auto;
+  grid-template-rows: 9.677% 32.25806% 16.12903% 32.25806% auto;  
+  grid-gap: 1px;
+  margin: 0 20%;
 }
 
 .grid-container {
@@ -83,27 +97,28 @@ body, html {
 }
 
 .input-color-button {
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  border-radius: 50%; /* Crea un cerchio */
+ 
+  width: 100%; /* Larghezza massima di 30px */
+  height: 100%; /* Altezza massima di 30px */
+  aspect-ratio: 1 / 1; /* Mantiene un rapporto d'aspetto 1:1 (cerchio perfetto) */
 }
 
 @media (max-width: 620px) {
   .input-color-button {
-    width: 30px;
-    height: 30px;
+    width: 100%; /* Larghezza massima di 30px */
+    height: 100%; /* Altezza massima di 30px */
+  }
+  .grid-container {
+    margin: 0;
   }
 }
 
-/*se sto da telefono deve stare in basso */
-@media (max-width: 620px) {
-  .button-bar {
-    position: relative; /* Change position to relative */
-    top: auto; /* Remove top and right properties */
-    right: auto;
-    width: 100%;
-    height: 10%;
-    background-color: #333131;
-    text-align: center;
+@media (max-width: 1000px) {
+  .grid-container {
+    margin: 0;
+  }
+  .controller-container{
+    margin: 10px 0%;
   }
 }

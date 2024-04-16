@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="main-container">
         <div class="game_board">
             <div class="grid-container">
                 {% set ballRow = namespace(value=1) %}
@@ -93,31 +93,102 @@
             </div>
                 
         </div>
+        <div id="countdown">Tempo rimasto 15:00</div>
         <div class="game-controller">
+            <div class="space"></div>
             <div class="controller-container">
                 <!--bottoni per inserire i colori-->
-                <div class="button-bar">
-                    <div id="countdown">Tempo rimasto 15:00</div>
+               
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
                     
-                    <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
-                    
-                    <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
-                    
-                    <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
-                    
-                    <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
-                    
-                    <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
-                    
-                    <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
-                    
-                    <button onclick="changeColor('pink')" class="input-color-button" style="background-color: pink;"></button>
-                    
-                    <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
-                    <br>
-                    <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
-                </div>
+                    <div class="item-1">
+                        <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-2">
+                        <button onclick="changeColor('green')" class="input-color-button" style="background-color: green;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-3">
+                        <button onclick="changeColor('blue')" class="input-color-button" style="background-color: blue;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-4">
+                        <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-5">
+                        <button id="cancCol" onclick="cancellaColore()">canc</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-6">
+                        <button id="invcod" onclick="confrontaCodici()">conferma codice</button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+
+                    <div class="item-7">
+                        <button onclick="changeColor('orange')" class="input-color-button" style="background-color: orange;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-8">
+                        <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-9">
+                        <button onclick="changeColor('pink')" class="input-color-button" style="background-color: pink;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-10">
+                        <button onclick="changeColor('skyblue')" class="input-color-button" style="background-color: skyblue;"></button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-11">
+                        <button id="sx-btn" onclick="sinistra()">sx</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-12">
+                        <button id="dx-btn" onclick="destra()">ds</button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+
+            
             </div>
+            <div class="space"></div>
         </div>
     </div>
 
