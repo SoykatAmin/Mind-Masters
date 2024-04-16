@@ -98,15 +98,20 @@
     <div id="md_online" class="modal fade " data-bs-backdrop='static'>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-header">
+                <div id="md_title"  class="modal-header">
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-header">
                     <h2 class="modal-title " id="md_body">Gioca online con i tuoi amici</h2>
+                    <div hidden class="input-group mb-3" id="md_body_cod">
+                        <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice">
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-info" id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby') }}`">Crea una stanza</button>
-                    <button class="btn btn-info"  id="right-bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                    <button class="btn btn-info"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby') }}`">Crea una stanza</button>
+                    <button class="btn btn-info"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                    <button hidden class="btn btn-danger"  id="left_bn_code" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="annulla()">annulla</button>
+                    <button hidden class="btn btn-info"  id="right_bn_code" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
                 </div>
             </div>
         </div>

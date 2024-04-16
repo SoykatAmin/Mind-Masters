@@ -268,12 +268,29 @@ function changeColor(color) {
         return;
     }
     // Seleziona l'elemento div tramite il suo ID
-    var targetDiv;
+    var targetDiv=0;
+    targetDiv = document.getElementById(`ball-${x}-${y}`);
+    targetDiv.style.backgroundColor = color;
+    Colorful[y-1] = 1;
+    //trova il primo elemnto di colorful che è uguale a 0
+    var next=0;
+    for (let i = 0; i < 4; i++) {
+        if (Colorful[i] === 0 && next==0) {
+            next=i+1;
+        }
+    }
+    //va al primo elememto vuoto 
+    if(next!=0 ){
+        moveBall(next);
+    }else {
+        moveBall(y+1);
+    }
     // Cerca il primo elemento Colorful[i] che sia uguale a 0
     // e imposta il flag a 1 per indicare che è stato colorato
+    /*
     for (let i = 0; i < 4; i++) {
         if (Colorful[i] === 0 || (i+1)===y) {
-            Colorful[i] = 1;
+            //conrtolla se colora la prima palla vuota o è qulla selezionata
             console.log("Colorato " + (i));
             
             // Seleziona l'elemento div corrispondente e imposta il colore di sfondo
@@ -283,20 +300,18 @@ function changeColor(color) {
             break;
         }
     }
+    */
     //numero di palle colorate
-    var flag = 0;
     //imposta la y alla prossima palla vuota
+    /*
     for (let i = 0; i < 4; i++) {
         if (Colorful[i] === 0) {
             moveBall(i+1);
+            console.log("Y = " + (i+1));
             break;
-        }else{
-            flag++;
         }
-    }
-    if(flag==4){
-        moveBall(1);
-    }
+    }*/
+  
 
 
 }
@@ -305,6 +320,11 @@ function avviaEventi() {
     console.log("avviaEventi");
     var xatt = x;
     y=1;
+    var delItem1= document.getElementById(`delete-ball-${x}-1`);
+    var delItem2= document.getElementById(`delete-ball-${x}-2`);
+    var delItem3= document.getElementById(`delete-ball-${x}-3`);
+    var delItem4= document.getElementById(`delete-ball-${x}-4`);
+
     var startball = document.getElementById(`ball-${x}-1`);
     startball.classList.add("ball-selected");
     
@@ -312,53 +332,102 @@ function avviaEventi() {
     var itemElement1 = document.getElementById(`ball-${x}-1`);
     itemElement1.addEventListener('click', () => {
         if (Colorful[0] == 1 && xatt == x) {
+            delItem1.setAttribute("hidden", "hidden");
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
             moveBall(1);
             console.log(x + " rimosso");
         }
     });
+    itemElement1.addEventListener("mouseover", () => { 
+        if (Colorful[0] == 1) {
+            delItem1.removeAttribute("hidden");
+        }
+        console.log("mouse enter");
+    }, false);
+
+    itemElement1.addEventListener("mouseleave", () => { 
+       
+        delItem1.setAttribute("hidden", "hidden");
+    
+        console.log("mouse leave");
+    }, false);
 
     var itemElement2 = document.getElementById(`ball-${x}-2`);
     itemElement2.addEventListener('click', () => {
         if (Colorful[1] == 1 && xatt == x) {
+            delItem2.setAttribute("hidden", "hidden");
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
             moveBall(2);
             console.log("rimosso");
         }
     });
+    itemElement2.addEventListener("mouseover", () => { 
+        if (Colorful[1] == 1) {
+            delItem2.removeAttribute("hidden");
+        }
+        console.log("mouse enter");
+    }, false);
+    itemElement2.addEventListener("mouseleave", () => { 
+       
+        delItem2.setAttribute("hidden", "hidden");
+    
+        console.log("mouse leave");
+    }, false);
+
+
 
     var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
         if (Colorful[2] == 1 && xatt == x) {
             itemElement3.style.backgroundColor = 'white';
+            delItem3.setAttribute("hidden", "hidden");
             Colorful[2] = 0;
             moveBall(3);
             console.log("rimosso");
         }
     });
+    itemElement3.addEventListener("mouseover", () => {
+        if (Colorful[2] == 1) {
+            delItem3.removeAttribute("hidden");
+        }
+        console.log("mouse enter");
+    }
+    , false);
+    itemElement3.addEventListener("mouseleave", () => {
+        delItem3.setAttribute("hidden", "hidden");
+        console.log("mouse leave");
+    }
+    , false);
 
     var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
         if (Colorful[3] == 1 && xatt == x) {
             itemElement4.style.backgroundColor = 'white';
+            delItem4.setAttribute("hidden", "hidden");
             Colorful[3] = 0;
             moveBall(4);
             console.log("rimosso");
         }
     });
+    itemElement4.addEventListener("mouseover", () => {
+        if (Colorful[3] == 1) {
+            delItem4.removeAttribute("hidden");
+        }
+        console.log("mouse enter");
+    }
+    , false);
+    itemElement4.addEventListener("mouseleave", () => {
+        delItem4.setAttribute("hidden", "hidden");
+        console.log("mouse leave");
+    }
+    , false);
+
+
     
-    // Mouseover per far apparire la scritta "rimuovi colore"
-    /*
-    let test = document.getElementById(`ball-${x}-3`);
-    test.addEventListener("mouseleave", () => { 
-        test.textContent = test.style.backgroundColor;
-    }, false);
-    test.addEventListener("mouseover", () => {
-        test.textContent = "mouse in";
-    });
-    */
+
+    
 }
 
 // Funzione che fa scorrere lo schermo al div successivo
@@ -435,26 +504,29 @@ function moveBall(y_suc) {
     prevBall.classList.remove("ball-selected");
 
     // Aggiorna la variabile y con il nuovo valore
-    y = y_suc;
-
+    if(y_suc>4){
+        y=1;
+    }else if(y_suc<1){
+        y=4;
+    }else{
+        y=y_suc;
+    }
+    
     // Aggiunge la classe "ball-selected" alla nuova palla selezionata
     var nextBall = document.getElementById(`ball-${x}-${y}`);
     nextBall.classList.add("ball-selected");
 }
 //funzione per mandare avanti(spostarla a destra) di uno la colonna
 function dx(){
-    if(y<4){
-        moveBall(y+1);
-    }else{
-        moveBall(1);
-    }
-   
+    moveBall(y+1);
 }
 //uguale a sopra ma a sinistra
 function sx(){
-    if(y>1){
         moveBall(y-1);
-    }else{
-        moveBall(4)
-    }
+}
+
+function dellColor(){
+    var itemElement = document.getElementById(`ball-${x}-${y}`);
+    itemElement.style.backgroundColor = 'white';
+    Colorful[y-1] = 0;
 }
