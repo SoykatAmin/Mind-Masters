@@ -422,7 +422,8 @@ function stringToCodice(col){
     return codice;
 }
 
-//funzione per spostare la palla selezionata 
+//funzione per spostare la palla selezionata distattiva l'animazine di quella attuale e attiva
+//l'animazione della nuova palla selezionata
 function moveBall(y_suc) {
     // Verifica se la partita è terminata, non fa nulla
     if (end_game) {
@@ -439,4 +440,21 @@ function moveBall(y_suc) {
     // Aggiunge la classe "ball-selected" alla nuova palla selezionata
     var nextBall = document.getElementById(`ball-${x}-${y}`);
     nextBall.classList.add("ball-selected");
+}
+//funzione per mandare avanti(spostarla a destra) di uno la colonna
+function dx(){
+    if(y<4){
+        moveBall(y+1);
+    }else{
+        moveBall(1);
+    }
+   
+}
+//uguale a sopra ma a sinistra
+function sx(){
+    if(y>1){
+        moveBall(y-1);
+    }else{
+        moveBall(4)
+    }
 }
