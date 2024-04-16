@@ -340,7 +340,7 @@ function avviaEventi() {
         }
     });
     itemElement1.addEventListener("mouseover", () => { 
-        if (Colorful[0] == 1) {
+        if (Colorful[0] == 1 && xatt == x) {
             delItem1.removeAttribute("hidden");
         }
         console.log("mouse enter");
@@ -364,7 +364,7 @@ function avviaEventi() {
         }
     });
     itemElement2.addEventListener("mouseover", () => { 
-        if (Colorful[1] == 1) {
+        if (Colorful[1] == 1 && xatt == x) {
             delItem2.removeAttribute("hidden");
         }
         console.log("mouse enter");
@@ -389,7 +389,7 @@ function avviaEventi() {
         }
     });
     itemElement3.addEventListener("mouseover", () => {
-        if (Colorful[2] == 1) {
+        if (Colorful[2] == 1 && xatt == x) {
             delItem3.removeAttribute("hidden");
         }
         console.log("mouse enter");
@@ -412,7 +412,7 @@ function avviaEventi() {
         }
     });
     itemElement4.addEventListener("mouseover", () => {
-        if (Colorful[3] == 1) {
+        if (Colorful[3] == 1 && xatt == x) {
             delItem4.removeAttribute("hidden");
         }
         console.log("mouse enter");
