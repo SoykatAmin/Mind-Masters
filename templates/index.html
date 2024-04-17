@@ -69,29 +69,36 @@
         <!-- This part will persist even when the left pane disappears. Contains a catch-phrase and two buttons to play. -->
 
         <div class="rightpane">
-            <div class="right-toppane">
-                {% if session['username'] %}
-                    <h2>ciao {{ session['username'] }}</h2>
-                {% else %}
+            <div class="right-container">
+                <div class="right-toppane">
+                    {% if session['username'] %}
+                        <h2>ciao {{ session['username'] }}</h2>
+                    {% endif %}
+                </div> 
+                
+                <div class="space"></div>
+
+                <div class="right-middlepane" >
+                    {% if session['username'] %}
+                        <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
+                            <h3>Play Online.</h3>
+                        </a>
+                    {% else %}
                     <a href="{{ url_for('login') }}">
                         <h3>Accedi per giocare online</h3>
                     </a>
-                {% endif %}
-            </div> 
-            <div class="right-middlepane" >
-                {% if session['username'] %}
-                    <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
-                        <h3>Play Online.</h3>
-                    </a>
-                {% endif %}
-            </div> 
-            <div class="right-bottompane">
-                <!--Sistemare si vede il link blu-->
-                <a href="{{ url_for('game') }}" >
-                    <h3>Play Computer.</h3> 
-                </a> 
-               
-            </div> 
+                    {% endif %}
+                </div> 
+
+                <div class="space"></div>
+
+                <div class="right-bottompane">
+                    <!--Sistemare si vede il link blu-->
+                    <a href="{{ url_for('game') }}" >
+                        <h3>Play Computer.</h3> 
+                    </a> 
+                </div> 
+            </div>
         </div>
     </div>
     <!--modal per avviare la partita online permettendo di creare o entrare in una stanza-->
