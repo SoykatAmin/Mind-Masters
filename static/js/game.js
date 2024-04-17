@@ -316,13 +316,14 @@ function avviaEventi() {
             console.log(x + " rimosso");
         }
     });
+    //vede se il muose è sopra
     itemElement1.addEventListener("mouseover", () => { 
         if (Colorful[0] == 1 && xatt == x) {
             delItem1.removeAttribute("hidden");
         }
         console.log("mouse enter");
     }, false);
-
+    //vede se il mouse è tolto
     itemElement1.addEventListener("mouseleave", () => { 
        
         delItem1.setAttribute("hidden", "hidden");
@@ -511,9 +512,8 @@ function dellColor(){
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
 }
-var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
+//attiva le lettura da input di tastiera
 function keyButton(){
-    console.log("dio");
     document.addEventListener('keydown', function(event) {
         if(event.key === '1') {
             changeColor("red");
