@@ -26,7 +26,8 @@ var timeleft = 900; // 15 minuti
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 
-/*funzione per confrantare il codice inseriro dal utente e il codice segrato generato
+/**
+ * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
 legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
 Se il codice è corretto iposta win a true e chiama la funzione terminaPartita() con il messaggio da stampare a schermo
 in caso di codice non corretto chiama la funzione suggerimeti() ed incrementa la x nel caso fosse l'ultimo tentativo
@@ -113,7 +114,8 @@ function confrontaCodici() {
         avviaEventi();
     }
 }
-/*Funzione per inserire i suggerimenti
+/**
+ * Funzione per inserire i suggerimenti
 La funzione prende come argomenti il numero di colori corretti ma in posizione errata (correct) e 
 il numero di colori corretti in posizione corretta (color)
 La funzione genera casualmente un array (occ) di lunghezza 4, dove ogni elemento rappresenta un colore
@@ -160,10 +162,10 @@ function suggerimenti(correct, color) {
         suggestionItem1.style.backgroundColor = "black";
         suggestionItem1.style.borderRadius = "50%";
         suggestionItem1.style.border = "1px solid black";
-    } else {
+    } /*else {
         suggestionItem1.style.backgroundColor = "#C19569";
         suggestionItem1.style.border = "1px solid #C19569";
-    }
+    }*/
     
     if (occ[1] == 2) {
         suggestionItem2.style.backgroundColor = "black";
@@ -172,11 +174,11 @@ function suggerimenti(correct, color) {
         suggestionItem2.style.backgroundColor = "black";
         suggestionItem2.style.borderRadius = "50%";
         suggestionItem2.style.border = "1px solid black";
-    } else {
+    } /*else {
         suggestionItem2.style.backgroundColor = "#C19569";
         suggestionItem2.style.border = "1px solid #C19569";
     }
-    
+    */
     if (occ[2] == 2) {
         suggestionItem3.style.backgroundColor = "black";
         suggestionItem3.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
@@ -184,10 +186,10 @@ function suggerimenti(correct, color) {
         suggestionItem3.style.backgroundColor = "black";
         suggestionItem3.style.borderRadius = "50%";
         suggestionItem3.style.border = "1px solid black";
-    } else {
+    }/* else {
         suggestionItem3.style.backgroundColor = "#C19569";
         suggestionItem3.style.border = "1px solid #C19569";
-    }
+    }*/
     
     if (occ[3] == 2) {
         suggestionItem4.style.backgroundColor = "black";
@@ -196,10 +198,10 @@ function suggerimenti(correct, color) {
         suggestionItem4.style.backgroundColor = "black";
         suggestionItem4.style.borderRadius = "50%";
         suggestionItem4.style.border = "1px solid black";
-    } else {
+    } /*else {
         suggestionItem4.style.backgroundColor = "#C19569";
         suggestionItem4.style.border = "1px solid #C19569";
-    }
+    }*/
 }
 
 /**
@@ -224,7 +226,7 @@ function startPVE() {
     end_game = false;
     game_timer();
 }
-/*Avvia un timer per il gioco.
+/**Avvia un timer per il gioco.
  Imposta il tempo rimasto in base alla modalità di debug.
  Avvia un timer che si ripete ogni secondo.
  Se il tempo scade, chiama la funzione terminaPartita per indicare la fine del gioco.
@@ -242,7 +244,10 @@ function game_timer() {
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
-            var str = colori[secret_code[0]] + "," + colori[secret_code[1]] + "," + colori[secret_code[2]] + "," + colori[secret_code[3]];
+            var str = `<p style="text-color:red">${colori[secret_code[0]]}</p>`;
+            for (let i = 1; i < secret_code.length; i++) {
+                str += `,${colori[secret_code[i]]}`;
+            }
             terminaPartita("Mi dispiace, tempo scaduto. Il codice era " + str);
         } else {
             // Calcola i minuti e i secondi rimanenti
@@ -285,34 +290,6 @@ function changeColor(color) {
     }else {
         moveBall(y+1);
     }
-    // Cerca il primo elemento Colorful[i] che sia uguale a 0
-    // e imposta il flag a 1 per indicare che è stato colorato
-    /*
-    for (let i = 0; i < 4; i++) {
-        if (Colorful[i] === 0 || (i+1)===y) {
-            //conrtolla se colora la prima palla vuota o è qulla selezionata
-            console.log("Colorato " + (i));
-            
-            // Seleziona l'elemento div corrispondente e imposta il colore di sfondo
-            targetDiv = document.getElementById(`ball-${x}-${y}`);
-            targetDiv.style.backgroundColor = color;
-            //rimuove la classe ball-selected
-            break;
-        }
-    }
-    */
-    //numero di palle colorate
-    //imposta la y alla prossima palla vuota
-    /*
-    for (let i = 0; i < 4; i++) {
-        if (Colorful[i] === 0) {
-            moveBall(i+1);
-            console.log("Y = " + (i+1));
-            break;
-        }
-    }*/
-  
-
 
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
@@ -331,7 +308,7 @@ function avviaEventi() {
     // Rimozione dei colori
     var itemElement1 = document.getElementById(`ball-${x}-1`);
     itemElement1.addEventListener('click', () => {
-        if (Colorful[0] == 1 && xatt == x) {
+        if (/*Colorful[0] == 1 && */xatt == x) {
             delItem1.setAttribute("hidden", "hidden");
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
@@ -355,7 +332,7 @@ function avviaEventi() {
 
     var itemElement2 = document.getElementById(`ball-${x}-2`);
     itemElement2.addEventListener('click', () => {
-        if (Colorful[1] == 1 && xatt == x) {
+        if (/*Colorful[1] == 1 &&*/ xatt == x) {
             delItem2.setAttribute("hidden", "hidden");
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
@@ -380,7 +357,7 @@ function avviaEventi() {
 
     var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
-        if (Colorful[2] == 1 && xatt == x) {
+        if (/*Colorful[2] == 1 && */xatt == x) {
             itemElement3.style.backgroundColor = 'white';
             delItem3.setAttribute("hidden", "hidden");
             Colorful[2] = 0;
@@ -403,7 +380,7 @@ function avviaEventi() {
 
     var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
-        if (Colorful[3] == 1 && xatt == x) {
+        if (/*Colorful[3] == 1 && */xatt == x) {
             itemElement4.style.backgroundColor = 'white';
             delItem4.setAttribute("hidden", "hidden");
             Colorful[3] = 0;
@@ -435,7 +412,7 @@ function scrollWin() {
     // Verifica se il turno corrente è maggiore di 2
     if (x > 2) {
         // Se sì, seleziona l'elemento div target tramite il suo ID
-        const targetElement = document.getElementById(`rig-${x-2}`);
+        const targetElement = document.getElementById(`rig-${x-1}`);
         // Scorri lo schermo in modo fluido verso l'elemento target
         targetElement.scrollIntoView({
             behavior: 'smooth'
@@ -468,6 +445,10 @@ function terminaPartita(msg){
         document.getElementById("md_body").innerHTML = msg;
         
         // Mostra il modal
+        //TODO :fare che ciudei modal gia aperti
+        const close_md = document.getElementById('md_err');
+        close_md.setAttribute("hidden", "hidden");
+        
         const modal = new bootstrap.Modal('#md_end');
         modal.show();
     }, 500);
@@ -524,9 +505,50 @@ function dx(){
 function sx(){
         moveBall(y-1);
 }
-
+//rimuove il colore e lasci la palla selezionata
 function dellColor(){
     var itemElement = document.getElementById(`ball-${x}-${y}`);
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
+}
+var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
+function keyButton(){
+    console.log("dio");
+    document.addEventListener('keydown', function(event) {
+        if(event.key === '1') {
+            changeColor("red");
+        }
+        else if(event.key === '2') {
+            changeColor("green");
+        }
+        else if(event.key === '3') {
+            changeColor("blue");
+        }
+        else if(event.key === '4') {
+            changeColor("yellow");
+        }
+        else if(event.key === '5') {
+            changeColor("orange");
+        }
+        else if(event.key === '6') {
+            changeColor("purple");
+        }
+        else if(event.key === '7') {
+            changeColor("pink");
+        }
+        else if(event.key === '8') {
+            changeColor("skyblue");
+        }
+        else if(event.key ==='Backspace') {
+           dellColor();
+        }else if(event.key ==='ArrowLeft'){
+            sx();
+        }else if(event.key ==='ArrowRight'){
+            dx();
+        }
+        else if(event.key ==='Enter'){
+            confrontaCodici();
+        }
+        // Add your code here to handle other key events
+    });
 }
