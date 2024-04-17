@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameoffline.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
-       
-
         //salvare nella variabile di sessione il codice generato
         startPVE()
     </script>
@@ -37,7 +35,7 @@
             <div class="modal-content" style="background-color: #4d4d4d;">
                 <div class="modal-body" id="md_err_body"></div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;">ok</button>
+                    <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
                 </div>
             </div>
         </div>
@@ -208,6 +206,7 @@
         //va messo alla fine senno i div non esistono e da errore undefined
         avviaEventi()
         keyButton()
+        
     </script>
     <!-- Modal -->
     <!-- Button trigger modal -->

@@ -26,6 +26,8 @@ var timeleft = 900; // 15 minuti
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 
+var modal_aperto=false//flag per vcedere se c'è un modal aperto
+
 /**
  * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
 legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
@@ -57,6 +59,7 @@ function confrontaCodici() {
             document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
             const modal = new bootstrap.Modal('#md_err');
             modal.show();
+            modal_aperto=true;
             return;
         } else {
             color_code.push(codelm.style.backgroundColor);
@@ -234,7 +237,7 @@ function startPVE() {
 function game_timer() {
     // Imposta il tempo rimasto in base alla modalità di debug
     if (debug) {
-        timeleft = 120; // 1 minuto in secondi
+        timeleft = 240; // 4 minuti in secondi
     }
     // Avvia un timer che si ripete ogni secondo
     var downloadTimer = setInterval(() => {
@@ -510,45 +513,68 @@ function sx(){
 function dellColor(){
     var itemElement = document.getElementById(`ball-${x}-${y}`);
     itemElement.style.backgroundColor = 'white';
+    if(y!=1){
+      sx();  
+    }
+    
     Colorful[y-1] = 0;
 }
 //attiva le lettura da input di tastiera
 function keyButton(){
     document.addEventListener('keydown', function(event) {
-        if(event.key === '1') {
-            changeColor("red");
+        
+        if(!modal_aperto){
+            if(event.key ==='Backspace') {
+                dellColor();
+                return;
+             }else if(event.key ==='ArrowLeft'){
+                 sx();
+                 return;
+             }else if(event.key ==='ArrowRight'){
+                 dx();
+                 return;
+             }
+             else if(event.key ==='Enter'){
+                 confrontaCodici();
+                 return;
+             }
+            
+            if(event.key === '1') {
+                changeColor("red");
+                return;
+            }
+            else if(event.key === '2') {
+                changeColor("green");
+                return;
+            }
+            else if(event.key === '3') {
+                changeColor("blue");
+                return;
+            }
+            else if(event.key === '4') {
+                changeColor("yellow");
+                return;
+            }
+            else if(event.key === '5') {
+                changeColor("orange");
+                return;
+            }
+            else if(event.key === '6') {
+                changeColor("purple");
+                return;
+            }
+            else if(event.key === '7') {
+                changeColor("pink");
+                return;
+            }
+            else if(event.key === '8') {
+                changeColor("skyblue");
+                return;
+            }
         }
-        else if(event.key === '2') {
-            changeColor("green");
-        }
-        else if(event.key === '3') {
-            changeColor("blue");
-        }
-        else if(event.key === '4') {
-            changeColor("yellow");
-        }
-        else if(event.key === '5') {
-            changeColor("orange");
-        }
-        else if(event.key === '6') {
-            changeColor("purple");
-        }
-        else if(event.key === '7') {
-            changeColor("pink");
-        }
-        else if(event.key === '8') {
-            changeColor("skyblue");
-        }
-        else if(event.key ==='Backspace') {
-           dellColor();
-        }else if(event.key ==='ArrowLeft'){
-            sx();
-        }else if(event.key ==='ArrowRight'){
-            dx();
-        }
-        else if(event.key ==='Enter'){
-            confrontaCodici();
-        }
+
+        
+        
         // Add your code here to handle other key events
     });
 }
