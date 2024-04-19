@@ -71,17 +71,17 @@
         <div class="rightpane">
             <div class="right-container">
                 <div class="right-toppane">
-                    {% if session['username'] %}
-                        <h2>ciao {{ session['username'] }}</h2>
-                    {% endif %}
+                    <h1 id="motto">Play Mastermind online!</h3>
                 </div> 
                 
                 <div class="space"></div>
 
                 <div class="right-middlepane" >
                     {% if session['username'] %}
-                        <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
-                            <h3>Play Online.</h3>
+                        <a class="link_play" data-bs-toggle="modal" data-bs-target="#md_online">
+                            <button class="play_button" id="online_button">
+                                <h3 style="color: white; text-decoration: none;">Play Online.</h3>
+                            </button>
                         </a>
                     {% else %}
                     <a href="{{ url_for('login') }}">
@@ -94,8 +94,10 @@
 
                 <div class="right-bottompane">
                     <!--Sistemare si vede il link blu-->
-                    <a href="{{ url_for('game') }}" >
-                        <h3>Play Computer.</h3> 
+                    <a href="{{ url_for('game') }}" class="link_play">
+                        <button class="play_button" id="computer_button"> 
+                                <h3 style="color: white; text-decoration: none;">Play Computer.</h3> 
+                        </button>
                     </a> 
                 </div> 
             </div>

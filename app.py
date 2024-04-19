@@ -91,8 +91,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(255), unique=True, nullable=False)
+    username = db.Column(db.String(255), primary_key=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
@@ -102,32 +101,79 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-class Game(db.Model):
+class Partita(db.Model):
     __tablename__ = 'games'
 
-    game_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    opponent_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
-    mode = db.Column(db.String(50), nullable=False)  # 'online' or 'offline'
-    start_time = db.Column(db.DateTime, nullable=False)
-    end_time = db.Column(db.DateTime, nullable=True)
-    winner_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
-    guesses = db.Column(db.JSON, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ora_inizio = db.Column(db.DateTime, nullable=False)
+    ora_fine = db.Column(db.DateTime, nullable=True)
 
 class Statistic(db.Model):
+
     __tablename__ = 'statistics'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
-    games_played = db.Column(db.Integer, nullable=False, default=0)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True)
+    id = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
     wins = db.Column(db.Integer, nullable=False, default=0)
     losses = db.Column(db.Integer, nullable=False, default=0)
-    first_try_wins = db.Column(db.Integer, nullable=False, default=0)
+    p_gio_computer = db.Column(db.Integer, nullable=False, default=0)
+
+class Obiettivo(db.Model):
+    __tablename__ = 'objectives'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nome = db.Column(db.String(255), nullable=False)
+    descrizione = db.Column(db.String(255), nullable=False)
+    stella = db.Column(db.Integer, nullable=False)
+
+class SbloccaObiettivo(db.Model):
+    __tablename__ = 'unlocked_objectives'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True)
+    obiettivo_id = db.Column(db.Integer, db.ForeignKey('objectives.id'), primary_key=True)
+    data = db.Column(db.DateTime, nullable=False)
+
+class Partita_online(db.Model):
+    __tablename__ = 'online_games'
+
+    id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True,autoincrement=True)
+    codice1 = db.Column(db.Integer, nullable=False)
+    codice2 = db.Column(db.Integer, nullable=False)
+    player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+
+class Mossa(db.Model):
+    __tablename__ = 'moves'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
+    riga = db.Column(db.Integer, primary_key=True, nullable=False)
+    colonna = db.Column(db.Integer, primary_key=True, nullable=False)
+    colore = db.Column(db.String(255), nullable=False)
+
+class Partita_computer(db.Model):
+
+    __tablename__ = 'computer_games'
+
+    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
+    difficolta = db.Column(db.Integer, nullable=False) # 1 = facile, 2 = medio, 3 = difficile
+
+class EntraPartita(db.Model):
+
+    __tablename__ = 'entries'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
+    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
+
+class creaPartita(db.Model):
+
+    __tablename__ = 'creations'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
+    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
 
 # Create tables in database (if not exist)
 with app.app_context():
     db.create_all()
-
-
 
 #funzioni per la chiamata delle pagini html
 @app.route('/', methods=['GET', 'POST'])
