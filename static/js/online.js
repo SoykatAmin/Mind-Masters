@@ -31,31 +31,47 @@ function entrasta(){
     })
 }
 
-
+//modifica il modal per permettere di inserire il docide della stanza
 function iserisciCodice(){
-    var body = document.getElementById("md_body");
-    //inserisci un form html per inserire il codice
-    body.innerHTML = '<div>Inserisci il codice della stanza</div><input type="text" id="game_code" name="game_code" ></input>';
+    var md_title = document.getElementById("md_title");
+    md_title.setAttribute("hidden", "hidden");
     var left = document.getElementById("left_bn");
-    var right = document.getElementById("right-bn");
-    //cambia gli elemeti della classe di sinistra
-    left.className = "btn btn-danger";
-    left.innerHTML = "Annulla";
-    left.setAttribute("onclick","annulla()");
-    right.innerHTML = "Entra";
-    right.setAttribute("onclick","entrasta()");
-}
+    var right = document.getElementById("right_bn");
+   
+    var body = document.getElementById("md_body");
+    body.setAttribute("hidden", "hidden");
+    var body_cod= document.getElementById("md_body_cod");
+    body_cod.removeAttribute("hidden");
+    left.setAttribute("hidden", "hidden");
+    right.setAttribute("hidden", "hidden");
+    var left_code = document.getElementById("left_bn_code");
+    var right_code = document.getElementById("right_bn_code");
+    left_code.removeAttribute("hidden");
+    right_code.removeAttribute("hidden");
+    
 
+
+}
+//
+/**
+ * Annulla le modifiche dopo un ritardo di 600 millisecondi.
+ */
 function annulla(){
     setTimeout(function() {
+
+        var md_title = document.getElementById("md_title");
+        md_title.removeAttribute("hidden");
         var body = document.getElementById("md_body");
-        body.innerHTML = "Gioca online con i tuoi amici";
+        body.removeAttribute("hidden");
         var left = document.getElementById("left_bn");
         var right = document.getElementById("right_bn");
-        left.className = "btn btn-info";
-        left.innerHTML = "Crea una stanza";
-        left.setAttribute("onclick","window.location.href = `{{ url_for('lobby') }}`");
-        right.innerHTML = "Entra in una stanza";
-        right.setAttribute("onclick","iserisciCodice()");
+        left.removeAttribute("hidden"); 
+        right.removeAttribute("hidden");
+        var body_cod= document.getElementById("md_body_cod");
+        body_cod.setAttribute("hidden", "hidden");
+        var left_code = document.getElementById("left_bn_code");
+        var right_code = document.getElementById("right_bn_code");
+        left_code.setAttribute("hidden", "hidden");
+        right_code.setAttribute("hidden", "hidden");
     }, 600);
 }

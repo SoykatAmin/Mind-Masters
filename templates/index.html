@@ -69,44 +69,56 @@
         <!-- This part will persist even when the left pane disappears. Contains a catch-phrase and two buttons to play. -->
 
         <div class="rightpane">
-            <div class="right-toppane">
-                {% if session['username'] %}
-                    <h2>ciao {{ session['username'] }}</h2>
-                {% else %}
+            <div class="right-container">
+                <div class="right-toppane">
+                    {% if session['username'] %}
+                        <h2>ciao {{ session['username'] }}</h2>
+                    {% endif %}
+                </div> 
+                
+                <div class="space"></div>
+
+                <div class="right-middlepane" >
+                    {% if session['username'] %}
+                        <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
+                            <h3>Play Online.</h3>
+                        </a>
+                    {% else %}
                     <a href="{{ url_for('login') }}">
                         <h3>Accedi per giocare online</h3>
                     </a>
-                {% endif %}
-            </div> 
-            <div class="right-middlepane" >
-                {% if session['username'] %}
-                    <a class="clickable"data-bs-toggle="modal" data-bs-target="#md_online">
-                        <h3>Play Online.</h3>
-                    </a>
-                {% endif %}
-            </div> 
-            <div class="right-bottompane">
-                <!--Sistemare si vede il link blu-->
-                <a href="{{ url_for('game') }}" >
-                    <h3>Play Computer.</h3> 
-                </a> 
-               
-            </div> 
+                    {% endif %}
+                </div> 
+
+                <div class="space"></div>
+
+                <div class="right-bottompane">
+                    <!--Sistemare si vede il link blu-->
+                    <a href="{{ url_for('game') }}" >
+                        <h3>Play Computer.</h3> 
+                    </a> 
+                </div> 
+            </div>
         </div>
     </div>
     <!--modal per avviare la partita online permettendo di creare o entrare in una stanza-->
     <div id="md_online" class="modal fade " data-bs-backdrop='static'>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-header">
+                <div id="md_title"  class="modal-header">
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-header">
                     <h2 class="modal-title " id="md_body">Gioca online con i tuoi amici</h2>
+                    <div hidden class="input-group mb-3" id="md_body_cod">
+                        <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice">
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-info" id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby') }}`">Crea una stanza</button>
-                    <button class="btn btn-info"  id="right-bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                    <button class="btn btn-info"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby') }}`">Crea una stanza</button>
+                    <button class="btn btn-info"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                    <button hidden class="btn btn-danger"  id="left_bn_code" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="annulla()">annulla</button>
+                    <button hidden class="btn btn-info"  id="right_bn_code" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
                 </div>
             </div>
         </div>

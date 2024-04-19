@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameoffline.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
-       
-
         //salvare nella variabile di sessione il codice generato
         startPVE()
     </script>
@@ -37,7 +35,7 @@
             <div class="modal-content" style="background-color: #4d4d4d;">
                 <div class="modal-body" id="md_err_body"></div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;">ok</button>
+                    <button class="btn btn-danger" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
                 </div>
             </div>
         </div>
@@ -57,7 +55,10 @@
                                     {% set ballCol = namespace(value=1) %}
                                     {% for v in range(1, 10) %}
                                         {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
-                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" ></div>
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
+                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}">
+                                                </div>
+                                            </div>
                                             {% set ballCol.value = ballCol.value + 1 %}
                                             {% if v == 8 %}
                                                 {% set ballRow.value = ballRow.value + 1 %}
@@ -131,8 +132,8 @@
                     <div class="space"></div>
 
                     <div class="item-5">
-                        <button id="cancCol" onclick="cancellaColore()"> 
-                            &#x2715
+                        <button id="cancCol" onclick="dellColor()" > 
+                           <h3>&#x2715</h3> 
                         </button>
                     </div>
 
@@ -140,7 +141,7 @@
 
                     <div class="item-6">
                         <button id="invcod" onclick="confrontaCodici()">
-                            &#x2713
+                            <h3>&#x2713</h3>
                         </button>
                     </div>
 
@@ -176,7 +177,7 @@
 
                     <div class="item-11">
                         <button id="sx-btn" onclick="sx()">
-                            &#x2190
+                            <h2>&#x2190</h2>
                         </button>
                     </div>
 
@@ -184,7 +185,7 @@
 
                     <div class="item-12">
                         <button id="dx-btn" onclick="dx()">
-                            &#x2192
+                            <h2>&#x2192</h2>
                         </button>
                     </div>
 
@@ -204,6 +205,8 @@
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
         avviaEventi()
+        keyButton()
+        
     </script>
     <!-- Modal -->
     <!-- Button trigger modal -->

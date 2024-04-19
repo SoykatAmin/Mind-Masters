@@ -37,7 +37,7 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <aside id="sidebar">
-            <div class="h-100">
+            <div class="h-90">
                 <div class="sidebar-logo">
                     <div class="logo">
                         <a href="{{ url_for('index') }}">Mind Masters</a>
@@ -83,7 +83,29 @@
                     {% endif %}
                     
                 </ul>
+
             </div>
+            <div class="h-10">
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="footer">
+                        <div class="row">
+                            <!-- List of links -->
+                            <ul>
+                                <li><a href="#">Contattaci</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Termini & Condizioni</a></li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <!-- Copyright information -->
+                            Copyright © 2024 Mind Masters - All rights reserved
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            
         </aside>
         <!-- Main Component -->
         <div class="main">
@@ -93,24 +115,7 @@
                 </button>
                 {% block body %}{% endblock %}
             </main>
-            <!-- Footer -->
-            <footer class="footer">
-                <div class="footer">
-                    <div class="row">
-                        <!-- List of links -->
-                        <ul>
-                            <li><a href="#">Contattaci</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Termini & Condizioni</a></li>
-                        </ul>
-                    </div>
-                    <div class="row">
-                        <!-- Copyright information -->
-                        Copyright © 2024 Mind Masters - All rights reserved
-                    </div>
-                </div>
-            </footer>
+            
         </div>
     </div>
 

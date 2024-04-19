@@ -21,8 +21,25 @@ li {
     flex: 45%; /* Set flex basis to 45% */
     margin-right: 10%; /* Set left and right margins */
     background-color: #4d4d4d;
+    display: flex;
 }
 
+/* Right side content */
+
+.right-container{
+  width: 100%; /* Make the container span the full width of the rightpane */
+  height: 80%; /* Make the container span the full height of the rightpane */
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+
+  display: grid;
+  grid-template-rows: 40% 20% 15% 10% 15%;
+  
+  background-color: lightblue;
+}
+
+/* Left side game board example */
 
 .grid-container {
     display: grid;
