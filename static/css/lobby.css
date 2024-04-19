@@ -30,19 +30,22 @@
     animation: fade-in-out 7s;
     animation-iteration-count: infinite;
 }
-
 @keyframes fade-in-out {
     0% {
         opacity: 0;
+        transform: translateX(-20%); /* Move the element from left to center */
     }
     25% {
         opacity: 1;
+        transform: translateX(0%); /* Keep the element centered */
     }
     75% {
         opacity: 1;
+        transform: translateX(0%); /* Keep the element centered */
     }
     100% {
         opacity: 0;
+        transform: translateX(20%); /* Move the element from center to right */
     }
 }
 
