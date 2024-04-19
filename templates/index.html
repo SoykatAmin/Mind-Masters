@@ -84,8 +84,10 @@
                             </button>
                         </a>
                     {% else %}
-                    <a href="{{ url_for('login') }}">
-                        <h3>Accedi per giocare online</h3>
+                    <a class="link_play" href="{{ url_for('login') }}">
+                        <button class="play_button" id="online_button_access">
+                            <h3 style="color: white; text-decoration: none;">Accedi per giocare online</h3>
+                        </button>
                     </a>
                     {% endif %}
                 </div> 
