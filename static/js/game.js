@@ -9,7 +9,7 @@ var Colorful = [0, 0, 0, 0];
 var secret_code = [];
 
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = true;
+var debug = false;
 
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
@@ -282,16 +282,24 @@ function changeColor(color) {
     Colorful[y-1] = 1;
     //trova il primo elemnto di colorful che è uguale a 0
     var next=0;
+    var count=0;
+
     for (let i = 0; i < 4; i++) {
-        if (Colorful[i] === 0 && next==0) {
-            next=i+1;
+        if (Colorful[(y - 1 + i) % 4] === 0 && next==0) {
+            next=((y - 1 + i) % 4)+1;
+            console.log("next "+next);
+        }else{
+            count++;
+        
         }
     }
     //va al primo elememto vuoto 
     if(next!=0 ){
         moveBall(next);
     }else {
-        moveBall(y+1);
+        if(count!=4){
+            moveBall(y+1);
+        }
     }
 
 }
@@ -512,17 +520,32 @@ function sx(){
 //rimuove il colore e lasci la palla selezionata
 function dellColor(){
     var itemElement = document.getElementById(`ball-${x}-${y}`);
-    itemElement.style.backgroundColor = 'white';
-    if(y!=1){
-      sx();  
-    }
     
+    
+   if(Colorful[y-1]==1){
+    itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
+   }else{
+    itemElement.style.backgroundColor = 'white';
+    Colorful[y-1] = 0;
+    if(y!=1){
+        sx();  
+    }
+   }
+    
+    
 }
 //attiva le lettura da input di tastiera
 function keyButton(){
     document.addEventListener('keydown', function(event) {
         
+        if(event.key ==='Enter'){
+            event.preventDefault();
+
+            confrontaCodici();
+            return;
+        }
+
         if(!modal_aperto){
             if(event.key ==='Backspace') {
                 dellColor();
@@ -534,43 +557,43 @@ function keyButton(){
                  dx();
                  return;
              }
-             else if(event.key ==='Enter'){
-                 confrontaCodici();
-                 return;
+             else{
+                if(event.key === '1') {
+                    changeColor("red");
+                    return;
+                }
+                else if(event.key === '2') {
+                    changeColor("green");
+                    return;
+                }
+                else if(event.key === '3') {
+                    changeColor("blue");
+                    return;
+                }
+                else if(event.key === '4') {
+                    changeColor("yellow");
+                    return;
+                }
+                else if(event.key === '5') {
+                    changeColor("orange");
+                    return;
+                }
+                else if(event.key === '6') {
+                    changeColor("purple");
+                    return;
+                }
+                else if(event.key === '7') {
+                    changeColor("pink");
+                    return;
+                }
+                else if(event.key === '8') {
+                    changeColor("skyblue");
+                    return;
+                }
+
              }
             
-            if(event.key === '1') {
-                changeColor("red");
-                return;
-            }
-            else if(event.key === '2') {
-                changeColor("green");
-                return;
-            }
-            else if(event.key === '3') {
-                changeColor("blue");
-                return;
-            }
-            else if(event.key === '4') {
-                changeColor("yellow");
-                return;
-            }
-            else if(event.key === '5') {
-                changeColor("orange");
-                return;
-            }
-            else if(event.key === '6') {
-                changeColor("purple");
-                return;
-            }
-            else if(event.key === '7') {
-                changeColor("pink");
-                return;
-            }
-            else if(event.key === '8') {
-                changeColor("skyblue");
-                return;
-            }
+            
         }
 
         
