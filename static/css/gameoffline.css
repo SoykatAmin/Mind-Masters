@@ -75,6 +75,7 @@ body, html {
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px; 
   border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow */
 }
 
 .suggestion-container {
@@ -85,6 +86,7 @@ body, html {
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px; 
   border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow */
 }
 
 .ball{
@@ -135,6 +137,34 @@ body, html {
   background-color: #fff; /* Set white background color with !important */
 }
 
+.timer{
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #333;
+  border: 1px solid black;
+  z-index: 1000; /* Assicurarsi che sia sopra tutti gli altri elementi */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Aggiunge un'ombra intorno */
+}
+@media(max-width: 1000px){
+  .timer{
+    position: static;
+    top: auto;
+    right: auto;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    z-index: auto;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  #remTimer {
+      display: none;
+  }
+}
 
 #countdown{
   display: flex;

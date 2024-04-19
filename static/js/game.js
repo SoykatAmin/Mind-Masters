@@ -12,10 +12,10 @@ var secret_code = [];
 var debug = true;
 
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
-var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
+var colors = ["Sono inutile", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 
 // uguale a sopra pero in italiano pr stamparli a schermo
-var colori = ["Non sei l'unico", "rosso", "verde", "blu", "giallo", "arancione", "viola", "rosa", "azzurro"];
+var colori = ["Non sei l'unico", "rosso", "verde", "blu", "Rosa", "giallo", "viola", "celeste", "marrone"];
 
 // Flag per indicare se il gioco è terminato
 var end_game = false;
@@ -41,16 +41,7 @@ function confrontaCodici() {
     var posizioneErrata = 0;
     var sbagliato = 0;
     var player_code = [];
-    // Disabilita il bottone che invia il codice per evitare un eventuale doppio click
-    document.getElementById("invcod").disabled = true;
-
-    // Riabilita il bottone dopo 1 secondo
-    setTimeout(() => {
-        if (!end_game) {
-            document.getElementById("invcod").disabled = false;
-        }
-
-    }, 1000);
+    
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
@@ -247,11 +238,8 @@ function game_timer() {
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
-            var str = `<p style="text-color:red">${colori[secret_code[0]]}</p>`;
-            for (let i = 1; i < secret_code.length; i++) {
-                str += `,${colori[secret_code[i]]}`;
-            }
-            terminaPartita("Mi dispiace, tempo scaduto. Il codice era " + str);
+            var str = `<span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span>`;
+            terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
             // Calcola i minuti e i secondi rimanenti
             var minutes = Math.floor(timeleft / 60);
@@ -422,7 +410,7 @@ function avviaEventi() {
 // Funzione che fa scorrere lo schermo al div successivo
 function scrollWin() {
     // Verifica se il turno corrente è maggiore di 2
-    if (x > 2) {
+    if (x > 1) {
         // Se sì, seleziona l'elemento div target tramite il suo ID
         const targetElement = document.getElementById(`rig-${x-1}`);
         // Scorri lo schermo in modo fluido verso l'elemento target
@@ -491,7 +479,6 @@ function moveBall(y_suc) {
     if (end_game) {
         return;
     }
-
     // Rimuove la classe "ball-selected" dalla palla precedente
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
@@ -504,7 +491,6 @@ function moveBall(y_suc) {
     }else{
         y=y_suc;
     }
-    
     // Aggiunge la classe "ball-selected" alla nuova palla selezionata
     var nextBall = document.getElementById(`ball-${x}-${y}`);
     nextBall.classList.add("ball-selected");
@@ -520,8 +506,6 @@ function sx(){
 //rimuove il colore e lasci la palla selezionata
 function dellColor(){
     var itemElement = document.getElementById(`ball-${x}-${y}`);
-    
-    
    if(Colorful[y-1]==1){
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
@@ -531,51 +515,53 @@ function dellColor(){
     if(y!=1){
         sx();  
     }
-   }
-    
-    
+   } 
 }
 //attiva le lettura da input di tastiera
 function keyButton(){
     document.addEventListener('keydown', function(event) {
         
-        if(event.key ==='Enter'){
+        if(event.key != 'F12'){
             event.preventDefault();
-
-            confrontaCodici();
-            return;
         }
-
+        
         if(!modal_aperto){
+            if(event.key ==='Enter'){
+                
+    
+                confrontaCodici();
+                return;
+            }
+    
             if(event.key ==='Backspace') {
                 dellColor();
                 return;
-             }else if(event.key ==='ArrowLeft'){
-                 sx();
-                 return;
-             }else if(event.key ==='ArrowRight'){
-                 dx();
-                 return;
-             }
+            }else if(event.key ==='ArrowLeft'){
+                sx();
+                return;
+            }else if(event.key ==='ArrowRight'){
+                dx();
+                return;
+            }
              else{
                 if(event.key === '1') {
                     changeColor("red");
                     return;
                 }
                 else if(event.key === '2') {
-                    changeColor("green");
+                    changeColor("darkgreen");
                     return;
                 }
                 else if(event.key === '3') {
-                    changeColor("blue");
+                    changeColor("darkblue");
                     return;
                 }
                 else if(event.key === '4') {
-                    changeColor("yellow");
+                    changeColor("deeppink");
                     return;
                 }
                 else if(event.key === '5') {
-                    changeColor("orange");
+                    changeColor("yellow");
                     return;
                 }
                 else if(event.key === '6') {
@@ -583,21 +569,14 @@ function keyButton(){
                     return;
                 }
                 else if(event.key === '7') {
-                    changeColor("pink");
+                    changeColor("aqua");
                     return;
                 }
                 else if(event.key === '8') {
-                    changeColor("skyblue");
+                    changeColor("sienna");
                     return;
                 }
-
-             }
-            
-            
+            }
         }
-
-        
-        
-        // Add your code here to handle other key events
     });
 }
