@@ -151,6 +151,7 @@ li {
     .container-fluid {
       flex-direction: column-reverse; /* Switch to horizontal direction for smaller screens */
       height: 100%; /* Make container span full page height */
+      margin-bottom: 100px;
       padding-bottom: 100px;
     }
     .rightpane {

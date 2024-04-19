@@ -225,7 +225,7 @@ a.sidebar-link {
     height: 100%;
   }
   
-  #online_button{
+  #online_button, #online_button_access{
     --c:  #ADADAD; 
   }
   

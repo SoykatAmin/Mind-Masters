@@ -25,6 +25,8 @@ body, html {
   min-height: 30%;
 }
 
+
+
 .controller-container{
   display: grid;
   grid-template-columns: 11.7647%
@@ -51,7 +53,7 @@ body, html {
                         9.21% 2.324295011% 
                         9.21%
                       auto;
-  background-color: #D9D9D9;
+  background-color: #A0AECB;
   grid-gap: 1px;
   margin: 0 20%;
   -moz-border-radius: 15px; 
@@ -61,7 +63,7 @@ body, html {
 }
 
 .grid-item {
-  border: 1px solid;
+  
   text-align: center;
 }
 
@@ -69,7 +71,7 @@ body, html {
   display: grid;
   grid-template-columns: 8.8362% 14.0086% 8.8362% 14.0086% 8.8362% 14.0086% 8.8362% 14.0086% auto;
   grid-template-rows: 11.7647% 76.470588% auto;
-  background-color: #C19569;
+  background-color: #7687AF;
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px; 
   border-radius: 15px;
@@ -79,7 +81,7 @@ body, html {
   display: grid;
   grid-template-columns: 20% 23.5294% 12.941176% 23.5294% auto;
   grid-template-rows: 20% 23.5294% 12.941176% 23.5294% auto;
-  background-color: #C19569;
+  background-color: #7687AF;
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px; 
   border-radius: 15px;
@@ -133,11 +135,19 @@ body, html {
   background-color: #fff; /* Set white background color with !important */
 }
 
+
+#countdown{
+  display: flex;
+  justify-content: center; /* Centra orizzontalmente il contenuto */
+  align-items: center; /* Centra verticalmente il contenuto */
+}
+
 @media (max-width: 620px) {
   
   .grid-container {
     margin: 0;
   }
+  
 }
 
 @media (max-width: 1000px) {
@@ -147,6 +157,7 @@ body, html {
   .controller-container{
     margin: 0 10%;
   }
+ 
 }
 
 
@@ -158,6 +169,7 @@ body, html {
     width: 40px;
     height: 40px;
   }
+  
 }
 
 @media (min-width: 500px) and (max-width: 700px){

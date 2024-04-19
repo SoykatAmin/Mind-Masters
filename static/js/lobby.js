@@ -1,4 +1,4 @@
-var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FASE SELECTION SORTTT!!!","Nel complesso, sai cheee"];
+var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FASE SELECTION SORTTT!!!","Nel complesso, sai cheee", "1982783 è il tag del miglior giocatore!"];
 var frasiUsate = [];
 
 function rotazione(){

@@ -94,7 +94,6 @@ class User(db.Model):
     username = db.Column(db.String(255), primary_key=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
 
     statistics = db.relationship("Statistic", backref="user", uselist=False)  # One-to-One with Statistic
 
@@ -105,8 +104,7 @@ class Partita(db.Model):
     __tablename__ = 'games'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    ora_inizio = db.Column(db.DateTime, nullable=False)
-    ora_fine = db.Column(db.DateTime, nullable=True)
+    player2 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
 
 class Statistic(db.Model):
 
@@ -137,8 +135,11 @@ class Partita_online(db.Model):
     __tablename__ = 'online_games'
 
     id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True,autoincrement=True)
-    codice1 = db.Column(db.Integer, nullable=False)
-    codice2 = db.Column(db.Integer, nullable=False)
+
+    oraFine1 = db.Column(db.DateTime, nullable=True) 
+    oraFine2 = db.Column(db.DateTime, nullable=True)
+    codice1 = db.Column(db.Integer, nullable=True)
+    codice2 = db.Column(db.Integer, nullable=True)
     player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
 
 class Mossa(db.Model):
@@ -164,7 +165,7 @@ class EntraPartita(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
 
-class creaPartita(db.Model):
+class CreaPartita(db.Model):
 
     __tablename__ = 'creations'
 

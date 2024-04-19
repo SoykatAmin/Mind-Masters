@@ -11,22 +11,29 @@
         
         <!-- This is the lobby page of this project. It contains a list of all the games that are currently being played, and a button that allows users to start a new game against another user. -->
         
-        <div class="lobby-container">
+       
+
+            <div class="lobby-container">
         
-            <!-- List of games that are currently being played. -->
-            
-            <h1 class="title">Lobby di {{ session['username'] }}</h1>
-            <br>
-            <div class="lobby-element">
+                <!-- List of games that are currently being played. -->
                 
-                <div>Codice stanza: <p>12456</p></div>
+                <h1 class="title">Lobby di {{ session['username'] }}</h1>
                 <br>
-                <div >In attesa di altri giocatri<p></p></div>
-                <br>
+                <div class="lobby-element">
+                    
+                    <div>Codice stanza: <p>12456</p></div>
+                    <br>
+                    <div >In attesa di altri giocatri<p></p></div>
+                    <br>
+                </div>
+                
             </div>
-            
-        </div>
-        <div class="frase"><div class="frase-in-out" id="frasi"></div></div>
+            <div class="frase">
+                <div class="frase-in-out" id="frasi"></div>
+            </div>
+
+
+        
         
         <script>
             rotazione();

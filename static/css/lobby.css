@@ -19,9 +19,11 @@
 /*codice per delle frasi che si devono treovare in fondo alla pagina*/
 .frase {
     /*testo allneato al cdentro*/
-    text-align: center;
     font-family: 'Play', sans-serif; /* Sets the font family of the footer */
-    text-align: center; /* Aligns the content of the footer to the center */
+    min-height: 15vh;
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
     font-size: 2em;
     border-top: 1px solid white; /* Adds a white line on top of the footer */
     bottom: 0;
