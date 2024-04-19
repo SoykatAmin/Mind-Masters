@@ -1,0 +1,49 @@
+.lobby-container{
+    margin: 0 12%; /* 12% margin on left and right 0 margin on top and bottom*/
+    min-height: 80vh;
+    padding: 5%; /* 5% padding on all sides */  
+    border-radius: 5px;
+}
+.title{
+    text-align: center;
+    
+    font-size: 3.5em; /* Increase font size to 2em */
+}
+.lobby-element{
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 2%;
+   
+}
+
+/*codice per delle frasi che si devono treovare in fondo alla pagina*/
+.frase {
+    /*testo allneato al cdentro*/
+    text-align: center;
+    font-family: 'Play', sans-serif; /* Sets the font family of the footer */
+    text-align: center; /* Aligns the content of the footer to the center */
+    font-size: 2em;
+    border-top: 1px solid white; /* Adds a white line on top of the footer */
+    bottom: 0;
+}
+.frase-in-out{
+    animation: fade-in-out 7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes fade-in-out {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+

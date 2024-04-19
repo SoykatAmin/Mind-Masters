@@ -9,7 +9,7 @@ var Colorful = [0, 0, 0, 0];
 var secret_code = [];
 
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = false;
+var debug = true;
 
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["Sono inutile", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];

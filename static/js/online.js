@@ -1,6 +1,6 @@
 var colors = ["Sono copiato", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
 //funzioni da finire poi vanno commentate
-
+//refactoring totale da fare delle funzione non commentate
 function creasta() {
     const url = 'http://127.0.0.1:5000/creaStanza'
     fetch(url)
@@ -31,7 +31,7 @@ function entrasta(){
     })
 }
 
-//modifica il modal per permettere di inserire il docide della stanza
+/**modifica il modal per permettere di inserire il docide della stanza*/
 function iserisciCodice(){
     var md_title = document.getElementById("md_title");
     md_title.setAttribute("hidden", "hidden");
@@ -48,17 +48,13 @@ function iserisciCodice(){
     var right_code = document.getElementById("right_bn_code");
     left_code.removeAttribute("hidden");
     right_code.removeAttribute("hidden");
-    
-
-
 }
-//
+
 /**
  * Annulla le modifiche dopo un ritardo di 600 millisecondi.
  */
 function annulla(){
     setTimeout(function() {
-
         var md_title = document.getElementById("md_title");
         md_title.removeAttribute("hidden");
         var body = document.getElementById("md_body");
@@ -74,4 +70,12 @@ function annulla(){
         left_code.setAttribute("hidden", "hidden");
         right_code.setAttribute("hidden", "hidden");
     }, 600);
+}
+
+/**chiama il modal per le partite online del file index.html */
+function callModal(){
+    setTimeout(function() {
+        const modal = new bootstrap.Modal('#md_online');
+        modal.show();
+    }, 400);
 }

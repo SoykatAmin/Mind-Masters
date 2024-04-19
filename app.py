@@ -256,6 +256,8 @@ def lobby():
 #creo funzione per il dialogo con il client 
 @app.route('/creaStanza', methods=['GET', 'POST'])
 def create_room():
+
+    
     #for p in partite:
     #    if p.player_ingame(session['username']):
     #        jsonResp = {'err': 'Sei già in una stanza'}
