@@ -27,9 +27,9 @@
     bottom: 0;
 }
 .frase-in-out{
-    animation: fade-in-out 7s;
-    animation-iteration-count: infinite;
+    animation: fade-in-out 7s linear infinite;
 }
+
 @keyframes fade-in-out {
     0% {
         opacity: 0;

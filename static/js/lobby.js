@@ -1,10 +1,10 @@
-var frasi=["Senza matematica,ma dove siamo!","SI È MESSO A FASE SELECTION SORTTT !!!","Nel complesso, sai cheee"];
+var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FASE SELECTION SORTTT!!!","Nel complesso, sai cheee"];
 var frasiUsate = [];
 
 function rotazione(){
     randomFrasi();
     //imposta una pausa di 2 secondi
-    setTimeout(rotazione, 7000);
+    setTimeout(rotazione, 6999);
 }
 
 function randomFrasi(){
