@@ -12,10 +12,10 @@ var secret_code = [];
 var debug = true;
 
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
-var colors = ["Sono inutile", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
+var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 
 // uguale a sopra pero in italiano pr stamparli a schermo
-var colori = ["Non sei l'unico", "rosso", "verde", "blu", "Rosa", "giallo", "viola", "celeste", "marrone"];
+var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Celeste", "Marrone"];
 
 // Flag per indicare se il gioco è terminato
 var end_game = false;
@@ -95,7 +95,7 @@ function confrontaCodici() {
 
     } else if (x == 8) {
         suggerimenti(posizioneCorretta, posizioneErrata);
-        var str = colori[secret_code[0]] + "," + colori[secret_code[1]] + "," + colori[secret_code[2]] + "," + colori[secret_code[3]];
+        var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
         terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
     } else {
@@ -207,7 +207,7 @@ function suggerimenti(correct, color) {
  */
 function startPVE() {
     if (debug) {
-        secret_code = [1, 1, 2, 3];//il codiece di debug è red red green blue
+        secret_code = [1,1,2,3];//il codiece di debug è red red green blue
     }else{
         for (let i = 0; i < 4; i++) {
             secret_code.push(Math.floor(Math.random() * 8)+1);
@@ -238,7 +238,7 @@ function game_timer() {
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
-            var str = `<span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span>`;
+            var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
             // Calcola i minuti e i secondi rimanenti

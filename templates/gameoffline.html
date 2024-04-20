@@ -18,10 +18,10 @@
     <div id="md_end" class="modal fade " data-bs-backdrop="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-header">
+                <div class="modal-header ">
                     <h2 class="modal-title " id="md_title"></h2>
                 </div>
-                <div class="modal-body" id="md_body" style="font-size: 1.2em;"></div>
+                <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
                 <div class="modal-footer">
                     <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
                     <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
@@ -33,7 +33,7 @@
     <div id="md_err" class="modal fade " data-bs-backdrop="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-body" id="md_err_body"></div>
+                <div class="modal-body text-center" id="md_err_body"></div>
                 <div class="modal-footer">
                     <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
                 </div>
@@ -97,7 +97,9 @@
        
         <div class="game-controller">
             <div class="space" id="remTimer"></div>
+        
             <div class="timer" id="countdown">Tempo rimasto 15:00</div>
+        
             <div class="controller-container">
                 <!--bottoni per inserire i colori-->
                
