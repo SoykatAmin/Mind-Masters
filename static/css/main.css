@@ -30,9 +30,9 @@ body {
 
 .footer{
     background:#363636; /* Sets the background color of the footer */
-   
     font-family: 'Play', sans-serif; /* Sets the font family of the footer */
     text-align:center; /* Aligns the content of the footer to the center */ 
+    bottom: 0px;
 }
 
 .footer .row{
@@ -69,17 +69,17 @@ body {
 
 @media (max-width:720px){
     .footer{
-    text-align:left;
-    padding:5%;
-}
-.footer .row ul li{
-    display:block;
-    margin:10px 0px;
-    text-align:left;
-}
-.footer .row a i{
-    margin:0% 3%;
-}
+        text-align:left;
+        padding:5%;
+    }
+    .footer .row ul li{
+        display:block;
+        margin:10px 0px;
+        text-align:left;
+    }
+    .footer .row a i{
+        margin:0% 3%;
+    }
 }
 
 #sidebar {
@@ -94,12 +94,12 @@ body {
 }
 
 .h-80{
-    min-height: 80%;
+    min-height: 90%;
     
 }
 
 .h-20{
-    min-height: 20%;
+    min-height: 10%;
 }
 
 
@@ -262,7 +262,7 @@ a.sidebar-link {
     }
 }
 
-@media (max-width:768px) {
+@media (max-width:1300px) {
     .wrapper {
         align-items: stretch;
         display: grid;
@@ -282,11 +282,11 @@ a.sidebar-link {
 
 @media (max-width:720px) {
     .h-80{
-        min-height: 72%;
+        min-height: 85%;
         
     }
     
     .h-20{
-        min-height: 28%;
+        min-height: 15%;
     }
 }

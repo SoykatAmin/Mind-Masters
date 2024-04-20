@@ -13,6 +13,7 @@ body, html {
   flex: 1;
   overflow-y: auto;
   padding-bottom: 15%; /* Altezza del footer */
+  margin-bottom: 10vh;
 }
 
 .game-controller{
@@ -182,7 +183,7 @@ body, html {
 
 @media (max-width: 1000px) {
   .grid-container {
-    margin: 0;
+    margin: 5%;
   }
   .controller-container{
     margin: 0 10%;
@@ -199,6 +200,14 @@ body, html {
     width: 40px;
     height: 40px;
   }
+  .grid-container{
+    grid-template-columns: 9.46% 65.67% 6.5% 12% auto;
+    margin: 0;
+  }
+  .balls-container{
+    grid-template-columns: 6.85% 17.8448% 5% 17.8448% 5% 17.8448% 5% 17.8448% auto;
+    grid-template-rows: 5% 90% auto;
+  }
   
 }
 
@@ -214,6 +223,9 @@ body, html {
     width: 65px;
     height: 65px;
   }
+  .game_board{
+    margin-bottom: 10vh;
+  }
 }
 
 @media (min-width: 900px) and (max-width: 1300px){
@@ -224,11 +236,17 @@ body, html {
   .controller-container{
     margin: 0 15%;
   }
+  .game_board{
+    margin-bottom: 15vh;
+  }
 }
 
 @media (min-width: 1300px) and (max-width: 1600px){
   .controller-container{
     margin: 0 20%;
+  }
+  .game_board{
+    margin-bottom: 10vh;
   }
 }
 

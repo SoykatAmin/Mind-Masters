@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let sidebarOpen = true;
     let sidebarClosed = false;
     screenWidth = window.innerWidth;
-    const screenLimit = 1320;
+    const screenLimit = 1300;
  
     // Fuction for the sidebar toggle button
     toggleSidebarButton.addEventListener('click', function toggleSidebar() {
