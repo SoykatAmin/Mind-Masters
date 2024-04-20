@@ -263,6 +263,7 @@ function changeColor(color) {
     if (end_game) {
         return;
     }
+    scrollWin();
     // Seleziona l'elemento div tramite il suo ID
     var targetDiv=0;
     targetDiv = document.getElementById(`ball-${x}-${y}`);
@@ -410,13 +411,21 @@ function avviaEventi() {
 // Funzione che fa scorrere lo schermo al div successivo
 function scrollWin() {
     // Verifica se il turno corrente è maggiore di 2
-    if (x > 1) {
+    if (x > 2) {
         // Se sì, seleziona l'elemento div target tramite il suo ID
-        const targetElement = document.getElementById(`rig-${x-1}`);
+        const targetElement = document.getElementById(`rig-${x-2}`);
         // Scorri lo schermo in modo fluido verso l'elemento target
         targetElement.scrollIntoView({
-            behavior: 'smooth'
+            behavior: 'smooth',
+            block: 'start'
         });
+    }else{
+        const targetElement = document.getElementById(`rig-${x}`);
+        targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end'
+        });
+    
     }
 }
 /*Funzione per terminare la partita se il gioco è online manda il risulato al server
@@ -497,14 +506,17 @@ function moveBall(y_suc) {
 }
 //funzione per mandare avanti(spostarla a destra) di uno la colonna
 function dx(){
+    scrollWin();
     moveBall(y+1);
 }
 //uguale a sopra ma a sinistra
 function sx(){
-        moveBall(y-1);
+    scrollWin();
+    moveBall(y-1);
 }
 //rimuove il colore e lasci la palla selezionata
 function dellColor(){
+    scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
    if(Colorful[y-1]==1){
     itemElement.style.backgroundColor = 'white';
