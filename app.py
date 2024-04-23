@@ -253,6 +253,11 @@ def gameonline():
 def lobby():
     return render_template('lobby.html')
 
+@app.route('/gioco-online-codice', methods=['GET', 'POST'])
+
+def gameonlinecode():
+    return render_template('gameonlinecode.html')
+
 #funzioni per dialogo client-server
 #creo funzione per il dialogo con il client 
 @app.route('/creaStanza', methods=['GET', 'POST'])

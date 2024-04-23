@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Game Online Code</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gameonlinecode.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="main-container">
+        <div class="game_board">
+            <div class="grid-container">
+                {% set ballRow = namespace(value=1) %}
+                {% for x in range(1, 4) %}
+                    {% for y in range(1, 4) %}
+
+                        {% if y == 2 and x == 2 %}
+                            <!-- Container for balls -->
+                            <div class="grid-item balls-container" id="rig-{{ ballRow.value }}">
+                                
+                                {% for z in range(1, 4) %}
+                                    {% set ballCol = namespace(value=1) %}
+                                    {% for v in range(1, 10) %}
+                                        {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
+                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}">
+                                                </div>
+                                            </div>
+                                            {% set ballCol.value = ballCol.value + 1 %}
+                                            {% if v == 8 %}
+                                                {% set ballRow.value = ballRow.value + 1 %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="ball-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="grid-item"></div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                {% endfor %}
+                
+            </div>
+                
+        </div>
+    
+        <div class="game-controller">
+            <div class="space" id="remTimer"></div>
+        
+            <div class="timer" id="countdown">Tempo rimasto 15:00</div>
+        
+            <div class="controller-container">
+                <!--bottoni per inserire i colori-->
+            
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+                    
+                    <div class="item-1">
+                        <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;">1</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-2">
+                        <button onclick="changeColor('darkgreen')" class="input-color-button" style="background-color: darkgreen;">2</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-3">
+                        <button onclick="changeColor('darkblue')" class="input-color-button" style="background-color: darkblue;">3</button>
+                    
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-4">
+                        <button onclick="changeColor('deepPink')" class="input-color-button" style="background-color: deepPink;">4</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-5">
+                        <button id="cancCol" onclick="dellColor()" > 
+                        <h3>&#x2715</h3> 
+                        </button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-6">
+                        <button id="invcod" onclick="confrontaCodici()">
+                            <h3>&#x2713</h3>
+                        </button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+
+                    <div class="item-7">
+                        <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;">5</button>
+                    </div>
+                    
+
+                    <div class="space"></div>
+
+                    <div class="item-8">
+                        <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;">6</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-9">
+                        <button onclick="changeColor('aqua')" class="input-color-button" style="background-color: aqua;">7</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-10">
+                        <button onclick="changeColor('sienna')" class="input-color-button" style="background-color: sienna;">8</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-11</div>">
+                        <button id="sx-btn" onclick="sx()">
+                            <h2>&#x2190</h2>
+                        </button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-12">
+                        <button id="dx-btn" onclick="dx()">
+                            <h2>&#x2192</h2>
+                        </button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
