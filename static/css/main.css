@@ -93,6 +93,8 @@ body {
     background-color: 222831;
 }
 
+/* Sidebar division */
+
 .h-80{
     min-height: 90%;
     
@@ -280,12 +282,14 @@ a.sidebar-link {
     }
 }
 
-@media (max-width:720px) {
+/* Sidebar responsive */
+
+
+@media (max-width:720px) or (max-height: 1300px){
     .h-80{
         min-height: 85%;
         
     }
-    
     .h-20{
         min-height: 15%;
     }
