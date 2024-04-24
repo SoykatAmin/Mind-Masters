@@ -105,6 +105,11 @@ body, html {
   animation: blink 1s infinite;
 }
 
+.ball-text{
+  color: white;
+  text-shadow: 1px 1px 6px black;
+}
+
 /*animazione che fa lampaggiare l bordo della cella */
 @keyframes blink {
   0% {

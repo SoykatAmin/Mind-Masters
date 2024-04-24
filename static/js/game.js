@@ -27,7 +27,7 @@ var timeleft = 900; // 15 minuti
 var win = false;
 
 var modal_aperto=false//flag per vcedere se c'è un modal aperto
-
+//console.log(localStorage.getItem("acc"))
 /**
  * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
 legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
@@ -111,7 +111,7 @@ function confrontaCodici() {
 /**
  * Funzione per inserire i suggerimenti
 La funzione prende come argomenti il numero di colori corretti ma in posizione errata (correct) e 
-il numero di colori corretti in posizione corretta (color)
+il numero di coconsole.log(json);lori corretti in posizione corretta (color)
 La funzione genera casualmente un array (occ) di lunghezza 4, dove ogni elemento rappresenta un colore
 nella sequenza di suggerimenti
 Se un colore è corretto ma in posizione errata, l'elemento corrispondente in occ viene impostato a 1
@@ -276,7 +276,6 @@ function changeColor(color) {
     for (let i = 0; i < 4; i++) {
         if (Colorful[(y - 1 + i) % 4] === 0 && next==0) {
             next=((y - 1 + i) % 4)+1;
-            console.log("next "+next);
         }else{
             count++;
         
@@ -310,6 +309,7 @@ function avviaEventi() {
     itemElement1.addEventListener('click', () => {
         if (/*Colorful[0] == 1 && */xatt == x) {
             delItem1.setAttribute("hidden", "hidden");
+           
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
             moveBall(1);
@@ -327,6 +327,7 @@ function avviaEventi() {
     itemElement1.addEventListener("mouseleave", () => { 
        
         delItem1.setAttribute("hidden", "hidden");
+
     
         console.log("mouse leave");
     }, false);
@@ -335,6 +336,7 @@ function avviaEventi() {
     itemElement2.addEventListener('click', () => {
         if (/*Colorful[1] == 1 &&*/ xatt == x) {
             delItem2.setAttribute("hidden", "hidden");
+            
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
             moveBall(2);
@@ -343,6 +345,7 @@ function avviaEventi() {
     });
     itemElement2.addEventListener("mouseover", () => { 
         if (Colorful[1] == 1 && xatt == x) {
+            
             delItem2.removeAttribute("hidden");
         }
         console.log("mouse enter");
@@ -359,8 +362,9 @@ function avviaEventi() {
     var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
         if (/*Colorful[2] == 1 && */xatt == x) {
-            itemElement3.style.backgroundColor = 'white';
+            
             delItem3.setAttribute("hidden", "hidden");
+            itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0;
             moveBall(3);
             console.log("rimosso");
@@ -376,14 +380,16 @@ function avviaEventi() {
     itemElement3.addEventListener("mouseleave", () => {
         delItem3.setAttribute("hidden", "hidden");
         console.log("mouse leave");
+    
     }
     , false);
 
     var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
         if (/*Colorful[3] == 1 && */xatt == x) {
-            itemElement4.style.backgroundColor = 'white';
+            
             delItem4.setAttribute("hidden", "hidden");
+            itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0;
             moveBall(4);
             console.log("rimosso");
@@ -518,11 +524,13 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
+    var delltextItem = document.getElementById(`text-ball-${x}-${y}`);
    if(Colorful[y-1]==1){
+    delltextItem.innerHTML = "";
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
    }else{
-    itemElement.style.backgroundColor = 'white';
+    //itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
     if(y!=1){
         sx();  
@@ -592,3 +600,5 @@ function keyButton(){
         }
     });
 }
+
+

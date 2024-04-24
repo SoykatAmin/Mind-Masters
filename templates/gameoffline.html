@@ -29,17 +29,7 @@
             </div>
         </div>
     </div>
-    <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
-    <div id="md_err" class="modal fade " data-bs-backdrop="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-body text-center" id="md_err_body"></div>
-                <div class="modal-footer">
-                    <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <div class="main-container">
         <div class="game_board">
             <div class="grid-container">
@@ -56,8 +46,9 @@
                                     {% for v in range(1, 10) %}
                                         {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
                                             <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
-                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}">
-                                                </div>
+
+                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                                
                                             </div>
                                             {% set ballCol.value = ballCol.value + 1 %}
                                             {% if v == 8 %}
@@ -110,27 +101,27 @@
 
                     {% endfor %}
                     
-                    <div class="item-1">
-                        <button onclick="changeColor('red')" class="input-color-button" style="background-color: red;">1</button>
+                    <div class="item-1" style="text-shadow: 1px 1px 60px black;">
+                        <button onclick="changeColor('red')" class="input-color-button ball-text" style="background-color: red;">1</button>
                     </div>
 
                     <div class="space"></div>
 
                     <div class="item-2">
-                        <button onclick="changeColor('darkgreen')" class="input-color-button" style="background-color: darkgreen;">2</button>
+                        <button onclick="changeColor('darkgreen')" class="input-color-button ball-text" style="background-color: darkgreen;">2</button>
                     </div>
 
                     <div class="space"></div>
 
                     <div class="item-3">
-                        <button onclick="changeColor('darkblue')" class="input-color-button" style="background-color: darkblue;">3</button>
+                        <button onclick="changeColor('darkblue')" class="input-color-button ball-text" style="background-color: darkblue;">3</button>
                     
                     </div>
 
                     <div class="space"></div>
 
                     <div class="item-4">
-                        <button onclick="changeColor('deepPink')" class="input-color-button" style="background-color: deepPink;">4</button>
+                        <button onclick="changeColor('deeppink')" class="input-color-button ball-text" style="background-color: deepPink;">4</button>
                     </div>
 
                     <div class="space"></div>
@@ -156,26 +147,26 @@
                     {% endfor %}
 
                     <div class="item-7">
-                        <button onclick="changeColor('yellow')" class="input-color-button" style="background-color: yellow;">5</button>
+                        <button onclick="changeColor('yellow')" class="input-color-button ball-text" style="background-color: yellow;">5</button>
                     </div>
                     
 
                     <div class="space"></div>
 
                     <div class="item-8">
-                        <button onclick="changeColor('purple')" class="input-color-button" style="background-color: purple;">6</button>
+                        <button onclick="changeColor('purple')" class="input-color-button ball-text" style="background-color: purple;">6</button>
                     </div>
 
                     <div class="space"></div>
 
                     <div class="item-9">
-                        <button onclick="changeColor('aqua')" class="input-color-button" style="background-color: aqua;">7</button>
+                        <button onclick="changeColor('aqua')" class="input-color-button ball-text" style="background-color: aqua; ">7</button>
                     </div>
 
                     <div class="space"></div>
 
                     <div class="item-10">
-                        <button onclick="changeColor('sienna')" class="input-color-button" style="background-color: sienna;">8</button>
+                        <button onclick="changeColor('sienna')" class="input-color-button ball-text" style="background-color: sienna;">8</button>
                     </div>
 
                     <div class="space"></div>

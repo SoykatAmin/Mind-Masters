@@ -80,6 +80,7 @@ partite=[]#lista delle partite in corso
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
+#gestione accessibilità utente
 
 
 # DATABASE CONFIGURATION
