@@ -1,3 +1,9 @@
+// Player 1 or 2
+var player;
+
+var secret_code1;
+var secret_code2;
+
 var colors = ["Sono copiato", "red", "green", "blue", "yellow", "orange","purple","pink","skyblue"];
 //funzioni da finire poi vanno commentate
 //refactoring totale da fare delle funzione non commentate

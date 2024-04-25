@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session,js
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt 
 import random
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 #classe per connessione partita  
@@ -88,8 +89,12 @@ app.config['SECRET_KEY'] = 'your secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'database.db')
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-class User(db.Model):
+
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     username = db.Column(db.String(255), primary_key=True, nullable=False)
@@ -97,6 +102,9 @@ class User(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
 
     statistics = db.relationship("Statistic", backref="user", uselist=False)  # One-to-One with Statistic
+
+    def get_id(self):
+           return (self.username)
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -139,8 +147,8 @@ class Partita_online(db.Model):
 
     oraFine1 = db.Column(db.DateTime, nullable=True) 
     oraFine2 = db.Column(db.DateTime, nullable=True)
-    codice1 = db.Column(db.Integer, nullable=True)
-    codice2 = db.Column(db.Integer, nullable=True)
+    codice1 = db.Column(db.String(4), nullable=True)
+    codice2 = db.Column(db.String(4), nullable=True)
     player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
 
 class Mossa(db.Model):
@@ -173,14 +181,39 @@ class CreaPartita(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
 
+class Lobby(db.Model):
+    
+        __tablename__ = 'lobbies'
+    
+        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        codice = db.Column(db.String(6), unique=True, nullable=False)
+        player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+
+class EntraLobby(db.Model):
+        
+            __tablename__ = 'lobby_entries'
+        
+            user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
+            lobby_id = db.Column(db.Integer, db.ForeignKey('lobbies.id'), primary_key=True)
+
 # Create tables in database (if not exist)
 with app.app_context():
     db.create_all()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(username=user_id).first()
 
 #funzioni per la chiamata delle pagini html
 @app.route('/', methods=['GET', 'POST'])
 
 def index():
+
+    if current_user.is_authenticated:
+        Lobby.query.filter_by(player1=current_user.username).delete()
+        EntraLobby.query.filter_by(user_id=current_user.username).delete()
+        db.session.commit()
+        return render_template('index.html', msg=current_user.username)
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -215,11 +248,11 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-        print(user)
-
+    
         if user:
             session['username'] = username # Store username in session
             if user.password == bcrypt.hashpw(password.encode('utf-8'), user.password):
+                login_user(user)
                 return redirect(url_for('index'))
             else:
                 msg = 'Incorrect password'
@@ -229,9 +262,10 @@ def login():
     return render_template('auth/login.html', msg=msg)
 
 @app.route('/logout')
-
+@login_required
 def logout():
     session.pop('username', None)
+    logout_user()
     return redirect(url_for('index'))
 
 @app.route('/regole', methods=['GET', 'POST'])
@@ -249,13 +283,77 @@ def game():
 def gameonline():
     return render_template('gameonline.html')
 
-@app.route('/lobby', methods=['GET', 'POST'])
+@app.route('/lobby/', methods=['GET', 'POST'])
 
+@login_required
 def lobby():
-    return render_template('lobby.html')
+    
+    # select mode from url query string (create or enter)
+    mode = request.args.get('mode')
+    code = ''
+    msg = ''
 
-@app.route('/gioco-online-codice', methods=['GET', 'POST'])
+    if mode == 'create':
 
+        # check if user has already created a lobby (if so, doesn't change the code)
+        if Lobby.query.filter_by(player1=current_user.username).first() is not None:
+            msg='Sei entrato in una lobby'
+            code = Lobby.query.filter_by(player1=current_user.username).first().codice
+
+        # create a new lobby
+        else:
+            msg='Hai creato una lobby'
+            codeArray = random.choices('0123456789', k=6)                               #array of 6 random numbers
+            code = ''.join(codeArray)                                                   #join the array to create a string
+            new_lobby = Lobby(codice=code, player1=current_user.username)               #prepare the new lobby
+            db.session.add(new_lobby)
+            db.session.commit()
+
+        # return the lobby page with the code, lobby creator and a message for the user 
+        return render_template('lobby.html', code=code, creator=current_user.username, msg=msg)
+    
+    elif mode == 'enter':
+        msg='Sei entrato in una lobby'
+        # check if user has already entered a lobby (if so, doesn't change the code)
+        if EntraLobby.query.filter_by(user_id=current_user.username).first() is not None:
+            lobby_id = EntraLobby.query.filter_by(user_id=current_user.username).first().lobby_id
+            code = Lobby.query.filter_by(id=lobby_id).first().codice
+            return render_template('lobby.html', code=code, creator=Lobby.query.filter_by(id=lobby_id).first().player1, msg=msg)
+        
+        # enter a lobby with the code provided by the user
+        code = request.form['code']
+        isCorrectLobby = Lobby.query.filter_by(codice = code).first()
+        
+        # if the lobby exists, add the user to the lobby
+        if isCorrectLobby:
+            enter = EntraLobby(user_id=current_user.username, lobby_id=isCorrectLobby.id)
+            db.session.add(enter)
+            db.session.commit()
+            return render_template('lobby.html', code=code, msg=msg, creator=isCorrectLobby.player1)
+        
+        # if the lobby doesn't exist, return the index page with an error message
+        else:
+            return render_template('index.html', code=code, msg='Nessuna lobby disponibile')
+
+    return render_template('index.html', msg='Errore')
+
+@app.route('/isConnected')
+def isConnected():
+    isCreator = False
+    if current_user.is_authenticated:
+        lobby = Lobby.query.filter_by(player1=current_user.username).first()
+        if lobby is None:
+            return jsonify({'connected': False, 'creator': isCreator})
+        if lobby.player1 == current_user.username:
+                isCreator = True
+        enterLobby = EntraLobby.query.filter_by(lobby_id=lobby.id).first()
+        if lobby is not None and enterLobby is not None:
+            return jsonify({'connected': True, 'username': enterLobby.user_id, 'creator': isCreator})
+        else:
+            return jsonify({'connected': False, 'creator': isCreator})
+    return jsonify({'connected': False})
+
+@app.route('/game-online-code', methods=['GET', 'POST'])
 def gameonlinecode():
     return render_template('gameonlinecode.html')
 
@@ -263,8 +361,6 @@ def gameonlinecode():
 #creo funzione per il dialogo con il client 
 @app.route('/creaStanza', methods=['GET', 'POST'])
 def create_room():
-
-    
     #for p in partite:
     #    if p.player_ingame(session['username']):
     #        jsonResp = {'err': 'Sei già in una stanza'}

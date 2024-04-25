@@ -21,7 +21,7 @@ var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Cel
 var end_game = false;
 
 // Tempo rimasto in secondi per il timer del gioco
-var timeleft = 900; // 15 minuti
+var timeleft = f; // 15 minuti
 
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
@@ -407,11 +407,6 @@ function avviaEventi() {
         console.log("mouse leave");
     }
     , false);
-
-
-    
-
-    
 }
 
 // Funzione che fa scorrere lo schermo al div successivo
@@ -547,8 +542,6 @@ function keyButton(){
         
         if(!modal_aperto){
             if(event.key ==='Enter'){
-                
-    
                 confrontaCodici();
                 return;
             }

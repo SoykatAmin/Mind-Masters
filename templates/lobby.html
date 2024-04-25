@@ -9,33 +9,64 @@
 
 {% block body %}
         
-        <!-- This is the lobby page of this project. It contains a list of all the games that are currently being played, and a button that allows users to start a new game against another user. -->
-        
-       
+    <!-- This is the lobby page of this project. It contains a list of all the games that are currently being played, and a button that allows users to start a new game against another user. -->
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            <div class="lobby-container">
-        
-                <!-- List of games that are currently being played. -->
-                
-                <h1 class="title">Lobby di {{ session['username'] }}</h1>
-                <br>
-                <div class="lobby-element">
-                    
-                    <div>Codice stanza: <p>12456</p></div>
-                    <br>
-                    <div >In attesa di altri giocatori<p></p></div>
-                    <br>
-                </div>
-                
+    <div class="lobby-container">
+        <!-- List of games that are currently being played. -->
+        <h1 class="title">Lobby di {{ creator }}</h1>
+        <br>
+        <div class="lobby-element">
+            <div> <p> {{ msg }} </p></div>
+            
+            <div>Codice stanza: <p> {{ code }} </p></div>
+            <br>
+            <div>
+                <p id="players"></p>
             </div>
-            <div class="frase">
-                <div class="frase-in-out" id="frasi"></div>
+            <div id="timer">
+
             </div>
-
-
+            <br>
+        </div>
         
-        
-        <script>
-            rotazione();
-        </script>
+    </div>
+        <div class="frase">
+            <div class="frase-in-out" id="frasi"></div>
+        </div>        
+    <script>
+        rotazione();
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            timeleft = 5000;
+            setInterval(function() {
+                $.get('/isConnected', function(data) {
+                    // Accesso ai dati JSON restituiti
+                    var connected = data.connected;
+                    var username = data.username;
+                    var creator = data.creator;
+
+                    if (creator) {
+                        $('#players').html('In attesa di altri giocatori');
+                    }else{
+                        $('#players').html('');
+                    }
+                    // Utilizzo dei dati
+                    if (connected) {
+                        $('#players').html('Utente connesso: ' + username);
+                        $('#timer').html('La partita inizia tra ' + Math.ceil(timeleft/1000));
+                        if (timeleft>0) {
+                            timeleft = timeleft - 500;
+                        }else{
+                            timeleft = 0;
+                            window.location.href = '/game-online-code';
+                        }
+                    }
+                });
+            }, 500);
+        });
+    </script>
 {% endblock %}

@@ -3,6 +3,8 @@
 {% block head %}
     <title>Game Online Code</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameonlinecode.css') }}">
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gameonlinecode.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -146,11 +148,16 @@
                     </div>
 
                     {% for x in range(1, 12) %}
-
                         <div class="space"></div>
-
                     {% endfor %}
             </div>
         </div>
     </div>
+
+    <script>
+        //va messo alla fine senno i div non esistono e da errore undefined
+        avviaEventi()
+        keyButton()
+    </script>
+
 {% endblock %}
