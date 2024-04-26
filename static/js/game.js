@@ -21,7 +21,7 @@ var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Cel
 var end_game = false;
 
 // Tempo rimasto in secondi per il timer del gioco
-var timeleft = f; // 15 minuti
+var timeleft = 900; // 15 minuti
 
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;

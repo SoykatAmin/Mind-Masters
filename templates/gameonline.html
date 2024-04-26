@@ -2,46 +2,209 @@
 
 {% block head %}
 
-    <title>Gioco Computer</title>
+    <title id="title">Gioco Computer</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameoffline.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
         //salvare nella variabile di sessione il codice generato
-        var codice = startPVE()
-        console.log(codice)
+        startPVE()
     </script>
 
 {% endblock %}
 
 {% block body %}
+    <!--modal he mosatra il risultato della partita vittoria/sconfitta -->
+    <div id="md_end" class="modal fade " data-bs-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-header ">
+                    <h2 class="modal-title " id="md_title"></h2>
+                </div>
+                <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
+                <div class="modal-footer">
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="game_board">
+            <div class="grid-container">
+                {% set ballRow = namespace(value=1) %}
+                {% for x in range(1, 18) %}
+                    {% for y in range(1, 6) %}
 
-    <button onclick="creasta()">crea stanza</button>
-    <label for="password">pin</label>
-    <input type="number" name="game_code" id="game_code"  required>
-    <button class="btn btn-primary" onclick="entrasta()">Login</button>
-    <div id="g1"></div>
-    <div id="g2"></div>
-    <div id="chat"></div>
+                        {% if y == 2 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for balls -->
+                            <div class="grid-item balls-container" id="rig-{{ ballRow.value }}">
+                                
+                                {% for z in range(1, 4) %}
+                                    {% set ballCol = namespace(value=1) %}
+                                    {% for v in range(1, 10) %}
+                                        {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
 
-    <div class="game_board">
-        <button onclick="changeColor()">Change Color</button>
-        <div class="grid-container">
-            {% for x in range(1, 34) %}
-                {% for y in range(1, 14) %}
-                    {% if (x == 3 or x == 7 or x == 11 or x == 15 or x == 19 or x == 23 or x == 27 or x == 31) and (y == 3 or y == 5 or y == 7 or y == 9) %}
-                        <div class="grid-item-balls" id="item-{{ x }}-{{ y }}">balls</div>
-                    {% else %}
-                        <div class="grid-item"></div>
-                    {% endif %}
-                    
+                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                                
+                                            </div>
+                                            {% set ballCol.value = ballCol.value + 1 %}
+                                            {% if v == 8 %}
+                                                {% set ballRow.value = ballRow.value + 1 %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="ball-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% elif y == 4 and (x == 2 or x == 4 or x == 6 or x == 8 or x == 10 or x == 12 or x == 14 or x == 16) %}
+                            <!-- Container for suggestion -->
+                            <div class="grid-item suggestion-container">
+                                {% set suggCol = namespace(value=1) %}
+                                {% for z in range(1, 6) %}
+                                    {% for v in range(1, 6) %}
+                                        {% if (z == 2 or z == 4) and (v == 2 or v == 4)  %}
+                                            <div class="suggestion" id="suggestion-{{ ballRow.value-1 }}-{{ suggCol.value }}"></div>
+                                            {% set suggCol.value = suggCol.value + 1 %}
+                                        {% else %}
+                                            <div class="suggestion-padding"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="grid-item"></div>
+                        {% endif %}
+                        
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+                
+            </div>
+                
         </div>
        
+        <div class="game-controller">
+            <div class="space" id="remTimer"></div>
+        
+            <div class="timer" id="countdown">Tempo rimasto 15:00</div>
+        
+            <div class="controller-container">
+                <!--bottoni per inserire i colori-->
+               
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+                    
+                    <div class="item-1" style="text-shadow: 1px 1px 60px black;">
+                        <button onclick="changeColor('red')" class="input-color-button ball-text" style="background-color: red;">1</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-2">
+                        <button onclick="changeColor('darkgreen')" class="input-color-button ball-text" style="background-color: darkgreen;">2</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-3">
+                        <button onclick="changeColor('darkblue')" class="input-color-button ball-text" style="background-color: darkblue;">3</button>
+                    
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-4">
+                        <button onclick="changeColor('deeppink')" class="input-color-button ball-text" style="background-color: deepPink;">4</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-5">
+                        <button id="cancCol" onclick="dellColor()" > 
+                           <h3>&#x2715</h3> 
+                        </button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-6">
+                        <button id="invcod" onclick="confrontaCodici()">
+                            <h3>&#x2713</h3>
+                        </button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+
+                    <div class="item-7">
+                        <button onclick="changeColor('yellow')" class="input-color-button ball-text" style="background-color: yellow;">5</button>
+                    </div>
+                    
+
+                    <div class="space"></div>
+
+                    <div class="item-8">
+                        <button onclick="changeColor('purple')" class="input-color-button ball-text" style="background-color: purple;">6</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-9">
+                        <button onclick="changeColor('aqua')" class="input-color-button ball-text" style="background-color: aqua; ">7</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-10">
+                        <button onclick="changeColor('sienna')" class="input-color-button ball-text" style="background-color: sienna;">8</button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-11</div>">
+                        <button id="sx-btn" onclick="sx()">
+                            <h2>&#x2190</h2>
+                        </button>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="item-12">
+                        <button id="dx-btn" onclick="dx()">
+                            <h2>&#x2192</h2>
+                        </button>
+                    </div>
+
+                    {% for x in range(1, 12) %}
+
+                        <div class="space"></div>
+
+                    {% endfor %}
+
+            </div>
+        </div>
     </div>
 
     <br>
+    <script>
+        //va messo alla fine senno i div non esistono e da errore undefined
+        avviaEventi()
+        keyButton()
+        
+    </script>
+    <!-- Modal -->
+    <!-- Button trigger modal -->
 
-    
+
 {% endblock %}
 

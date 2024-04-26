@@ -4,7 +4,9 @@
     <title>Game Online Code</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameonlinecode.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/gameonlinecode.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+   
 {% endblock %}
 
 {% block body %}
@@ -97,7 +99,7 @@
                     <div class="space"></div>
 
                     <div class="item-6">
-                        <button id="invcod" onclick="confrontaCodici()">
+                        <button id="invcod" onclick="sendCode()">
                             <h3>&#x2713</h3>
                         </button>
                     </div>
@@ -133,7 +135,7 @@
 
                     <div class="space"></div>
 
-                    <div class="item-11</div>">
+                    <div class="item-11">
                         <button id="sx-btn" onclick="sx()">
                             <h2>&#x2190</h2>
                         </button>
@@ -158,6 +160,9 @@
         //va messo alla fine senno i div non esistono e da errore undefined
         avviaEventi()
         keyButton()
+        var idGame = {{ id }};
     </script>
+
+    <script src="{{ url_for('static', filename='js/gameonlinecode.js') }}"></script>
 
 {% endblock %}

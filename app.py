@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import bcrypt 
 import random
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
+import datetime
 
 #classe per connessione partita  
 #TODO: implementare le partite nel database
@@ -113,7 +113,8 @@ class Partita(db.Model):
     __tablename__ = 'games'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player2 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+    player2 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=True)
+    OraInizio = db.Column(db.DateTime, nullable=False)
 
 class Statistic(db.Model):
 
@@ -147,8 +148,8 @@ class Partita_online(db.Model):
 
     oraFine1 = db.Column(db.DateTime, nullable=True) 
     oraFine2 = db.Column(db.DateTime, nullable=True)
-    codice1 = db.Column(db.String(4), nullable=True)
-    codice2 = db.Column(db.String(4), nullable=True)
+    codice1 = db.Column(db.String(4), nullable=True)        # codice per il primo giocatore (creatore)
+    codice2 = db.Column(db.String(4), nullable=True)        # codice per il secondo giocatore
     player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
 
 class Mossa(db.Model):
@@ -164,15 +165,9 @@ class Partita_computer(db.Model):
 
     __tablename__ = 'computer_games'
 
-    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True,autoincrement=True)
     difficolta = db.Column(db.Integer, nullable=False) # 1 = facile, 2 = medio, 3 = difficile
-
-class EntraPartita(db.Model):
-
-    __tablename__ = 'entries'
-
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
-    partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
+    oraFine = db.Column(db.DateTime, nullable=True) 
 
 class CreaPartita(db.Model):
 
@@ -188,6 +183,7 @@ class Lobby(db.Model):
         id = db.Column(db.Integer, primary_key=True, autoincrement=True)
         codice = db.Column(db.String(6), unique=True, nullable=False)
         player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+        idGame = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=True)
 
 class EntraLobby(db.Model):
         
@@ -210,8 +206,11 @@ def load_user(user_id):
 def index():
 
     if current_user.is_authenticated:
-        Lobby.query.filter_by(player1=current_user.username).delete()
+        lobby = Lobby.query.filter_by(player1=current_user.username).first()
+        if lobby is not None:
+            EntraLobby.query.filter_by(lobby_id=lobby.id).delete()
         EntraLobby.query.filter_by(user_id=current_user.username).delete()
+        Lobby.query.filter_by(player1=current_user.username).delete()
         db.session.commit()
         return render_template('index.html', msg=current_user.username)
     return render_template('index.html')
@@ -278,10 +277,31 @@ def rules():
 def game():
     return render_template('gameoffline.html')
 
-@app.route('/gioco-online', methods=['GET', 'POST'])
-
+@app.route('/online-game', methods=['GET', 'POST'])
+@login_required
 def gameonline():
-    return render_template('gameonline.html')
+    # fetch data from json request. It has to contain the id of the game and the code to win the game
+    if request.method == 'POST':
+        data = request.json
+        game_id = data.get('id')
+        code = data.get('code')
+        lobby = Lobby.query.filter_by(idGame=game_id).first()
+        online_game = Partita_online.query.filter_by(id=game_id).first()
+        if lobby is not None:
+            # if the current user is the creator of the lobby, update the code for the first player
+            if lobby.player1 == current_user.username:
+                if online_game is not None:
+                    online_game.codice1 = code
+            # if the current user is the second player, update the code for the second player
+            else:
+                enter_lobby = EntraLobby.query.filter_by(id=lobby.id).first()
+                if enter_lobby is not None:
+                    if enter_lobby.user_id == current_user.username:
+                        if online_game is not None:
+                            online_game.codice2 = code
+        return jsonify({'id': game_id})
+    else:
+        return render_template('gameonline.html')
 
 @app.route('/lobby/', methods=['GET', 'POST'])
 
@@ -294,15 +314,14 @@ def lobby():
     msg = ''
 
     if mode == 'create':
-
+        msg='Hai creato una lobby'
         # check if user has already created a lobby (if so, doesn't change the code)
         if Lobby.query.filter_by(player1=current_user.username).first() is not None:
-            msg='Sei entrato in una lobby'
+            
             code = Lobby.query.filter_by(player1=current_user.username).first().codice
 
         # create a new lobby
         else:
-            msg='Hai creato una lobby'
             codeArray = random.choices('0123456789', k=6)                               #array of 6 random numbers
             code = ''.join(codeArray)                                                   #join the array to create a string
             new_lobby = Lobby(codice=code, player1=current_user.username)               #prepare the new lobby
@@ -337,98 +356,114 @@ def lobby():
 
     return render_template('index.html', msg='Errore')
 
+# funzioni per il dialogo client-server
 @app.route('/isConnected')
 def isConnected():
     isCreator = False
     if current_user.is_authenticated:
         lobby = Lobby.query.filter_by(player1=current_user.username).first()
+        # if the user is not the creator of the lobby, either he is the second player or the creator has left his lobby
         if lobby is None:
+            lobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
+            # if the user is the second player
+            if lobby is not None:
+                lobby = Lobby.query.filter_by(id=lobby.lobby_id).first()
+                # if the creator has left the lobby
+                if lobby is None:
+                    return jsonify({'disconnect': True})
+                else:
+                    return jsonify({'connected': True, 'creator': isCreator})
+            # should never happen
             return jsonify({'connected': False, 'creator': isCreator})
+        # if the user is the creator of the lobby
         if lobby.player1 == current_user.username:
                 isCreator = True
         enterLobby = EntraLobby.query.filter_by(lobby_id=lobby.id).first()
+        # if the creator is still in the lobby and a second player has joined
         if lobby is not None and enterLobby is not None:
             return jsonify({'connected': True, 'username': enterLobby.user_id, 'creator': isCreator})
         else:
             return jsonify({'connected': False, 'creator': isCreator})
+    # should never happen
     return jsonify({'connected': False})
 
 @app.route('/game-online-code', methods=['GET', 'POST'])
+@login_required
 def gameonlinecode():
-    return render_template('gameonlinecode.html')
+    id = request.args.get('id')
+    player2 = request.args.get('player2')
+    # Se l'utente corrente non è il secondo giocatore, aggiorna il campo player1 della partita online
+    if current_user.username != player2:
+        online_game = Partita_online.query.filter_by(id=id).first()
+        online_game.player1 = current_user.username
+        db.session.commit()
 
-#funzioni per dialogo client-server
-#creo funzione per il dialogo con il client 
-@app.route('/creaStanza', methods=['GET', 'POST'])
-def create_room():
-    #for p in partite:
-    #    if p.player_ingame(session['username']):
-    #        jsonResp = {'err': 'Sei già in una stanza'}
-    #        return jsonify(jsonResp)
-    #
-    p=Partita()
-    code = p.creaStanza(session['username'])
-    jsonResp = {'game_code': code}
-    partite.append(p)
-    return jsonify(jsonResp)
+    return render_template('gameonlinecode.html', id=id, player2=player2)
 
-@app.route('/entraStanza', methods=['GET', 'POST'])
-def enter_room():
 
-    for p in partite:
-        if p.player_ingame(session['username']):
-            jsonResp = {'err': 'Sei già in una stanza'}
-            return jsonify(jsonResp)
+@app.route('/create-game', methods=['POST'])
+@login_required
+def create_game():
     
-    if request.method == 'POST':
-        game_code = request.get_json()
-        print(game_code)
-        
-    if 'pin' in game_code:
-        pin = game_code['pin']
-        for p in partite:
-            if p.entraStanza(session['username'], pin):
-                jsonResp = {'u': p.player[0]}
-                return jsonify(jsonResp)
-    print(game_code)
-    jsonResp = {'err': 'Nessuna stanza con questo codice'}
-    return jsonify(jsonResp)
+    data = request.json
+    player2 = data.get('player2')
+    new_Game = Partita()
+    new_Game.OraInizio = datetime.datetime.now()
+    new_Game.player2 = player2
+    db.session.add(new_Game)
+    db.session.commit()
+    # Crea una partita online
+    online_game = Partita_online()
+    online_game.id = new_Game.id
+    online_game.player1 = current_user.username
+    db.session.add(online_game)
+    db.session.commit()
+    # Aggiorna la lobby con l'id della partita
+    lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    if lobby is not None:
+        lobby.idGame = new_Game.id
+        db.session.commit()
+    data = {'id': new_Game.id}
+    return jsonify(data)
 
-@app.route('/ottieniAdm', methods=['GET', 'POST'])
-def get_adm():
-    for p in partite:
-        if p.player_ingame(session['username']):
-            jsonResp = {'u': p.get_adm()}
-            return jsonify(jsonResp)
-    jsonResp = {'err': 'Non sei in una stanza'}
-    return jsonify(jsonResp)
+@app.route('/insert-code', methods=['POST'])
+def insert_code():
+    if current_user.is_authenticated:
+        data = request.json
+        code = data.get('code')  # Estrai il valore del campo 'code'
+        id_game = data.get('id')  # Estrai il valore del campo 'id'
+        player = data.get('player')  # Estrai il valore del campo 'player2'
+        online_game = Partita_online.query.filter_by(id=id_game).first()
+        if online_game is None:
+            return jsonify({'error': 'Partita non trovata'})
+        if player == online_game.player1:
+            online_game.codice1 = code
+        else:
+            online_game.codice2 = code
+        db.session.commit()
+        print(code)
+        return jsonify(data)
 
-@app.route('/uscitaStanza', methods=['GET', 'POST'])
-def exit_room():
-    for p in partite:
-        if p.player_ingame(session['username']):
-            if p.esci_stanza(session['username']):
-                partite.remove(p)
-                jsonResp = {'err': 'Stanza chiusa'}
-                return jsonify(jsonResp)
+@app.route('/isCreated', methods=['POST'])
+@login_required
+def isCreated():
+    
+    lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    if lobby is not None:
+        if lobby.idGame is not None:
+            return jsonify({'created': True, 'id': lobby.idGame})
+        else:
+            return jsonify({'created': False, 'id': lobby.idGame})
+    else:
+        enterLobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
+        if enterLobby is not None:
+            lobby = Lobby.query.filter_by(id=enterLobby.lobby_id).first()
+            if lobby.idGame is not None:
+                return jsonify({'created': True, 'id': lobby.idGame})
             else:
-                jsonResp = {'msg': 'Uscito dalla stanza'}
-                return jsonify(jsonResp)
-    jsonResp = {'err': 'Non sei in una stanza'}
-    return jsonify(jsonResp)
-
-@app.route('/controlloStanza', methods=['GET', 'POST'])
-def check_room():
-    for p in partite:
-        if p.player_ingame(session['username']):
-            if p.game_check():
-                jsonResp = {'msg': 'Stanza piena'}
-                return jsonify(jsonResp)
-            else:
-                jsonResp = {'msg': 'Termina la partita'}
-                return jsonify(jsonResp)
-    jsonResp = {'err': 'Qualcosa è andato storto'}
-    return jsonify(jsonResp)
+                return jsonify({'created': False, 'id': lobby.idGame})
+    return jsonify({'created': False, 'id': lobby.idGame})
 
 if __name__ == "__main__":
+
     app.run(debug=True)

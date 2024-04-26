@@ -23,6 +23,7 @@ function keyButton(){
         if(!modal_aperto){
             if(event.key ==='Enter'){
                 readCode();
+                sendCode();
                 window.location.href = "gioco-computer";
                 return;
             }
@@ -71,6 +72,22 @@ function keyButton(){
                     return;
                 }
             }
+        }
+    });
+}
+
+function sendCode(){
+    readCode();
+    var code = secretCode.join('');
+    var data = {code: code, id: idGame};
+    $.ajax({
+        type: "POST",
+        url: "/online-game",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(response){
+            var id = response.id;
+            window.location.href = "/online-game?id="+id;
         }
     });
 }
