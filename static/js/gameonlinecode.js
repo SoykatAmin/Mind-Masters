@@ -81,6 +81,7 @@ function sendCode(){
     var code = secretCode.join('');
     var data = {code: code, id: idGame};
     var id = null;
+    // manda il codice al server
     $.ajax({
         type: "POST",
         url: "/online-game",
@@ -90,6 +91,7 @@ function sendCode(){
             id = response.id;
         }
     });
+    // aspetta che l'avversario mandi il codice
     setInterval(function() {
         $.ajax({
             type: "POST",
