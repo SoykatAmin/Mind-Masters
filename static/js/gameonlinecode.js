@@ -1,7 +1,8 @@
-var script = document.createElement('script');
-script.src = 'online.js';
-document.head.appendChild(script);
 
+
+
+
+modal_aperto=false;
 var secretCode;
 
 function readCode(){
@@ -10,21 +11,27 @@ function readCode(){
     var three = document.getElementById("ball-1-3");
     var four = document.getElementById("ball-1-4");
     var colors = [one.style.backgroundColor, two.style.backgroundColor, three.style.backgroundColor, four.style.backgroundColor];
+    for (let i = 0; i < 4; i++) {
+        if(colors[i] == "" || colors[i] == "white"){
+            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+            const modal = new bootstrap.Modal('#md_err');
+            modal.show();
+            modal_aperto=true;
+            return;
+        }
+    }
     secretCode = stringToCodice(colors);
     console.log(secretCode);
+   
 }
-
-/* Override */
-function keyButton(){
+function keyButton_code(){
     document.addEventListener('keydown', function(event) {
         if(event.key != 'F12'){
             event.preventDefault();
         }
         if(!modal_aperto){
             if(event.key ==='Enter'){
-                readCode();
                 sendCode();
-                window.location.href = "gioco-computer";
                 return;
             }
     
@@ -78,6 +85,9 @@ function keyButton(){
 
 function sendCode(){
     readCode();
+    if(secretCode == null){
+        return;
+    }
     var code = secretCode.join('');
     var data = {code: code, id: idGame};
     var id = null;

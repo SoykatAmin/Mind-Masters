@@ -7,8 +7,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import datetime
 
 #classe per connessione partita  
-#TODO: implementare le partite nel database
-
 #variabili globali e inizializzazione
 
 basedir = os.path.abspath(os.path.dirname(__file__))

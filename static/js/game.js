@@ -1,3 +1,14 @@
+
+
+
+window.addEventListener('beforeunload', function(event) {
+    console.log("beforeunload");
+    if(game_started){
+        event.returnValue = "Sei sicuro di voler abbandonare la partita?";
+    }
+});
+
+
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
 var x = 1;
 //variabile per tenere traccia della colonna
@@ -33,6 +44,8 @@ var draw = false;
 var winnerUsername = "";
 
 var modal_aperto=false//flag per vcedere se c'è un modal aperto
+
+var game_started = false;
 //console.log(localStorage.getItem("acc"))
 /**
  * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
@@ -179,6 +192,7 @@ function confrontaCodiciPVP() {
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         suggerimenti(posizioneCorretta, posizioneErrata);
+        end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
         $.ajax({
@@ -221,6 +235,7 @@ function confrontaCodiciPVP() {
 
     } else if (x == 8) {
         suggerimenti(posizioneCorretta, posizioneErrata);
+        end_game = true;
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
         terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
@@ -332,13 +347,13 @@ function suggerimenti(correct, color) {
  * Chiama la funzione game_timer.
  */
 function startPVE() {
+    game_started = true;
     if (debug) {
         secret_code = [1,1,2,3];//il codiece di debug è red red green blue
     }else{
         for (let i = 0; i < 4; i++) {
             secret_code.push(Math.floor(Math.random() * 8)+1);
-        }
-         
+        } 
     }
     console.log(secret_code);
     Colorful=[0,0,0,0];
@@ -349,8 +364,10 @@ function startPVE() {
 
 function startPVP() {
     
+    game_started = true;
     /* Convert string to array */
     var codiceArray = codice.split('').map(Number);
+    console.log(codice);
     secret_code = codiceArray;
     console.log(secret_code);
     Colorful=[0,0,0,0];
@@ -432,6 +449,9 @@ function changeColor(color) {
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
 function avviaEventi() {
+    if(!game_started){
+        return;
+    }
     console.log("avviaEventi");
     var xatt = x;
     y=1;
@@ -660,9 +680,9 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
-    var delltextItem = document.getElementById(`text-ball-${x}-${y}`);
+    
    if(Colorful[y-1]==1){
-    delltextItem.innerHTML = "";
+    
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
    }else{

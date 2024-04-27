@@ -4,6 +4,7 @@
     <title>Game Online Code</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameonlinecode.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gameonlinecode.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
    
@@ -159,7 +160,7 @@
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
         avviaEventi()
-        keyButton()
+        keyButton_code()
         var idGame = "{{ id }}";
     </script>
 
