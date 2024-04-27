@@ -107,6 +107,94 @@ function confrontaCodici() {
         x++;
         avviaEventi();
     }
+
+}
+function confrontaCodiciPVP() {
+    // Variabili per tenere traccia delle posizioni corrette e errate
+    var postrov = [0, 0, 0, 0];
+    var posizioneCorretta = 0;
+    var posizioneErrata = 0;
+    var sbagliato = 0;
+    var player_code = [];
+    
+    var color_code=[];
+    for (let i = 0; i < 4; i++) {
+        var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+        //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
+        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
+            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+            const modal = new bootstrap.Modal('#md_err');
+            modal.show();
+            modal_aperto=true;
+            return;
+        } else {
+            color_code.push(codelm.style.backgroundColor);
+        }
+    }
+    console.log(color_code);
+    player_code = stringToCodice(color_code);
+    console.log("Codice giocatore " + player_code);
+
+    // Confronta i valori inseriti dal giocatore con il codice segreto
+    const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
+    for (let i = 0; i < player_code.length; i++) {
+        if (player_code[i] === copysc[i]) {
+            postrov[i] = 1;
+            posizioneCorretta++;
+            copysc[i] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
+        }
+    }
+    for (let i = 0; i < 4; i++) {
+        if (postrov[i] === 0) {
+            if (copysc.includes(player_code[i])) {
+                posizioneErrata++;
+                const index = copysc.indexOf(player_code[i]);
+                copysc[index] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
+            } else {
+                sbagliato++;
+            }
+        }
+
+    }
+    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata + " sbagliato: " + sbagliato);
+    // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
+    if (posizioneCorretta === 4) {
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        // Chiamata alla funzione terminaPartita
+        win = true;
+        if (x == 1) {
+            terminaPartita("Che gigachad! Hai vinto al primo turno!");
+        } else {
+            terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
+        }
+
+    } else if (x == 8) {
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
+        // Chiamata alla funzione terminaPartita
+        terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
+    } else {
+        var ball_selected = document.getElementById(`ball-${x}-${y}`);
+        ball_selected.classList.remove("ball-selected");
+        scrollWin();
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        Colorful = [0, 0, 0, 0];
+        x++;
+        avviaEventi();
+    }
+    
+    stringCode = player_code.join("");
+    var row = x-1;
+    $.ajax({
+        type: 'POST',
+        url: '/registerMove',
+        data: JSON.stringify({gameID: gameID, code: stringCode, row: row}),
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
+
 }
 /**
  * Funzione per inserire i suggerimenti
@@ -220,6 +308,19 @@ function startPVE() {
     end_game = false;
     game_timer();
 }
+
+function startPVP() {
+    
+    /* Convert string to array */
+    var codiceArray = codice.split('').map(Number);
+    secret_code = codiceArray;
+    console.log(secret_code);
+    Colorful=[0,0,0,0];
+    x=1;
+    end_game = false;
+    game_timer();
+}
+
 /**Avvia un timer per il gioco.
  Imposta il tempo rimasto in base alla modalità di debug.
  Avvia un timer che si ripete ogni secondo.

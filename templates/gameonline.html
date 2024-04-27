@@ -6,9 +6,12 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameoffline.css') }}">
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         //salvare nella variabile di sessione il codice generato
-        startPVE()
+        var codice = "{{ code }}"
+        var gameID = "{{ id }}"
+        startPVP()
     </script>
 
 {% endblock %}
@@ -135,7 +138,7 @@
                     <div class="space"></div>
 
                     <div class="item-6">
-                        <button id="invcod" onclick="confrontaCodici()">
+                        <button id="invcod" onclick="confrontaCodiciPVP()">
                             <h3>&#x2713</h3>
                         </button>
                     </div>

@@ -50,7 +50,7 @@
                 $.get('/isConnected', function(data) {
                     // Accesso ai dati JSON restituiti
                     var connected = data.connected;             // true if another player is connected
-                    var secondPlayer = data.username;               // username of the connected player
+                    var secondPlayer = data.username;           // username of the connected player
                     var creator = data.creator;                 // true if the user is the creator of the game
                     var disconnect = data.disconnect;           // true if the creator has disconnected
                     

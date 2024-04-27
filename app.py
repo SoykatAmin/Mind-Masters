@@ -9,71 +9,6 @@ import datetime
 #classe per connessione partita  
 #TODO: implementare le partite nel database
 
-class Partita:
-    def __init__(self):
-        self.player=[]#dentro player ci sono gli username dei giocatori
-        self.game_code=random.randint(100000,999999)#codice partita per collegarsi
-        self.vincitore=None
-        self.mosse=[]
-        self.tempi=[]
-
-    def creaStanza(self, player):
-        self.player.append(player)
-        return self.game_code
-    
-    
-    def entraStanza(self, player, code):
-        if len(self.player)==1 and code==str(self.game_code):
-            self.player.append(player)
-            return True
-        else:
-            #stanza piena
-            return False
-
-    
-    def fine_gioco(self):
-        if len(self.mosse)==len(self.player) and len(self.tempi)==len(self.player):
-            if self.mosse[0]<self.mosse[1]:
-                self.vincitore=self.player[0]
-            elif self.mosse[0]>self.mosse[1]:
-                self.vincitore=self.player[1]
-            else:
-                if self.tempi[0]<self.tempi[1]:
-                    self.vincitore=self.player[0]
-                elif self.tempi[0]>self.tempi[1]:
-                    self.vincitore=self.player[1]
-                else:
-                    #pareggio
-                    self.vincitore=None
-        else:
-            #non hanno finito entrambi
-            return False
-        return self.vincitore
-
-    def player_end(self, mossa, tempo, player):
-        index = self.player.index(player)
-        self.mosse.insert(index, mossa)
-        self.tempi.insert(index, tempo)
-        return self.fine_gioco()
-        
-    def player_ingame(self, player):
-        return player in self.player
-
-    def get_adm(self):
-        return self.player[0]
-    
-    def esci_stanza(self, player):
-        if self.player[0]==player:
-            self.player.remove(player)
-            return False
-        else:
-            self.player.remove(player)
-            return True
-        
-    def game_check(self):
-        return len(self.player)==2
-       
-
 #variabili globali e inizializzazione
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -158,8 +93,7 @@ class Mossa(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
     riga = db.Column(db.Integer, primary_key=True, nullable=False)
-    colonna = db.Column(db.Integer, primary_key=True, nullable=False)
-    colore = db.Column(db.String(255), nullable=False)
+    colore = db.Column(db.String(4), nullable=False)
 
 class Partita_computer(db.Model):
 
@@ -292,16 +226,27 @@ def gameonline():
             if lobby.player1 == current_user.username:
                 if online_game is not None:
                     online_game.codice1 = code
+                    db.session.commit()
             # if the current user is the second player, update the code for the second player
             else:
-                enter_lobby = EntraLobby.query.filter_by(id=lobby.id).first()
+                enter_lobby = EntraLobby.query.filter_by(lobby_id=lobby.id).first()
                 if enter_lobby is not None:
                     if enter_lobby.user_id == current_user.username:
                         if online_game is not None:
                             online_game.codice2 = code
+                            db.session.commit()
         return jsonify({'id': game_id})
     else:
-        return render_template('gameonline.html')
+        id = request.args.get('id')
+        online_game = Partita_online.query.filter_by(id=id).first()
+        code = ''
+        if online_game is not None:
+            if current_user.username != online_game.player1:
+                code = online_game.codice1
+            else:
+                code = online_game.codice2
+
+        return render_template('gameonline.html', id=id, code=code)
 
 @app.route('/lobby/', methods=['GET', 'POST'])
 
@@ -463,6 +408,21 @@ def isCreated():
             else:
                 return jsonify({'created': False, 'id': lobby.idGame})
     return jsonify({'created': False, 'id': lobby.idGame})
+
+@app.route('/registerMove', methods=['POST'])
+@login_required
+def registerMove():
+    data = request.json
+    id_game = data.get('gameID')
+    row = data.get('row')
+    code = data.get('code')
+
+    new_move = Mossa(user_id=current_user.username, partita_id=id_game, riga=row, colore=code)
+    print('Mossa registrata' + str(new_move))
+    db.session.add(new_move)
+    db.session.commit()
+    print('Mossa registrata' + str(new_move))
+    return jsonify(data)
 
 if __name__ == "__main__":
 
