@@ -11,6 +11,7 @@
         //salvare nella variabile di sessione il codice generato
         var codice = "{{ code }}"
         var gameID = "{{ id }}"
+        var username = "{{ current_user.username }}"
         startPVP()
     </script>
 
@@ -97,7 +98,6 @@
             <div class="controller-container">
                 <!--bottoni per inserire i colori-->
                
-
                     {% for x in range(1, 12) %}
 
                         <div class="space"></div>

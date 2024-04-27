@@ -80,14 +80,28 @@ function sendCode(){
     readCode();
     var code = secretCode.join('');
     var data = {code: code, id: idGame};
+    var id = null;
     $.ajax({
         type: "POST",
         url: "/online-game",
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function(response){
-            var id = response.id;
-            window.location.href = "/online-game?id="+id;
+            id = response.id;
         }
     });
+    setInterval(function() {
+        $.ajax({
+            type: "POST",
+            url: "/hasInsertedCode",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response){
+                var inserted = response.inserted;
+                if(inserted){
+                    window.location.href = "/online-game?id="+id;
+                }
+            }
+        });
+}, 500);
 }

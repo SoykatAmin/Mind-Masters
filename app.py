@@ -90,7 +90,7 @@ class Partita_online(db.Model):
 class Mossa(db.Model):
     __tablename__ = 'moves'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True, nullable=False)
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
     riga = db.Column(db.Integer, primary_key=True, nullable=False)
     colore = db.Column(db.String(4), nullable=False)
@@ -241,10 +241,11 @@ def gameonline():
         online_game = Partita_online.query.filter_by(id=id).first()
         code = ''
         if online_game is not None:
-            if current_user.username != online_game.player1:
-                code = online_game.codice1
-            else:
+            if current_user.username == online_game.player1:
+                print(current_user.username + " code to win: " + online_game.codice2)
                 code = online_game.codice2
+            else:
+                code = online_game.codice1
 
         return render_template('gameonline.html', id=id, code=code)
 
@@ -336,14 +337,7 @@ def isConnected():
 @login_required
 def gameonlinecode():
     id = request.args.get('id')
-    player2 = request.args.get('player2')
-    # Se l'utente corrente non è il secondo giocatore, aggiorna il campo player1 della partita online
-    if current_user.username != player2:
-        online_game = Partita_online.query.filter_by(id=id).first()
-        online_game.player1 = current_user.username
-        db.session.commit()
-
-    return render_template('gameonlinecode.html', id=id, player2=player2)
+    return render_template('gameonlinecode.html', id=id)
 
 
 @app.route('/create-game', methods=['POST'])
@@ -423,6 +417,52 @@ def registerMove():
     db.session.commit()
     print('Mossa registrata' + str(new_move))
     return jsonify(data)
+
+@app.route('/endGame', methods=['POST'])
+@login_required
+def endGame():
+    data = request.json
+    id_game = data.get('gameID')
+    player = data.get('winner')
+    online_game = Partita_online.query.filter_by(id=id_game).first()
+    if online_game is not None:
+        if player == online_game.player1:
+            online_game.oraFine1 = datetime.datetime.now()
+        else:
+            online_game.oraFine2 = datetime.datetime.now()
+        db.session.commit()
+
+    return jsonify(data)
+
+@app.route('/hasEnded', methods=['POST'])
+@login_required
+def hasEnded():
+    data = request.json
+    id_game = data.get('gameID')
+    data = ({'ended': False, 'winner': ''})
+    online_game = Partita_online.query.filter_by(id=id_game).first()
+    if online_game is not None:
+        if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
+            partita = Partita.query.filter_by(id=id_game).first()
+            if online_game.oraFine1 < online_game.oraFine2:
+                data['winner'] = online_game.player1
+            elif online_game.oraFine1 > online_game.oraFine2:
+                data['winner'] = partita.player2
+            else:
+                data['winner'] = 'draw'
+            data['ended'] = True
+    return jsonify(data)
+
+@app.route('/hasInsertedCode', methods=['POST'])
+@login_required
+def hasInsertedCode():
+    data = request.json
+    id_game = data.get('id')
+    online_game = Partita_online.query.filter_by(id=id_game).first()
+    if online_game is not None:
+        if online_game.codice1 is not None and online_game.codice2 is not None:
+            return jsonify({'inserted': True})
+    return jsonify({'inserted': False})
 
 if __name__ == "__main__":
 

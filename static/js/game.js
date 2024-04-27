@@ -26,6 +26,12 @@ var timeleft = 900; // 15 minuti
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 
+// Flag per indicare se il gioco è finito in pareggio
+var draw = false;
+
+// Variabile che indice l'username del vincitore
+var winnerUsername = "";
+
 var modal_aperto=false//flag per vcedere se c'è un modal aperto
 //console.log(localStorage.getItem("acc"))
 /**
@@ -135,6 +141,19 @@ function confrontaCodiciPVP() {
     player_code = stringToCodice(color_code);
     console.log("Codice giocatore " + player_code);
 
+    /* Insert move to database */
+    stringCode = player_code.join("");
+    var row = x-1;
+    $.ajax({
+        type: 'POST',
+        url: '/registerMove',
+        data: JSON.stringify({gameID: gameID, code: stringCode, row: row}),
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
+
     // Confronta i valori inseriti dal giocatore con il codice segreto
     const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
     for (let i = 0; i < player_code.length; i++) {
@@ -160,13 +179,45 @@ function confrontaCodiciPVP() {
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         suggerimenti(posizioneCorretta, posizioneErrata);
-        // Chiamata alla funzione terminaPartita
-        win = true;
-        if (x == 1) {
-            terminaPartita("Che gigachad! Hai vinto al primo turno!");
-        } else {
-            terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
-        }
+        // Inserisce nel database l'ora di fine del giocatore
+        // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
+        $.ajax({
+            type: 'POST',
+            url: '/endGame',
+            data: JSON.stringify({gameID: gameID, winner: username}),
+            contentType: 'application/json',
+            success: function(data) {
+            }
+        });
+        // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
+        setInterval(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/hasEnded',
+                data: JSON.stringify({gameID: gameID}),
+                contentType: 'application/json',
+                success: function(data) {
+                    winnerUsername = data.winner;
+                    var ended = data.ended;
+                    if (ended) {
+                        console.log(winnerUsername);
+                        if (username == winnerUsername) {
+                            win = true;
+                            if (x == 1) {
+                                terminaPartita("Che gigachad! Hai vinto al primo turno!");
+                            } else {
+                                terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
+                            }
+                        } else if (winnerUsername == "draw") {
+                            draw = True;
+                            terminaPartita("Pareggio.");
+                        }else {
+                            terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
+                        }
+                    }
+                }
+            });
+        }, 500);
 
     } else if (x == 8) {
         suggerimenti(posizioneCorretta, posizioneErrata);
@@ -182,19 +233,6 @@ function confrontaCodiciPVP() {
         x++;
         avviaEventi();
     }
-    
-    stringCode = player_code.join("");
-    var row = x-1;
-    $.ajax({
-        type: 'POST',
-        url: '/registerMove',
-        data: JSON.stringify({gameID: gameID, code: stringCode, row: row}),
-        contentType: 'application/json',
-        success: function(data) {
-            console.log(data);
-        }
-    });
-
 }
 /**
  * Funzione per inserire i suggerimenti
@@ -549,7 +587,9 @@ function terminaPartita(msg){
         // Mostra il titolo del modal in base al risultato
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
-        }else{
+        }else if(draw){
+            document.getElementById("md_title").innerHTML = "Pareggio";
+        }else {
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
         }
         // Mostra il messaggio nel corpo del modal
