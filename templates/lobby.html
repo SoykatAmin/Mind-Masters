@@ -46,6 +46,7 @@
         $(document).ready(function() {
             timeleft = 5000;
             var idGame = null;
+            var timeSpeed = 800;    // Tempo di aggiornamento in millisecondi, non diminuire troppo altrimenti si mandano troppe richieste al server aumentando il numero di partite create. Manda tutto in crash
             setInterval(function() {
                 $.get('/isConnected', function(data) {
                     // Accesso ai dati JSON restituiti
@@ -70,10 +71,11 @@
                         }
                         $('#timer').html('La partita inizia tra ' + Math.ceil(timeleft/1000));
                         if (timeleft>0) {
-                            timeleft = timeleft - 500;
+                            timeleft = timeleft - timeSpeed;
                         }else{
                             timeleft = 0;
-                            
+                            // crea la partita e reindirizza alla pagina di gioco. Aggiorna quindi il database. Il creatore della lobby è quello che crea la partita. L'altro giocatore
+                            // controlla se il primo ha creato la partita. Se l'ha creata vanno entrambi alla pagina di gioco.
                             if(creator){
                                 $.ajax({
                                     url: '/create-game',
@@ -109,7 +111,7 @@
                         }
                     }
                 });
-            }, 500);
+            }, timeSpeed);
         });
     </script>
 

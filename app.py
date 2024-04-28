@@ -77,7 +77,7 @@ class SbloccaObiettivo(db.Model):
 class Partita_online(db.Model):
     __tablename__ = 'online_games'
 
-    id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
 
     oraFine1 = db.Column(db.DateTime, nullable=True) 
     oraFine2 = db.Column(db.DateTime, nullable=True)
@@ -217,12 +217,16 @@ def gameonline():
         data = request.json
         game_id = data.get('id')
         code = data.get('code')
+        print("game id: " + str(game_id) + " code to win: " + code)
         lobby = Lobby.query.filter_by(idGame=game_id).first()
+        print(lobby)
         online_game = Partita_online.query.filter_by(id=game_id).first()
         if lobby is not None:
+            print("Daaaaaaaaaaai")
             # if the current user is the creator of the lobby, update the code for the first player
             if lobby.player1 == current_user.username:
                 if online_game is not None:
+                    print("Daaaaaaaaaaai")
                     online_game.codice1 = code
                     db.session.commit()
             # if the current user is the second player, update the code for the second player
@@ -231,6 +235,7 @@ def gameonline():
                 if enter_lobby is not None:
                     if enter_lobby.user_id == current_user.username:
                         if online_game is not None:
+                            print("Daaaaaaaaaaai")
                             online_game.codice2 = code
                             db.session.commit()
         return jsonify({'id': game_id})
@@ -248,7 +253,6 @@ def gameonline():
         return render_template('gameonline.html', id=id, code=code)
 
 @app.route('/lobby/', methods=['GET', 'POST'])
-
 @login_required
 def lobby():
     
@@ -357,8 +361,11 @@ def create_game():
     db.session.commit()
     # Aggiorna la lobby con l'id della partita
     lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    print(current_user.username + "is calling this function")
+    print(lobby)
     if lobby is not None:
         lobby.idGame = new_Game.id
+        print("lobby id: " + str(lobby.idGame))
         db.session.commit()
     data = {'id': new_Game.id}
     return jsonify(data)
@@ -457,10 +464,22 @@ def hasInsertedCode():
     data = request.json
     id_game = data.get('id')
     online_game = Partita_online.query.filter_by(id=id_game).first()
+
     if online_game is not None:
         if online_game.codice1 is not None and online_game.codice2 is not None:
             return jsonify({'inserted': True})
     return jsonify({'inserted': False})
+
+@app.route('/getMoves', methods=['POST'])
+@login_required
+def getMoves():
+    data = request.json
+    id_game = data.get('gameID')
+    moves = Mossa.query.filter_by(partita_id=id_game).all()
+    movesArray = []
+    for move in moves:
+        movesArray.append({'row': move.riga, 'code': move.colore})
+    return jsonify(movesArray)
 
 if __name__ == "__main__":
 

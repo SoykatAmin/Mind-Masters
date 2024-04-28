@@ -89,6 +89,7 @@ function sendCode(){
         return;
     }
     var code = secretCode.join('');
+    console.log(code);
     var data = {code: code, id: idGame};
     var id = null;
     // manda il codice al server

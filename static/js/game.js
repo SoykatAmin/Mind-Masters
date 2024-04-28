@@ -371,7 +371,6 @@ function startPVP() {
     secret_code = codiceArray;
     console.log(secret_code);
     Colorful=[0,0,0,0];
-    x=1;
     end_game = false;
     game_timer();
 }
@@ -756,3 +755,29 @@ function keyButton(){
 }
 
 
+window.onload = function() {
+    var url = window.location.href;
+    if(url.includes("online-game")){
+        $.ajax({
+            type: 'POST',
+            url: '/getMoves',
+            data: JSON.stringify({gameID: gameID}),
+            contentType: 'application/json',
+            success: function(data) {
+                var length = data.length;
+                for (let i = 0; i < length; i++) {
+                    var row = data[i].row;
+                    var code = data[i].code;
+                    var codeArray = code.split('').map(Number);
+                    console.log(codeArray);
+                    for (let j = 0; j < 4; j++) {
+                        var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
+                        codelm.style.backgroundColor = colors[codeArray[j]];
+                    }
+                }
+                x = length+1;
+                avviaEventi();
+            }
+        });
+    }
+};
