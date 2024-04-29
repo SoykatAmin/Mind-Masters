@@ -3,6 +3,7 @@
 {% block head %}
     <title>Game Online Code</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gameonlinecode.css') }}">
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -153,4 +154,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        //va messo alla fine senno i div non esistono e da errore undefined
+        avviaEventi()
+        keyButton()
+    </script>
 {% endblock %}
