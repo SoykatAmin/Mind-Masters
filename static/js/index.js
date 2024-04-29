@@ -1,4 +1,5 @@
 
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Toggle of class 'collapsed' of sidebar
         if(screenWidth <= screenLimit){
             toggleSidebarButton.style.visibility = 'hidden';
-            closeSidebarButton.style.visibility = 'visible';
+            closeSidebarButton.style.visibisidebarlity = 'visible';
         }else{
             closeSidebarButton.style.visibility = 'hidden';
         }
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         sidebar.classList.add('closed');
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('closed'));
     });
-
+    
     // Function to manage the sidebar state on page load
     window.addEventListener('load', function() {
         if (window.innerWidth <= screenLimit) {
@@ -88,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-
+    
 });
 
 

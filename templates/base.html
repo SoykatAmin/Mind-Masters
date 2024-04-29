@@ -35,6 +35,17 @@
     <!-- HTML code that will persist in all pages. It has the general outline and a responsive sidebar. -->
 
     <div class="wrapper">
+        <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
+        <div id="md_err" class="modal fade " data-bs-backdrop="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: #4d4d4d;">
+                    <div class="modal-body text-center" id="md_err_body"></div>
+                    <div class="modal-footer">
+                        <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Sidebar -->
         <aside id="sidebar">
             <div class="h-80">
@@ -81,7 +92,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    
+                       
                 </ul>
 
             </div>

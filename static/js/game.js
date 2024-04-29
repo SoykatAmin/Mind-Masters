@@ -1,3 +1,14 @@
+
+
+
+window.addEventListener('beforeunload', function(event) {
+    console.log("beforeunload");
+    if(game_started){
+        event.returnValue = "Sei sicuro di voler abbandonare la partita?";
+    }
+});
+
+
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
 var x = 1;
 //variabile per tenere traccia della colonna
@@ -26,8 +37,16 @@ var timeleft = 900; // 15 minuti
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 
+// Flag per indicare se il gioco è finito in pareggio
+var draw = false;
+
+// Variabile che indice l'username del vincitore
+var winnerUsername = "";
+
 var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
+var game_started = false;
+//console.log(localStorage.getItem("acc"))
 /**
  * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
 legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
@@ -107,11 +126,133 @@ function confrontaCodici() {
         x++;
         avviaEventi();
     }
+
+}
+function confrontaCodiciPVP() {
+    // Variabili per tenere traccia delle posizioni corrette e errate
+    var postrov = [0, 0, 0, 0];
+    var posizioneCorretta = 0;
+    var posizioneErrata = 0;
+    var sbagliato = 0;
+    var player_code = [];
+    
+    var color_code=[];
+    for (let i = 0; i < 4; i++) {
+        var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+        //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
+        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
+            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+            const modal = new bootstrap.Modal('#md_err');
+            modal.show();
+            modal_aperto=true;
+            return;
+        } else {
+            color_code.push(codelm.style.backgroundColor);
+        }
+    }
+    console.log(color_code);
+    player_code = stringToCodice(color_code);
+    console.log("Codice giocatore " + player_code);
+
+    /* Insert move to database */
+    stringCode = player_code.join("");
+    var row = x-1;
+    $.ajax({
+        type: 'POST',
+        url: '/registerMove',
+        data: JSON.stringify({gameID: gameID, code: stringCode, row: row}),
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
+
+    // Confronta i valori inseriti dal giocatore con il codice segreto
+    const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
+    for (let i = 0; i < player_code.length; i++) {
+        if (player_code[i] === copysc[i]) {
+            postrov[i] = 1;
+            posizioneCorretta++;
+            copysc[i] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
+        }
+    }
+    for (let i = 0; i < 4; i++) {
+        if (postrov[i] === 0) {
+            if (copysc.includes(player_code[i])) {
+                posizioneErrata++;
+                const index = copysc.indexOf(player_code[i]);
+                copysc[index] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
+            } else {
+                sbagliato++;
+            }
+        }
+
+    }
+    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata + " sbagliato: " + sbagliato);
+    // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
+    if (posizioneCorretta === 4) {
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        end_game = true;
+        // Inserisce nel database l'ora di fine del giocatore
+        // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
+        $.ajax({
+            type: 'POST',
+            url: '/endGame',
+            data: JSON.stringify({gameID: gameID, winner: username}),
+            contentType: 'application/json',
+            success: function(data) {
+            }
+        });
+        // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
+        setInterval(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/hasEnded',
+                data: JSON.stringify({gameID: gameID}),
+                contentType: 'application/json',
+                success: function(data) {
+                    winnerUsername = data.winner;
+                    var ended = data.ended;
+                    if (ended) {
+                        console.log(winnerUsername);
+                        if (username == winnerUsername) {
+                            win = true;
+                            if (x == 1) {
+                                terminaPartita("Che gigachad! Hai vinto al primo turno!");
+                            } else {
+                                terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
+                            }
+                        } else if (winnerUsername == "draw") {
+                            draw = True;
+                            terminaPartita("Pareggio.");
+                        }else {
+                            terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
+                        }
+                    }
+                }
+            });
+        }, 500);
+
+    } else if (x == 8) {
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        end_game = true;
+        var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
+        // Chiamata alla funzione terminaPartita
+        terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
+    } else {
+        var ball_selected = document.getElementById(`ball-${x}-${y}`);
+        ball_selected.classList.remove("ball-selected");
+        scrollWin();
+        suggerimenti(posizioneCorretta, posizioneErrata);
+        Colorful = [0, 0, 0, 0];
+        x++;
+        avviaEventi();
+    }
 }
 /**
  * Funzione per inserire i suggerimenti
 La funzione prende come argomenti il numero di colori corretti ma in posizione errata (correct) e 
-il numero di colori corretti in posizione corretta (color)
+il numero di coconsole.log(json);lori corretti in posizione corretta (color)
 La funzione genera casualmente un array (occ) di lunghezza 4, dove ogni elemento rappresenta un colore
 nella sequenza di suggerimenti
 Se un colore è corretto ma in posizione errata, l'elemento corrispondente in occ viene impostato a 1
@@ -206,13 +347,13 @@ function suggerimenti(correct, color) {
  * Chiama la funzione game_timer.
  */
 function startPVE() {
+    game_started = true;
     if (debug) {
         secret_code = [1,1,2,3];//il codiece di debug è red red green blue
     }else{
         for (let i = 0; i < 4; i++) {
             secret_code.push(Math.floor(Math.random() * 8)+1);
-        }
-         
+        } 
     }
     console.log(secret_code);
     Colorful=[0,0,0,0];
@@ -220,6 +361,20 @@ function startPVE() {
     end_game = false;
     game_timer();
 }
+
+function startPVP() {
+    
+    game_started = true;
+    /* Convert string to array */
+    var codiceArray = codice.split('').map(Number);
+    console.log(codice);
+    secret_code = codiceArray;
+    console.log(secret_code);
+    Colorful=[0,0,0,0];
+    end_game = false;
+    game_timer();
+}
+
 /**Avvia un timer per il gioco.
  Imposta il tempo rimasto in base alla modalità di debug.
  Avvia un timer che si ripete ogni secondo.
@@ -276,7 +431,6 @@ function changeColor(color) {
     for (let i = 0; i < 4; i++) {
         if (Colorful[(y - 1 + i) % 4] === 0 && next==0) {
             next=((y - 1 + i) % 4)+1;
-            console.log("next "+next);
         }else{
             count++;
         
@@ -294,6 +448,9 @@ function changeColor(color) {
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
 function avviaEventi() {
+    if(!game_started){
+        return;
+    }
     console.log("avviaEventi");
     var xatt = x;
     y=1;
@@ -310,6 +467,7 @@ function avviaEventi() {
     itemElement1.addEventListener('click', () => {
         if (/*Colorful[0] == 1 && */xatt == x) {
             delItem1.setAttribute("hidden", "hidden");
+           
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
             moveBall(1);
@@ -327,6 +485,7 @@ function avviaEventi() {
     itemElement1.addEventListener("mouseleave", () => { 
        
         delItem1.setAttribute("hidden", "hidden");
+
     
         console.log("mouse leave");
     }, false);
@@ -335,6 +494,7 @@ function avviaEventi() {
     itemElement2.addEventListener('click', () => {
         if (/*Colorful[1] == 1 &&*/ xatt == x) {
             delItem2.setAttribute("hidden", "hidden");
+            
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
             moveBall(2);
@@ -343,6 +503,7 @@ function avviaEventi() {
     });
     itemElement2.addEventListener("mouseover", () => { 
         if (Colorful[1] == 1 && xatt == x) {
+            
             delItem2.removeAttribute("hidden");
         }
         console.log("mouse enter");
@@ -359,8 +520,9 @@ function avviaEventi() {
     var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
         if (/*Colorful[2] == 1 && */xatt == x) {
-            itemElement3.style.backgroundColor = 'white';
+            
             delItem3.setAttribute("hidden", "hidden");
+            itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0;
             moveBall(3);
             console.log("rimosso");
@@ -376,14 +538,16 @@ function avviaEventi() {
     itemElement3.addEventListener("mouseleave", () => {
         delItem3.setAttribute("hidden", "hidden");
         console.log("mouse leave");
+    
     }
     , false);
 
     var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
         if (/*Colorful[3] == 1 && */xatt == x) {
-            itemElement4.style.backgroundColor = 'white';
+            
             delItem4.setAttribute("hidden", "hidden");
+            itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0;
             moveBall(4);
             console.log("rimosso");
@@ -401,11 +565,6 @@ function avviaEventi() {
         console.log("mouse leave");
     }
     , false);
-
-
-    
-
-    
 }
 
 // Funzione che fa scorrere lo schermo al div successivo
@@ -447,7 +606,9 @@ function terminaPartita(msg){
         // Mostra il titolo del modal in base al risultato
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
-        }else{
+        }else if(draw){
+            document.getElementById("md_title").innerHTML = "Pareggio";
+        }else {
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
         }
         // Mostra il messaggio nel corpo del modal
@@ -518,11 +679,13 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
+    
    if(Colorful[y-1]==1){
+    
     itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
    }else{
-    itemElement.style.backgroundColor = 'white';
+    //itemElement.style.backgroundColor = 'white';
     Colorful[y-1] = 0;
     if(y!=1){
         sx();  
@@ -539,8 +702,6 @@ function keyButton(){
         
         if(!modal_aperto){
             if(event.key ==='Enter'){
-                
-    
                 confrontaCodici();
                 return;
             }
@@ -592,3 +753,31 @@ function keyButton(){
         }
     });
 }
+
+
+window.onload = function() {
+    var url = window.location.href;
+    if(url.includes("online-game")){
+        $.ajax({
+            type: 'POST',
+            url: '/getMoves',
+            data: JSON.stringify({gameID: gameID}),
+            contentType: 'application/json',
+            success: function(data) {
+                var length = data.length;
+                for (let i = 0; i < length; i++) {
+                    var row = data[i].row;
+                    var code = data[i].code;
+                    var codeArray = code.split('').map(Number);
+                    console.log(codeArray);
+                    for (let j = 0; j < 4; j++) {
+                        var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
+                        codelm.style.backgroundColor = colors[codeArray[j]];
+                    }
+                }
+                x = length+1;
+                avviaEventi();
+            }
+        });
+    }
+};
