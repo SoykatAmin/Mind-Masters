@@ -1,12 +1,12 @@
 
-
+/*
 
 window.addEventListener('beforeunload', function(event) {
     console.log("beforeunload");
     if(game_started){
         event.returnValue = "Sei sicuro di voler abbandonare la partita?";
     }
-});
+});*/
 
 
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
@@ -415,6 +415,7 @@ function game_timer() {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
             clearInterval(downloadTimer);
+            localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
@@ -422,6 +423,8 @@ function game_timer() {
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
             // Calcola i minuti e i secondi rimanenti
+            localStorage.setItem("timeleft", timeleft);
+            
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
             // Formatta il tempo rimasto come MM:SS
@@ -624,7 +627,7 @@ function terminaPartita(msg){
     x=0;
     end_game = true;
     console.log("termina partita");
-   
+    localStorage.clear();
     document.getElementById("invcod").disabled = true;
     // Aggiungi un ritardo per far vedere il risultato
     setTimeout(()=> {
@@ -809,5 +812,10 @@ window.onload = function() {
                 avviaEventi();
             }
         });
+        var timer_str=localStorage.getItem("timeleft");
+        if(timer_str!=null){
+            timeleft=parseInt(timer_str);
+        }
+
     }
 };
