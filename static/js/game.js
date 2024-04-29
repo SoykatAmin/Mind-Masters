@@ -58,7 +58,7 @@ var game_started = false;
  * @param {Array} player_code - Il codice inserito dal giocatore.
  */
 
-function getCode(){
+function getCode(x){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
@@ -73,18 +73,19 @@ function getCode(){
             color_code.push(codelm.style.backgroundColor);
         }
     }
+    console.log("sdffsdfsdfdf" + color_code);
     return color_code;
 }
 
-function suggestion_aux() {
+function suggestion_aux(ex) {
     var postrov = [0, 0, 0, 0];
     var sbagliato = 0;
     posizioneCorretta = 0;
     posizioneErrata = 0;
 
-    var color_code = getCode();
+    var color_code = getCode(ex);
     player_code = stringToCodice(color_code);
-    console.log("Codice giocatore " + player_code);
+    console.log("Codice inserito " + player_code);
     // Confronta i valori inseriti dal giocatore con il codice segreto
     const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
     for (let i = 0; i < player_code.length; i++) {
@@ -105,7 +106,8 @@ function suggestion_aux() {
             }
         }
     }
-    suggerimenti(posizioneCorretta, posizioneErrata);
+    suggerimenti(posizioneCorretta, posizioneErrata, ex);
+    return posizioneCorretta;
 }
 
 /**
@@ -118,13 +120,8 @@ x=8 chiama la funzione terminaPartita()*/
 function confrontaCodici() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
-    var posizioneErrata = 0;
     // Variabile per tenere traccia del numero di colori corretti ma in posizione errata
-    var color_code=getCode();
-    console.log(color_code);
-    suggestion_aux();
-
-    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata);
+    posizioneCorretta=suggestion_aux(x);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         //suggerimenti(posizioneCorretta, posizioneErrata);
@@ -135,7 +132,6 @@ function confrontaCodici() {
         } else {
             terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
         }
-
     } else if (x == 8) {
         //suggerimenti(posizioneCorretta, posizioneErrata);
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
@@ -150,33 +146,14 @@ function confrontaCodici() {
         x++;
         avviaEventi();
     }
-
 }
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
-    var postrov = [0, 0, 0, 0];
     var posizioneCorretta = 0;
-    var posizioneErrata = 0;
-    var sbagliato = 0;
     var player_code = [];
     
-    var color_code=[];
-    for (let i = 0; i < 4; i++) {
-        var codelm = document.getElementById(`ball-${x}-${i + 1}`);
-        //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
-        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
-            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
-            const modal = new bootstrap.Modal('#md_err');
-            modal.show();
-            modal_aperto=true;
-            return;
-        } else {
-            color_code.push(codelm.style.backgroundColor);
-        }
-    }
-    console.log(color_code);
+    var color_code=getCode(x);
     player_code = stringToCodice(color_code);
-    console.log("Codice giocatore " + player_code);
 
     /* Insert move to database */
     stringCode = player_code.join("");
@@ -187,35 +164,12 @@ function confrontaCodiciPVP() {
         data: JSON.stringify({gameID: gameID, code: stringCode, row: row}),
         contentType: 'application/json',
         success: function(data) {
-            console.log(data);
         }
     });
 
-    // Confronta i valori inseriti dal giocatore con il codice segreto
-    const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
-    for (let i = 0; i < player_code.length; i++) {
-        if (player_code[i] === copysc[i]) {
-            postrov[i] = 1;
-            posizioneCorretta++;
-            copysc[i] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
-        }
-    }
-    for (let i = 0; i < 4; i++) {
-        if (postrov[i] === 0) {
-            if (copysc.includes(player_code[i])) {
-                posizioneErrata++;
-                const index = copysc.indexOf(player_code[i]);
-                copysc[index] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
-            } else {
-                sbagliato++;
-            }
-        }
-
-    }
-    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata + " sbagliato: " + sbagliato);
+    posizioneCorretta=suggestion_aux(x);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
-        suggerimenti(posizioneCorretta, posizioneErrata);
         end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
@@ -258,7 +212,6 @@ function confrontaCodiciPVP() {
         }, 500);
 
     } else if (x == 8) {
-        suggerimenti(posizioneCorretta, posizioneErrata);
         end_game = true;
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
@@ -267,7 +220,6 @@ function confrontaCodiciPVP() {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
         scrollWin();
-        suggerimenti(posizioneCorretta, posizioneErrata);
         Colorful = [0, 0, 0, 0];
         x++;
         avviaEventi();
@@ -284,20 +236,25 @@ Se un colore è corretto e in posizione corretta, l'elemento corrispondente in o
 Gli altri elementi in occ rimangono a 0
 Successivamente, la funzione applica gli stili corretti agli elementi HTML dei suggerimenti in base ai valori
 in occ*/
-function suggerimenti(correct, color) {
-    var suggestionItem1 = document.getElementById(`suggestion-${x}-1`);
-    var suggestionItem2 = document.getElementById(`suggestion-${x}-2`);
-    var suggestionItem3 = document.getElementById(`suggestion-${x}-3`);
-    var suggestionItem4 = document.getElementById(`suggestion-${x}-4`);
+function suggerimenti(correct, color, x) {
     var occ = [0, 0, 0, 0];
     console.log("Correct: " + correct + " Color: " + color)
     
     // Riempimento dell'array occ con 1 per ogni colore corretto ma in posizione errata e 2 per ogni colore corretto e in posizione corretta
     //viene riempito in maniera casuale per non suggerire al giocatore a quale colore si rifrisce il suggerimento
+
+    // Applicazione degli stili corretti agli elementi HTML dei suggerimenti in base ai valori in occ
+    //un triangolo per i colori giusti in posizione corretta
+    //un cerchio per colore giusto in posizione sbagliata 
+    //nasconde il quadrato quando ci sono delle posizione sbagliate
+
     for (let i = 0; i < correct; i++) {
         var r = Math.floor(Math.random() * 4);
         if (occ[r] === 0) {
             occ[r] = 2;
+            var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
+            suggestion.style.backgroundColor = "black";
+            suggestion.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
         } else {
             i--;
         }
@@ -306,62 +263,14 @@ function suggerimenti(correct, color) {
         var r = Math.floor(Math.random() * 4);
         if (occ[r] === 0) {
             occ[r] = 1;
+            var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
+            suggestion.style.backgroundColor = "black";
+            suggestion.style.borderRadius = "50%";
+            suggestion.style.border = "1px solid black";
         } else {
             i--;
         }
     }
-    
-    // Applicazione degli stili corretti agli elementi HTML dei suggerimenti in base ai valori in occ
-    //un triangolo per i colori giusti in posizione corretta
-    //un cerchio per colore giusto in posizione sbagliata 
-    //nasconde il quadrato quando ci sono delle posizione sbagliate
-    if (occ[0] == 2) {
-        suggestionItem1.style.backgroundColor = "black";
-        suggestionItem1.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-    } else if (occ[0] == 1) {
-        suggestionItem1.style.backgroundColor = "black";
-        suggestionItem1.style.borderRadius = "50%";
-        suggestionItem1.style.border = "1px solid black";
-    } /*else {
-        suggestionItem1.style.backgroundColor = "#C19569";
-        suggestionItem1.style.border = "1px solid #C19569";
-    }*/
-    
-    if (occ[1] == 2) {
-        suggestionItem2.style.backgroundColor = "black";
-        suggestionItem2.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-    } else if (occ[1] == 1) {
-        suggestionItem2.style.backgroundColor = "black";
-        suggestionItem2.style.borderRadius = "50%";
-        suggestionItem2.style.border = "1px solid black";
-    } /*else {
-        suggestionItem2.style.backgroundColor = "#C19569";
-        suggestionItem2.style.border = "1px solid #C19569";
-    }
-    */
-    if (occ[2] == 2) {
-        suggestionItem3.style.backgroundColor = "black";
-        suggestionItem3.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-    } else if (occ[2] == 1) {
-        suggestionItem3.style.backgroundColor = "black";
-        suggestionItem3.style.borderRadius = "50%";
-        suggestionItem3.style.border = "1px solid black";
-    }/* else {
-        suggestionItem3.style.backgroundColor = "#C19569";
-        suggestionItem3.style.border = "1px solid #C19569";
-    }*/
-    
-    if (occ[3] == 2) {
-        suggestionItem4.style.backgroundColor = "black";
-        suggestionItem4.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-    } else if (occ[3] == 1) {
-        suggestionItem4.style.backgroundColor = "black";
-        suggestionItem4.style.borderRadius = "50%";
-        suggestionItem4.style.border = "1px solid black";
-    } /*else {
-        suggestionItem4.style.backgroundColor = "#C19569";
-        suggestionItem4.style.border = "1px solid #C19569";
-    }*/
 }
 
 /**
@@ -380,7 +289,6 @@ function startPVE() {
             secret_code.push(Math.floor(Math.random() * 8)+1);
         } 
     }
-    console.log(secret_code);
     Colorful=[0,0,0,0];
     x=1;
     end_game = false;
@@ -390,11 +298,8 @@ function startPVE() {
 function startPVP() {
     
     game_started = true;
-    /* Convert string to array */
     var codiceArray = codice.split('').map(Number);
-    console.log(codice);
     secret_code = codiceArray;
-    console.log(secret_code);
     Colorful=[0,0,0,0];
     end_game = false;
     game_timer();
@@ -461,7 +366,6 @@ function changeColor(color) {
             next=((y - 1 + i) % 4)+1;
         }else{
             count++;
-        
         }
     }
     //va al primo elememto vuoto 
@@ -511,10 +415,7 @@ function avviaEventi() {
     }, false);
     //vede se il mouse è tolto
     itemElement1.addEventListener("mouseleave", () => { 
-       
         delItem1.setAttribute("hidden", "hidden");
-
-    
         console.log("mouse leave");
     }, false);
 
@@ -531,15 +432,12 @@ function avviaEventi() {
     });
     itemElement2.addEventListener("mouseover", () => { 
         if (Colorful[1] == 1 && xatt == x) {
-            
             delItem2.removeAttribute("hidden");
         }
         console.log("mouse enter");
     }, false);
     itemElement2.addEventListener("mouseleave", () => { 
-       
         delItem2.setAttribute("hidden", "hidden");
-    
         console.log("mouse leave");
     }, false);
 
@@ -548,7 +446,6 @@ function avviaEventi() {
     var itemElement3 = document.getElementById(`ball-${x}-3`);
     itemElement3.addEventListener('click', () => {
         if (/*Colorful[2] == 1 && */xatt == x) {
-            
             delItem3.setAttribute("hidden", "hidden");
             itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0;
@@ -566,14 +463,12 @@ function avviaEventi() {
     itemElement3.addEventListener("mouseleave", () => {
         delItem3.setAttribute("hidden", "hidden");
         console.log("mouse leave");
-    
     }
     , false);
 
     var itemElement4 = document.getElementById(`ball-${x}-4`);
     itemElement4.addEventListener('click', () => {
         if (/*Colorful[3] == 1 && */xatt == x) {
-            
             delItem4.setAttribute("hidden", "hidden");
             itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0;
@@ -707,77 +602,63 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
-    
-   if(Colorful[y-1]==1){
-    
-    itemElement.style.backgroundColor = 'white';
-    Colorful[y-1] = 0;
-   }else{
-    //itemElement.style.backgroundColor = 'white';
-    Colorful[y-1] = 0;
-    if(y!=1){
-        sx();  
-    }
+    if(Colorful[y-1]==1){
+        itemElement.style.backgroundColor = 'white';
+        Colorful[y-1] = 0;
+    }else{
+        //itemElement.style.backgroundColor = 'white';
+        Colorful[y-1] = 0;
+        if(y!=1){
+            sx();  
+        }
    } 
 }
 //attiva le lettura da input di tastiera
 function keyButton(){
     document.addEventListener('keydown', function(event) {
-        
         if(event.key != 'F12'){
             event.preventDefault();
         }
-        
         if(!modal_aperto){
             if(event.key ==='Enter'){
-                confrontaCodici();
-                return;
-            }
-    
-            if(event.key ==='Backspace') {
+                if(window.location.href.includes("?id=")){
+                    confrontaCodiciPVP();
+                }else{
+                    confrontaCodici();
+                }
+            }else if(event.key ==='Backspace') {
                 dellColor();
-                return;
             }else if(event.key ==='ArrowLeft'){
                 sx();
-                return;
             }else if(event.key ==='ArrowRight'){
                 dx();
-                return;
-            }
-             else{
+            }else{
                 if(event.key === '1') {
                     changeColor("red");
-                    return;
                 }
                 else if(event.key === '2') {
                     changeColor("darkgreen");
-                    return;
                 }
                 else if(event.key === '3') {
                     changeColor("darkblue");
-                    return;
                 }
                 else if(event.key === '4') {
                     changeColor("deeppink");
-                    return;
                 }
                 else if(event.key === '5') {
                     changeColor("yellow");
-                    return;
                 }
                 else if(event.key === '6') {
                     changeColor("purple");
-                    return;
                 }
                 else if(event.key === '7') {
                     changeColor("aqua");
-                    return;
                 }
                 else if(event.key === '8') {
                     changeColor("sienna");
-                    return;
                 }
             }
+            return;
         }
     });
 }
@@ -792,20 +673,22 @@ window.onload = function() {
             data: JSON.stringify({gameID: gameID}),
             contentType: 'application/json',
             success: function(data) {
+                x = 1;
                 var length = data.length;
+                for (let i = 0; i < length; i++) {
+                    console.log(data[i]);
+                }
                 for (let i = 0; i < length; i++) {
                     var row = data[i].row;
                     var code = data[i].code;
                     var codeArray = code.split('').map(Number);
                     var posizioneCorretta=0;
-                    var posizioneErrata=0;
-                    console.log(codeArray);
 
                     for (let j = 0; j < 4; j++) {
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
-                    suggestion_aux();
+                    posizioneCorretta=suggestion_aux(x);
                     x++;
                 }
                 x = length+1;
@@ -816,6 +699,5 @@ window.onload = function() {
         if(timer_str!=null){
             timeleft=parseInt(timer_str);
         }
-
     }
 };

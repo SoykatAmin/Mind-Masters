@@ -415,12 +415,10 @@ def registerMove():
     id_game = data.get('gameID')
     row = data.get('row')
     code = data.get('code')
-
     new_move = Mossa(user_id=current_user.username, partita_id=id_game, riga=row, colore=code)
     print('Mossa registrata' + str(new_move))
     db.session.add(new_move)
     db.session.commit()
-    print('Mossa registrata' + str(new_move))
     return jsonify(data)
 
 @app.route('/endGame', methods=['POST'])
@@ -475,7 +473,7 @@ def hasInsertedCode():
 def getMoves():
     data = request.json
     id_game = data.get('gameID')
-    moves = Mossa.query.filter_by(partita_id=id_game).all()
+    moves = Mossa.query.filter_by(partita_id=id_game, user_id=current_user.username).all()
     movesArray = []
     for move in moves:
         movesArray.append({'row': move.riga, 'code': move.colore})
