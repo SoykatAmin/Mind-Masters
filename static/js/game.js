@@ -47,20 +47,18 @@ var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
 var game_started = false;
 //console.log(localStorage.getItem("acc"))
+
+
+
 /**
- * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
-legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
-Se il codice è corretto iposta win a true e chiama la funzione terminaPartita() con il messaggio da stampare a schermo
-in caso di codice non corretto chiama la funzione suggerimeti() ed incrementa la x nel caso fosse l'ultimo tentativo
-x=8 chiama la funzione terminaPartita()*/
-function confrontaCodici() {
-    // Variabili per tenere traccia delle posizioni corrette e errate
-    var postrov = [0, 0, 0, 0];
-    var posizioneCorretta = 0;
-    var posizioneErrata = 0;
-    var sbagliato = 0;
-    var player_code = [];
-    
+ * Calcola il numero di posizioni corrette e posizioni errate nel codice del giocatore rispetto al codice segreto.
+ * 
+ * @param {number} posizioneCorretta - Il numero di posizioni corrette nel codice del giocatore.
+ * @param {number} posizioneErrata - Il numero di posizioni errate nel codice del giocatore.
+ * @param {Array} player_code - Il codice inserito dal giocatore.
+ */
+
+function getCode(){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
@@ -75,10 +73,18 @@ function confrontaCodici() {
             color_code.push(codelm.style.backgroundColor);
         }
     }
-    console.log(color_code);
+    return color_code;
+}
+
+function suggestion_aux() {
+    var postrov = [0, 0, 0, 0];
+    var sbagliato = 0;
+    posizioneCorretta = 0;
+    posizioneErrata = 0;
+
+    var color_code = getCode();
     player_code = stringToCodice(color_code);
     console.log("Codice giocatore " + player_code);
-
     // Confronta i valori inseriti dal giocatore con il codice segreto
     const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
     for (let i = 0; i < player_code.length; i++) {
@@ -88,7 +94,7 @@ function confrontaCodici() {
             copysc[i] = null; // Segna l'elemento come utilizzato per evitare di contarli come errori nuovamente
         }
     }
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < player_code.length; i++) {
         if (postrov[i] === 0) {
             if (copysc.includes(player_code[i])) {
                 posizioneErrata++;
@@ -98,12 +104,30 @@ function confrontaCodici() {
                 sbagliato++;
             }
         }
-
     }
-    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata + " sbagliato: " + sbagliato);
+    suggerimenti(posizioneCorretta, posizioneErrata);
+}
+
+/**
+ * funzione per confrantare il codice inseriro dal utente e il codice segrato generato
+legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e y la colonna.
+Se il codice è corretto iposta win a true e chiama la funzione terminaPartita() con il messaggio da stampare a schermo
+in caso di codice non corretto chiama la funzione suggerimeti() ed incrementa la x nel caso fosse l'ultimo tentativo
+x=8 chiama la funzione terminaPartita()*/
+
+function confrontaCodici() {
+    // Variabili per tenere traccia delle posizioni corrette e errate
+    var posizioneCorretta = 0;
+    var posizioneErrata = 0;
+    // Variabile per tenere traccia del numero di colori corretti ma in posizione errata
+    var color_code=getCode();
+    console.log(color_code);
+    suggestion_aux();
+
+    console.log("Posizione corretta: " + posizioneCorretta + " Posizione errata: " + posizioneErrata);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
-        suggerimenti(posizioneCorretta, posizioneErrata);
+        //suggerimenti(posizioneCorretta, posizioneErrata);
         // Chiamata alla funzione terminaPartita
         win = true;
         if (x == 1) {
@@ -113,7 +137,7 @@ function confrontaCodici() {
         }
 
     } else if (x == 8) {
-        suggerimenti(posizioneCorretta, posizioneErrata);
+        //suggerimenti(posizioneCorretta, posizioneErrata);
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
         terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
@@ -121,7 +145,7 @@ function confrontaCodici() {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
         scrollWin();
-        suggerimenti(posizioneCorretta, posizioneErrata);
+        //suggerimenti(posizioneCorretta, posizioneErrata);
         Colorful = [0, 0, 0, 0];
         x++;
         avviaEventi();
@@ -266,6 +290,7 @@ function suggerimenti(correct, color) {
     var suggestionItem3 = document.getElementById(`suggestion-${x}-3`);
     var suggestionItem4 = document.getElementById(`suggestion-${x}-4`);
     var occ = [0, 0, 0, 0];
+    console.log("Correct: " + correct + " Color: " + color)
     
     // Riempimento dell'array occ con 1 per ogni colore corretto ma in posizione errata e 2 per ogni colore corretto e in posizione corretta
     //viene riempito in maniera casuale per non suggerire al giocatore a quale colore si rifrisce il suggerimento
@@ -769,11 +794,16 @@ window.onload = function() {
                     var row = data[i].row;
                     var code = data[i].code;
                     var codeArray = code.split('').map(Number);
+                    var posizioneCorretta=0;
+                    var posizioneErrata=0;
                     console.log(codeArray);
+
                     for (let j = 0; j < 4; j++) {
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
+                    suggestion_aux();
+                    x++;
                 }
                 x = length+1;
                 avviaEventi();
