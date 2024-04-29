@@ -143,6 +143,10 @@ body, html {
   background-color: #fff; /* Set white background color with !important */
 }
 
+.spazio_carica{
+  margin-left: 10px;
+}
+
 .timer{
   position: fixed;
   top: 0;
