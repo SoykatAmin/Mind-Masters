@@ -57,7 +57,6 @@ var game_started = false;
  * @param {number} posizioneErrata - Il numero di posizioni errate nel codice del giocatore.
  * @param {Array} player_code - Il codice inserito dal giocatore.
  */
-
 function getCode(x){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
@@ -376,7 +375,6 @@ function changeColor(color) {
             moveBall(y+1);
         }
     }
-
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
 function avviaEventi() {
@@ -519,7 +517,7 @@ Aggiunge un ritardo di 500 millisecondi per mostrare il risultato
 Mostra un messaggio di vittoria o sconfitta a schermo in base al valore della variabile win
 Mostra un modal con il messaggio di vittoria o sconfitta*/
 function terminaPartita(msg){
-    x=0;
+  
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
@@ -689,6 +687,7 @@ window.onload = function() {
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
                     posizioneCorretta=suggestion_aux(x);
+                    
                     x++;
                 }
                 x = length+1;
