@@ -516,12 +516,26 @@ Disabilita il pulsante con id "invcod"
 Aggiunge un ritardo di 500 millisecondi per mostrare il risultato
 Mostra un messaggio di vittoria o sconfitta a schermo in base al valore della variabile win
 Mostra un modal con il messaggio di vittoria o sconfitta*/
-function terminaPartita(msg){
-  
+function terminaPartita(msg){   
+    
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
     document.getElementById("invcod").disabled = true;
+    document.getElementById("btn-color-1").disabled = true;
+    document.getElementById("btn-color-2").disabled = true;
+    document.getElementById("btn-color-3").disabled = true;
+    document.getElementById("btn-color-4").disabled = true;
+    document.getElementById("btn-color-5").disabled = true;
+    document.getElementById("btn-color-6").disabled = true;
+    document.getElementById("btn-color-7").disabled = true;
+    document.getElementById("btn-color-8").disabled = true;
+    document.getElementById("dx-btn").disabled = true;
+    document.getElementById("sx-btn").disabled = true;
+    document.getElementById("cancCol").disabled = true;
+
+    var prevBall = document.getElementById(`ball-${x}-${y}`);
+    prevBall.classList.remove("ball-selected");
     // Aggiungi un ritardo per far vedere il risultato
     setTimeout(()=> {
         // Mostra il titolo del modal in base al risultato
@@ -539,7 +553,7 @@ function terminaPartita(msg){
         //TODO :fare che ciudei modal gia aperti
         const close_md = document.getElementById('md_err');
         close_md.setAttribute("hidden", "hidden");
-        
+        console.log("chiudo");
         const modal = new bootstrap.Modal('#md_end');
         modal.show();
     }, 500);
