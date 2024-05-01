@@ -16,7 +16,7 @@
 <div id="md_dif" class="modal fade " data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color: #4d4d4d;">
-            <div class="modal-body text-center" id="md_err_body"></div>
+            <div class="modal-body text-center" id="md_body_msg"></div>
             <div class="modal-footer">
                 <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">facile</button>
                 <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">normale</button>
@@ -204,7 +204,10 @@
         //va messo alla fine senno i div non esistono e da errore undefined
         avviaEventi();
         keyButton();
-       
+        var modal_dif = new bootstrap.Modal('#md_dif');
+        modal_dif.show();
+        modal_aperto = true;
+        
         
     </script>
     <!-- Modal -->

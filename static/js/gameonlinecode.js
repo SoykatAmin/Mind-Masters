@@ -144,6 +144,7 @@ function sendCode(read=true){
         return;
     }
 
+    document.getElementById(`ball-1-${y}`).classList.remove("ball-selected");
     blockbutton();
     document.getElementById("md_body_msg").innerHTML = msg;
     if(modal_err!=null){

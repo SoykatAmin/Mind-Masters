@@ -135,10 +135,11 @@ function confrontaCodici() {
     } else {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
+        x++;
         scrollWin();
         //suggerimenti(posizioneCorretta, posizioneErrata);
         Colorful = [0, 0, 0, 0];
-        x++;
+    
         avviaEventi();
     }
 }
@@ -499,17 +500,28 @@ function avviaEventi() {
 
 // Funzione che fa scorrere lo schermo al div successivo
 function scrollWin() {
+    var screenHeight=window.innerHeight;
+    var targetElement;
     // Verifica se il turno corrente è maggiore di 2
     if (x > 2) {
         // Se sì, seleziona l'elemento div target tramite il suo ID
-        const targetElement = document.getElementById(`rig-${x-2}`);
+        if(screenHeight <= 300){
+            targetElement = document.getElementById(`rig-${x}`);
+            console.log("Ciaoooo");
+        }else if(screenHeight <= 600){
+            targetElement = document.getElementById(`rig-${x-1}`);
+        }else{
+            targetElement = document.getElementById(`rig-${x-2}`);
+        }
         // Scorri lo schermo in modo fluido verso l'elemento target
         targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+            behavior: 'smooth',  
         });
     }else{
-        const targetElement = document.getElementById(`rig-${x}`);
+        targetElement = document.getElementById(`rig-${x}`);
+        if(x>=1 && screenHeight <= 370){
+            targetElement = document.getElementById(`rig-${x+2}`);
+        }
         targetElement.scrollIntoView({
             behavior: 'smooth',
             block: 'end'
