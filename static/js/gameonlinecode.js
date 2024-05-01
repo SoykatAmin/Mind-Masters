@@ -1,10 +1,8 @@
-
-
-
-
-modal_aperto=false;
 var secretCode;
-var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
+var timerCodeLeft = 30;
+
+
+
 
 function readCode(){
     var one = document.getElementById("ball-1-1");
@@ -15,16 +13,17 @@ function readCode(){
     for (let i = 0; i < 4; i++) {
         if(colors[i] == "" || colors[i] == "white"){
             document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
-            const modal = new bootstrap.Modal('#md_err');
-            modal.show();
+            modal_err = new bootstrap.Modal('#md_err');
+            modal_err.show();
             modal_aperto=true;
             return;
         }
     }
     secretCode = stringToCodice(colors);
-    console.log(secretCode);
+
    
 }
+
 function keyButton_code(){
     document.addEventListener('keydown', function(event) {
         if(event.key != 'F12'){
@@ -83,13 +82,77 @@ function keyButton_code(){
     });
 }
 
-function sendCode(){
-    readCode();
+/**
+ * funzione che colora le palline con i colori del codice generato casulaemente
+ */
+function colorCasualCode(){
+    var coliri_codice_casuale=codiceToString(secretCode);
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(`ball-1-${i+1}`).style.backgroundColor = coliri_codice_casuale[i];
+    }
+}
+/**
+ * funzione che se il gocatore non ha inserito tutti i colori allo scader del tempo 
+ * genera un codce randomico semple (cioe senza ripetizioni)
+ */
+function timerCode(){
+    var codeValid=true;
+    var interval=setInterval(()=> {
+        timerCodeLeft--;
+
+        if(timerCodeLeft <= 0){
+            
+            document.getElementById("countdown").innerHTML = "Tempo scaduto!";
+            clearInterval(interval);
+            for(let i = 0; i < 4; i++){
+                
+                var readColor=document.getElementById(`ball-1-${i+1}`).style.backgroundColor;
+                if(readColor == "" || readColor == "white"){
+                    codeValid=false;
+                    break;
+                }
+            }
+            if(codeValid){
+                readCode();
+            }else{
+                secretCode = createEasyCode();
+                colorCasualCode();
+            }
+            sendCode(false);
+        }else{
+            var minutes = Math.floor(timerCodeLeft / 60);
+            var seconds = timerCodeLeft % 60;
+            // Formatta il tempo rimasto come MM:SS
+            var formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            // Aggiorna l'elemento HTML con il tempo rimasto
+            document.getElementById("countdown").innerHTML = "Tempo rimasto " + formattedTime;
+        }
+
+    }, 1000);
+}
+
+
+function sendCode(read=true){
+    if(read){
+        readCode();
+        msg="Codice inviato! Attendere che l'avversario inserisca il codice per iniziare la partita!";
+    }else{
+        msg="Tempo scaduto, codice casuale generato! Attendere che l'avversario inserisca il codice per iniziare la partita!";
+    }
+    
     if(secretCode == null){
         return;
     }
+
+    blockbutton();
+    document.getElementById("md_body_msg").innerHTML = msg;
+    if(modal_err!=null){
+        modal_err.hide();
+    }
+    var modal = new bootstrap.Modal('#md_msg');
+    modal.show();
     var code = secretCode.join('');
-    console.log(code);
+    
     var data = {code: code, id: idGame};
     // manda il codice al server
     $.ajax({

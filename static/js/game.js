@@ -1,14 +1,4 @@
 
-/*
-
-window.addEventListener('beforeunload', function(event) {
-    console.log("beforeunload");
-    if(game_started){
-        event.returnValue = "Sei sicuro di voler abbandonare la partita?";
-    }
-});*/
-
-
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
 var x = 1;
 //variabile per tenere traccia della colonna
@@ -47,7 +37,7 @@ var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
 var game_started = false;
 //console.log(localStorage.getItem("acc"))
-
+var modal_err;
 
 
 /**
@@ -65,15 +55,15 @@ function getCode(x){
         //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
         if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
             document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
-            const modal = new bootstrap.Modal('#md_err');
-            modal.show();
+            modal_err = new bootstrap.Modal('#md_err');
+            modal_err.show();
             modal_aperto=true;
-            return;
+            return -1;
         } else {
             color_code.push(codelm.style.backgroundColor);
         }
     }
-    console.log("sdffsdfsdfdf" + color_code);
+    console.log(color_code);
     return color_code;
 }
 
@@ -84,6 +74,9 @@ function suggestion_aux(ex) {
     posizioneErrata = 0;
 
     var color_code = getCode(ex);
+    if(color_code==-1){
+        return -1;
+    }
     player_code = stringToCodice(color_code);
     console.log("Codice inserito " + player_code);
     // Confronta i valori inseriti dal giocatore con il codice segreto
@@ -116,12 +109,14 @@ legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e
 Se il codice è corretto iposta win a true e chiama la funzione terminaPartita() con il messaggio da stampare a schermo
 in caso di codice non corretto chiama la funzione suggerimeti() ed incrementa la x nel caso fosse l'ultimo tentativo
 x=8 chiama la funzione terminaPartita()*/
-
 function confrontaCodici() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
     // Variabile per tenere traccia del numero di colori corretti ma in posizione errata
     posizioneCorretta=suggestion_aux(x);
+    if(posizioneCorretta==-1){
+        return;//non fa nulla se il codice non è valido 
+    }
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         //suggerimenti(posizioneCorretta, posizioneErrata);
@@ -154,7 +149,9 @@ function confrontaCodiciPVP() {
     
     var color_code=getCode(x);
     player_code = stringToCodice(color_code);
-
+    if(posizioneCorretta==-1){
+        return;//non fa nulla se il codice non è valido 
+    }
     /* Insert move to database */
     stringCode = player_code.join("");
     var row = x-1;
@@ -299,6 +296,21 @@ function startPVP() {
     game_timer();
 }
 
+/**
+ * funzione per creare un codice segreto casuale senza ripetizioni
+ */
+function createEasyCode() {
+   
+    var i = 0;
+    while (i < 4) {
+        var color = Math.floor(Math.random() * 8) + 1;
+        if(!secret_code.includes(color)){
+            secret_code.push(color);
+            i++;
+        }
+    }
+    return secret_code;
+}
 /**Avvia un timer per il gioco.
  Imposta il tempo rimasto in base alla modalità di debug.
  Avvia un timer che si ripete ogni secondo.
@@ -310,10 +322,10 @@ function game_timer() {
         timeleft = 240; // 4 minuti in secondi
     }
     // Avvia un timer che si ripete ogni secondo
-    var downloadTimer = setInterval(() => {
+    var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
-            clearInterval(downloadTimer);
+            clearInterval(gameTimer);
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
@@ -334,6 +346,10 @@ function game_timer() {
         }
         // Decrementa il tempo rimasto di un secondo
         timeleft--;
+        // Verifica se il gioco è terminato e interrompe il timer
+        if (end_game) {
+            clearInterval(gameTimer);
+        }
     }, 1000);
 }
 // Funzione per inserire i colori nelle palle
@@ -514,19 +530,8 @@ function terminaPartita(msg){
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
-    document.getElementById("invcod").disabled = true;
-    document.getElementById("btn-color-1").disabled = true;
-    document.getElementById("btn-color-2").disabled = true;
-    document.getElementById("btn-color-3").disabled = true;
-    document.getElementById("btn-color-4").disabled = true;
-    document.getElementById("btn-color-5").disabled = true;
-    document.getElementById("btn-color-6").disabled = true;
-    document.getElementById("btn-color-7").disabled = true;
-    document.getElementById("btn-color-8").disabled = true;
-    document.getElementById("dx-btn").disabled = true;
-    document.getElementById("sx-btn").disabled = true;
-    document.getElementById("cancCol").disabled = true;
-
+   
+    blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
     // Aggiungi un ritardo per far vedere il risultato
@@ -540,22 +545,41 @@ function terminaPartita(msg){
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
         }
         // Mostra il messaggio nel corpo del modal
-        document.getElementById("md_body").innerHTML = msg;
+        
         
         // Mostra il modal
-        //TODO :fare che ciudei modal gia aperti
-        const close_md = document.getElementById('md_err');
-        close_md.setAttribute("hidden", "hidden");
-        console.log("chiudo");
+        if(modal_err!=null){
+            modal_err.hide();
+        }
+        console.log(msg);
+        document.getElementById("md_body").innerHTML = msg;
         const modal = new bootstrap.Modal('#md_end');
         modal.show();
     }, 500);
 }
 
+function blockbutton(){
+    document.getElementById("invcod").disabled = true;
+    document.getElementById("btn-color-1").disabled = true;
+    document.getElementById("btn-color-2").disabled = true;
+    document.getElementById("btn-color-3").disabled = true;
+    document.getElementById("btn-color-4").disabled = true;
+    document.getElementById("btn-color-5").disabled = true;
+    document.getElementById("btn-color-6").disabled = true;
+    document.getElementById("btn-color-7").disabled = true;
+    document.getElementById("btn-color-8").disabled = true;
+    document.getElementById("dx-btn").disabled = true;
+    document.getElementById("sx-btn").disabled = true;
+    document.getElementById("cancCol").disabled = true;
+}
+
 //Funzione per convertire il codice in stringa di colori
 function codiceToString(codice){
-    var str = colori[codice[0]] + "," + colori[codice[1]] + "," + colori[codice[2]] + "," + colori[codice[3]];
-    return str;
+    var str_code_arr=[];
+    for (let i = 0; i < codice.length; i++) {
+        str_code_arr.push(colors[codice[i]]);
+    }
+    return str_code_arr;
 }
 
 //Funzione per convertire colori in codice dato un array di colori genera il codice corrispondente
