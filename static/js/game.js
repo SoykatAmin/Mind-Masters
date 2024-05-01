@@ -38,7 +38,8 @@ var modal_aperto=false//flag per vcedere se c'è un modal aperto
 var game_started = false;
 //console.log(localStorage.getItem("acc"))
 var modal_err;
-
+//variablie che tiene traccia della difficoltà del gioco(solo per la modalità PVE), sono tre F (facile), N (normale), D (difficile)
+var difficoltà_PVE;
 
 /**
  * Calcola il numero di posizioni corrette e posizioni errate nel codice del giocatore rispetto al codice segreto.
@@ -52,14 +53,23 @@ function getCode(x){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+        if(codelm.style.backgroundColor==""){
+            codelm.style.backgroundColor="white";
+        }
         //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
-        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
-            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
+        if (codelm.style.backgroundColor=="white" && difficoltà_PVE!='D') {    
+            document.getElementById("md_err_body").innerHTML = "Hai lasciato delle caselle vuote, inserisci tutti i colori prima di continuare!";
             modal_err = new bootstrap.Modal('#md_err');
             modal_err.show();
             modal_aperto=true;
             return -1;
-        } else {
+        } else if(color_code.includes(codelm.style.backgroundColor)&& difficoltà_PVE=='F'){
+            document.getElementById("md_err_body").innerHTML = "Hai inserito più volte lo stesso colore, inserisci i colori una sola volta prima di continuare!";
+            modal_err = new bootstrap.Modal('#md_err');
+            modal_err.show();
+            modal_aperto=true;
+            return -1;
+        }else {
             color_code.push(codelm.style.backgroundColor);
         }
     }
@@ -211,9 +221,10 @@ function confrontaCodiciPVP() {
     } else {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
+        x++;
         scrollWin();
         Colorful = [0, 0, 0, 0];
-        x++;
+        
         avviaEventi();
     }
 }
@@ -272,19 +283,26 @@ function suggerimenti(correct, color, x) {
  * Inizializza l'array Colorful con zeri, imposta x a 1 e imposta end_game a false.
  * Chiama la funzione game_timer.
  */
-function startPVE() {
+function startPVE(dif) {
     game_started = true;
+    difficoltà_PVE=dif;
+    
     if (debug) {
         secret_code = [1,1,2,3];//il codiece di debug è red red green blue
     }else{
-        for (let i = 0; i < 4; i++) {
-            secret_code.push(Math.floor(Math.random() * 8)+1);
-        } 
+        if(dif=="F"){
+            createEasyCode();
+        }else if(dif=="N"){
+            createNormalCode();
+        }else if(dif=="D"){
+            createHardCode();
+        }
     }
     Colorful=[0,0,0,0];
-    x=1;
     end_game = false;
     game_timer();
+    avviaEventi();
+    keyButton();
 }
 
 function startPVP() {
@@ -298,7 +316,7 @@ function startPVP() {
 }
 
 /**
- * funzione per creare un codice segreto casuale senza ripetizioni
+ * funzione per creare un codice segreto casuale senza ripetizioni (difficoltà facile)
  */
 function createEasyCode() {
    
@@ -310,6 +328,26 @@ function createEasyCode() {
             i++;
         }
     }
+    return secret_code;
+}
+
+/**
+ * funzione per creare un codice segreto casuale con ripetizioni (difficoltà normale)
+ */
+function createNormalCode() {
+    for (let i = 0; i < 4; i++) {
+        secret_code.push(Math.floor(Math.random() * 8)+1);
+    }
+    return secret_code;
+}
+/**
+ * Funzione per creare un codice segreto casuale con ripetizioni e spazzi vuoti (difficoltà difficile)
+ */
+function createHardCode() {
+    for (let i = 0; i < 4; i++) {
+        secret_code.push(Math.floor(Math.random() * 9));
+    }
+    console.log(secret_code);
     return secret_code;
 }
 /**Avvia un timer per il gioco.
@@ -398,7 +436,8 @@ function avviaEventi() {
     var delItem2= document.getElementById(`delete-ball-${x}-2`);
     var delItem3= document.getElementById(`delete-ball-${x}-3`);
     var delItem4= document.getElementById(`delete-ball-${x}-4`);
-
+    
+    // Selezione della prima palla
     var startball = document.getElementById(`ball-${x}-1`);
     startball.classList.add("ball-selected");
     

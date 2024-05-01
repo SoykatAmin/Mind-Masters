@@ -8,7 +8,7 @@
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
         //salvare nella variabile di sessione il codice generato
-        startPVE()
+        
     </script>
 
 {% endblock %}
@@ -18,9 +18,9 @@
         <div class="modal-content" style="background-color: #4d4d4d;">
             <div class="modal-body text-center" id="md_body_msg"></div>
             <div class="modal-footer">
-                <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">facile</button>
-                <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">normale</button>
-                <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">difficile</button>
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('F')">facile</button>
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('N')">normale</button>
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('D')">difficile</button>
             </div>
         </div>
     </div>
@@ -202,8 +202,7 @@
     <br>
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
-        avviaEventi();
-        keyButton();
+        
         var modal_dif = new bootstrap.Modal('#md_dif');
         modal_dif.show();
         modal_aperto = true;
