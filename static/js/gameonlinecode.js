@@ -4,6 +4,7 @@
 
 modal_aperto=false;
 var secretCode;
+var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 
 function readCode(){
     var one = document.getElementById("ball-1-1");
@@ -34,7 +35,6 @@ function keyButton_code(){
                 sendCode();
                 return;
             }
-    
             if(event.key ==='Backspace') {
                 dellColor();
                 return;
@@ -91,7 +91,6 @@ function sendCode(){
     var code = secretCode.join('');
     console.log(code);
     var data = {code: code, id: idGame};
-    var id = null;
     // manda il codice al server
     $.ajax({
         type: "POST",
@@ -99,10 +98,49 @@ function sendCode(){
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function(response){
-            id = response.id;
         }
     });
     // aspetta che l'avversario mandi il codice
+    hasInsertedCode();
+}
+
+function checkInsertion(){
+    var data = {id: idGame};
+
+    $.ajax({
+        type: "POST",
+        url: "/getSecretCode",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(response){
+            code = response.code;
+            if(code != ''){
+                disableButtons();
+                var codeArray = code.split('').map(Number);
+                console.log(codeArray);
+                for (let j = 0; j < 4; j++) {
+                    var codelm = document.getElementById(`ball-1-${j + 1}`);
+                    codelm.style.backgroundColor = colors[codeArray[j]];
+                }
+                hasInsertedCode();
+            }
+        }
+    });
+}
+
+function disableButtons(){
+    var buttons = document.getElementsByClassName("btn-manage");
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+    }
+}
+
+window.onload = function(){
+    checkInsertion();
+}
+
+function hasInsertedCode(){
+    var data = {id: idGame};
     setInterval(function() {
         $.ajax({
             type: "POST",
@@ -112,9 +150,9 @@ function sendCode(){
             success: function(response){
                 var inserted = response.inserted;
                 if(inserted){
-                    window.location.href = "/online-game?id="+id;
+                    window.location.href = "/online-game?id="+idGame;
                 }
             }
         });
-}, 500);
+    }, 500);
 }

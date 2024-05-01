@@ -173,16 +173,9 @@ function confrontaCodiciPVP() {
         end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
-        $.ajax({
-            type: 'POST',
-            url: '/endGame',
-            data: JSON.stringify({gameID: gameID, winner: username}),
-            contentType: 'application/json',
-            success: function(data) {
-            }
-        });
+        endGame();
         // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
-        setInterval(function() {
+        var endingInterval = setInterval(function() {
             $.ajax({
                 type: 'POST',
                 url: '/hasEnded',
@@ -192,18 +185,19 @@ function confrontaCodiciPVP() {
                     winnerUsername = data.winner;
                     var ended = data.ended;
                     if (ended) {
+                        clearInterval(endingInterval);
                         console.log(winnerUsername);
                         if (username == winnerUsername) {
                             win = true;
-                            if (x == 1) {
+                            if(x == 1) {
                                 terminaPartita("Che gigachad! Hai vinto al primo turno!");
                             } else {
                                 terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
                             }
-                        } else if (winnerUsername == "draw") {
+                        } else if(winnerUsername == "draw") {
                             draw = True;
                             terminaPartita("Pareggio.");
-                        }else {
+                        }else{
                             terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
                         }
                     }
@@ -323,6 +317,7 @@ function game_timer() {
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
+            endGame();
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
@@ -339,10 +334,6 @@ function game_timer() {
         }
         // Decrementa il tempo rimasto di un secondo
         timeleft--;
-        // Verifica se il gioco è terminato e interrompe il timer
-        if (end_game) {
-            clearInterval(downloadTimer);
-        }
     }, 1000);
 }
 // Funzione per inserire i colori nelle palle
@@ -677,7 +668,9 @@ function keyButton(){
     });
 }
 
-
+/*
+For online games, it retrieves the moves from the database and displays them on the screen.
+*/
 window.onload = function() {
     var url = window.location.href;
     if(url.includes("online-game")){
@@ -715,3 +708,20 @@ window.onload = function() {
         }
     }
 };
+
+// Inserisce il tempo di fine nel database se esce dalla pagina
+window.onbeforeunload = function() {
+    endGame();
+}
+
+// Inserisce il tempo di fine nel database
+function endGame() {
+    $.ajax({
+        type: 'POST',
+        url: '/endGame',
+        data: JSON.stringify({gameID: gameID, winner: username}),
+        contentType: 'application/json',
+        success: function(data) {
+        }
+    });
+}

@@ -226,7 +226,7 @@ def gameonline():
             # if the current user is the creator of the lobby, update the code for the first player
             if lobby.player1 == current_user.username:
                 if online_game is not None:
-                    print("Daaaaaaaaaaai")
+                    print("inserito")
                     online_game.codice1 = code
                     db.session.commit()
             # if the current user is the second player, update the code for the second player
@@ -235,12 +235,13 @@ def gameonline():
                 if enter_lobby is not None:
                     if enter_lobby.user_id == current_user.username:
                         if online_game is not None:
-                            print("Daaaaaaaaaaai")
+                            print("inserito")
                             online_game.codice2 = code
                             db.session.commit()
         return jsonify({'id': game_id})
     else:
         id = request.args.get('id')
+        print(str(id))
         online_game = Partita_online.query.filter_by(id=id).first()
         code = ''
         if online_game is not None:
@@ -445,14 +446,40 @@ def hasEnded():
     data = ({'ended': False, 'winner': ''})
     online_game = Partita_online.query.filter_by(id=id_game).first()
     if online_game is not None:
+        # if both players have ended the game, either by winning or by leaving the game
         if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
             partita = Partita.query.filter_by(id=id_game).first()
-            if online_game.oraFine1 < online_game.oraFine2:
-                data['winner'] = online_game.player1
-            elif online_game.oraFine1 > online_game.oraFine2:
-                data['winner'] = partita.player2
-            else:
+            maxRowMoves1 = Mossa.query.filter_by(partita_id=id_game, user_id=online_game.player1).order_by(Mossa.riga.desc()).first()
+            maxRowMoves2 = Mossa.query.filter_by(partita_id=id_game, user_id=partita.player2).order_by(Mossa.riga.desc()).first()
+            # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
+            if maxRowMoves1 is None and maxRowMoves2 is None:
                 data['winner'] = 'draw'
+            elif maxRowMoves1 is None:
+                data['winner'] = partita.player2
+            elif maxRowMoves2 is None:
+                data['winner'] = online_game.player1
+            else:
+                if maxRowMoves1.colore == online_game.codice1 and maxRowMoves2.colore == online_game.codice2:
+                    if maxRowMoves1.riga < maxRowMoves2.riga:
+                        data['winner'] = online_game.player1
+                    elif maxRowMoves1.riga > maxRowMoves2.riga:
+                        data['winner'] = partita.player2
+                    else:
+                        if online_game.oraFine1 < online_game.oraFine2:
+                            data['winner'] = online_game.player1
+                        elif online_game.oraFine1 > online_game.oraFine2:
+                            data['winner'] = partita.player2
+                        else:
+                            data['winner'] = 'draw'
+                # if only one player has won the game, the other player either lost or left the game
+                elif maxRowMoves1.colore == online_game.codice1:
+                    data['winner'] = online_game.player1
+                # if only one player has won the game, the other player either lost or left the game
+                elif maxRowMoves2.colore == online_game.codice2:
+                    data['winner'] = partita.player2
+                # if both players have lost the game, the game is a draw
+                else:
+                    data['winner'] = 'draw' 
             data['ended'] = True
     return jsonify(data)
 
@@ -478,6 +505,24 @@ def getMoves():
     for move in moves:
         movesArray.append({'row': move.riga, 'code': move.colore})
     return jsonify(movesArray)
+
+@app.route('/getSecretCode', methods=['POST'])
+@login_required
+def getSecretCode():
+    data = request.json
+    id_game = data.get('id')
+    online_game = Partita_online.query.filter_by(id=id_game).first()
+    code = ''
+    if online_game is not None:
+        if current_user.username == online_game.player1:
+            if online_game.codice1 is not None:
+                code = online_game.codice1
+        else:
+            if online_game.codice2 is not None:
+                code = online_game.codice2
+    print(id_game)
+    print(code)
+    return jsonify({'code': code})
 
 if __name__ == "__main__":
 

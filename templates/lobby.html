@@ -47,7 +47,7 @@
             timeleft = 5000;
             var idGame = null;
             var timeSpeed = 800;    // Tempo di aggiornamento in millisecondi, non diminuire troppo altrimenti si mandano troppe richieste al server aumentando il numero di partite create. Manda tutto in crash
-            setInterval(function() {
+            var checkConnection = setInterval(function() {
                 $.get('/isConnected', function(data) {
                     // Accesso ai dati JSON restituiti
                     var connected = data.connected;             // true if another player is connected
@@ -66,6 +66,7 @@
                     }
                     // Utilizzo dei dati
                     if (connected) {
+                        
                         if(creator){
                             $('#players').html('Utente connesso: ' + secondPlayer);
                         }
@@ -92,21 +93,23 @@
                                     }
                                 });
                             }else{
-                                $.ajax({
-                                    url: '/isCreated',
-                                    method: 'POST',
-                                    contentType: 'application/json',
-                                    data: {}, // Dati da passare alla funzione
-                                    success: function(response) {
-                                        // Ricevi il risultato e visualizzalo nella pagina
-                                        var created = response.created;
-                                        console.log(created);
-                                        if(created){
-                                            console.log(response);
-                                            window.location.href = '/game-online-code?id=' + response.id;
+                                var checkCreated = setInterval(function() {
+                                    $.ajax({
+                                        url: '/isCreated',
+                                        method: 'POST',
+                                        contentType: 'application/json',
+                                        data: {}, // Dati da passare alla funzione
+                                        success: function(response) {
+                                            // Ricevi il risultato e visualizzalo nella pagina
+                                            var created = response.created;
+                                            console.log(created);
+                                            if(created){
+                                                console.log(response);
+                                                window.location.href = '/game-online-code?id=' + response.id;
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }, timeSpeed);
                             }
                         }
                     }
