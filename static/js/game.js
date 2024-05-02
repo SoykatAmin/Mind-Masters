@@ -49,6 +49,15 @@ var game_started = false;
 //console.log(localStorage.getItem("acc"))
 
 
+function getStatus(posizioneCorretta){
+    if(posizioneCorretta==4){
+        return 1;   //vittoria
+    }else if(x==8){
+        return 2;   //sconfitta
+    }else{
+        return 3;   //partita in corso
+    }
+}
 
 /**
  * Calcola il numero di posizioni corrette e posizioni errate nel codice del giocatore rispetto al codice segreto.
@@ -120,7 +129,7 @@ function confrontaCodici() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
     // Variabile per tenere traccia del numero di colori corretti ma in posizione errata
-    posizioneCorretta=suggestion_aux(x);
+    posizioneCorretta = suggestion_aux(x);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         //suggerimenti(posizioneCorretta, posizioneErrata);
@@ -167,8 +176,9 @@ function confrontaCodiciPVP() {
     });
 
     posizioneCorretta=suggestion_aux(x);
+    var status = getStatus(posizioneCorretta);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
-    if (posizioneCorretta === 4) {
+    if (status === 1) {
         end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
@@ -181,7 +191,7 @@ function confrontaCodiciPVP() {
             }
         });
         // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
-        setInterval(function() {
+        var interval = setInterval(function() {
             $.ajax({
                 type: 'POST',
                 url: '/hasEnded',
@@ -191,6 +201,7 @@ function confrontaCodiciPVP() {
                     winnerUsername = data.winner;
                     var ended = data.ended;
                     if (ended) {
+                        clearInterval(interval);
                         console.log(winnerUsername);
                         if (username == winnerUsername) {
                             win = true;
@@ -203,6 +214,7 @@ function confrontaCodiciPVP() {
                             draw = True;
                             terminaPartita("Pareggio.");
                         }else {
+                            win = false;
                             terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
                         }
                     }
@@ -210,7 +222,7 @@ function confrontaCodiciPVP() {
             });
         }, 500);
 
-    } else if (x == 8) {
+    } else if (status == 2) {
         end_game = true;
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
@@ -701,8 +713,17 @@ window.onload = function() {
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
                     posizioneCorretta=suggestion_aux(x);
-                    
-                    x++;
+                    var status = getStatus(posizioneCorretta);
+                    if(status==1){
+                        end_game=true;
+                        win=true;
+                        if (x == 1) {
+                            terminaPartita("Che gigachad! Hai vinto al primo turno!");
+                        } else {
+                            terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
+                        }
+                    }
+                    confrontaCodiciPVP();
                 }
                 x = length+1;
                 avviaEventi();

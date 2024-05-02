@@ -415,6 +415,9 @@ def registerMove():
     id_game = data.get('gameID')
     row = data.get('row')
     code = data.get('code')
+    new_move = Mossa.query.filter_by(partita_id=id_game, user_id=current_user.username, riga=row).first()
+    if new_move is not None:
+        return jsonify(data)
     new_move = Mossa(user_id=current_user.username, partita_id=id_game, riga=row, colore=code)
     print('Mossa registrata' + str(new_move))
     db.session.add(new_move)
@@ -430,9 +433,11 @@ def endGame():
     online_game = Partita_online.query.filter_by(id=id_game).first()
     if online_game is not None:
         if player == online_game.player1:
-            online_game.oraFine1 = datetime.datetime.now()
+            if online_game.oraFine1 is None:
+                online_game.oraFine1 = datetime.datetime.now()
         else:
-            online_game.oraFine2 = datetime.datetime.now()
+            if online_game.oraFine2 is None:
+                online_game.oraFine2 = datetime.datetime.now()
         db.session.commit()
 
     return jsonify(data)
