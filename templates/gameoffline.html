@@ -48,7 +48,7 @@
                                             <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
 
                                                 <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
-                                                
+                                                <div class="ball-text" id="text-ball-{{ballRow.value}}-{{ballCol.value}}"></div>
                                             </div>
                                             {% set ballCol.value = ballCol.value + 1 %}
                                             {% if v == 8 %}
@@ -105,7 +105,7 @@
 
                     {% endfor %}
                     
-                    <div class="item-1" style="text-shadow: 1px 1px 60px black;">
+                    <div class="item-1" >
                         <button id="btn-color-1" onclick="changeColor('red')" class="input-color-button ball-text" style="background-color: red;">1</button>
                     </div>
 

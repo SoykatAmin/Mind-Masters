@@ -1,7 +1,6 @@
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
     
     const toggleSidebarButton = document.getElementById('sidebar-button');
@@ -90,7 +89,56 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-    
+    //-------gestione accessibilita-----//
+   
+
 });
+
+
+function accesibility() {
+    if(localStorage.getItem('accessibility')==null){
+        localStorage.setItem('accessibility', true);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:true}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+    
+    }
+    if(localStorage.getItem('accessibility') == 'false'){
+        localStorage.setItem('accessibility', true);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:true}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+        
+    }
+    else{
+        localStorage.setItem('accessibility', false);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:false}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+        
+    }   
+    console.log(localStorage.getItem('accessibility')); 
+}
+
+
+
 
 

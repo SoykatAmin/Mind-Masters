@@ -15,6 +15,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 #gestione accessibilità utente
+@app.route('/accessibility', methods=['GET', 'POST'])
+def accessibility():
+    data = request.json
+    session['acc'] = data.get('acc')
+    print(session['acc'])
+    return jsonify(data)
 
 
 # DATABASE CONFIGURATION
@@ -158,6 +164,9 @@ def register():
 
         if username in [user.username for user in User.query.all()]:
             msg = 'Username already exists'
+            return render_template('auth/register.html', msg=msg)
+        if email in [user.email for user in User.query.all()]:
+            msg = 'Email already exists'
             return render_template('auth/register.html', msg=msg)
         
         # Save hashed password to database for security purposes

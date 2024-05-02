@@ -22,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // When the page loads, scroll to the top for better user experience and to avoid bugs.
         window.onload = function() {
@@ -118,7 +119,25 @@
                             </a>
                         </li>
                     {% endif %}
-                       
+                    {%if request.path == '/'%}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link">
+                            <i class="fa-solid fa-list pe-2"></i>
+                            accessibilità
+                            <label class="switch allinea">
+                                <label class="switch allinea" >
+                                    {% if session['acc'] %} 
+                                        <input  id="checkbox" onclick="accesibility()" type="checkbox" checked>
+                                    {%else%}
+                                        <input id="checkbox" onclick="accesibility()" type="checkbox" >
+                                    {%endif%}
+                                    <span class="slider round"></span>
+                                </label>
+                            </label>
+                        </a>
+                    </li>
+                    
+                    {%endif%}
                 </ul>
 
             </div>
