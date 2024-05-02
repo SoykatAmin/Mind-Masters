@@ -1,4 +1,4 @@
-var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FASE SELECTION SORTTT!!!","Nel complesso, sai cheee", "Il sito si trova alla versione: 1982783","Sapevi che i numeri da 1 a 8 da tasiera ti permettono di inserire i colori "];
+var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FARE SELECTION SORTTT!!!","Nel complesso, sai cheee", "Il sito si trova alla versione: 1982783","Sapevi che i numeri da 1 a 8 da tasiera ti permettono di inserire i colori "];
 var frasiUsate = [];
 var ultimaFrase = "";
 
@@ -78,26 +78,27 @@ function loadPage(){
                                     console.log(response);
                                     idGame = response.id;
                                     // Costruisci manualmente l'URL con i parametri
-                                    var url = "/game-online-code?id=" + idGame;
-                                    window.location.href = url;
+                                    window.location.href = "/game-online-code?id="+idGame;
                                 }
                             });
                         }else{
-                            $.ajax({
-                                url: '/isCreated',
-                                method: 'POST',
-                                contentType: 'application/json',
-                                data: {}, // Dati da passare alla funzione
-                                success: function(response) {
-                                    // Ricevi il risultato e visualizzalo nella pagina
-                                    var created = response.created;
-                                    console.log(created);
-                                    if(created){
-                                        console.log(response);
-                                        window.location.href = '/game-online-code?id=' + response.id;
+                            setInterval(function() {
+                                $.ajax({
+                                    url: '/isCreated',
+                                    method: 'POST',
+                                    contentType: 'application/json',
+                                    data: {}, // Dati da passare alla funzione
+                                    success: function(response) {
+                                        // Ricevi il risultato e visualizzalo nella pagina
+                                        var created = response.created;
+                                        console.log(created);
+                                        if(created){
+                                            console.log(response);
+                                            window.location.href = '/game-online-code?id=' + response.id;
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }, timeSpeed);
                         }
                     }
                 }

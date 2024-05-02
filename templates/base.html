@@ -33,10 +33,10 @@
 <body>
     
     <!-- HTML code that will persist in all pages. It has the general outline and a responsive sidebar. -->
-
+    
     <div class="wrapper">
         <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
-        <div id="md_err" class="modal fade " data-bs-backdrop="false">
+        <div id="md_err" class="modal fade " data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="background-color: #4d4d4d;">
                     <div class="modal-body text-center" id="md_err_body"></div>
@@ -46,6 +46,32 @@
                 </div>
             </div>
         </div>
+        <div id="md_msg" class="modal fade" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: #4d4d4d;">
+                    <div class="modal-header ">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" id="md_body_msg" style="font-size: 1.2em;">Codice inviato, attendi che lo inserisca anche l'altro giocatore</div>
+                </div>
+            </div>
+        </div>
+        <div id="md_end" class="modal fade " data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: #4d4d4d;">
+                    <div class="modal-header ">
+                        <h2 class="modal-title " id="md_title"></h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
+                    <div class="modal-footer">
+                        <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
+                        <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block modal %}{% endblock %}
         <!-- Sidebar -->
         <aside id="sidebar">
             <div class="h-80">

@@ -6,6 +6,32 @@
     <script src="{{ url_for('static', filename='js/online.js') }}"></script>
     
 {% endblock %}
+{% block modal %}
+<div id="md_online" class="modal fade " data-bs-backdrop='static'>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div id="md_title"  class="modal-header">
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-header">
+                <h2 class="modal-title " id="md_body_online">Gioca online con i tuoi amici</h2>
+                <div hidden class="input-group mb-3" id="md_body_cod">
+                    <form action="{{ url_for('lobby', mode='enter') }}" id="enterRoomForm" method="post">
+                        <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice" name="code"/>
+                    </form>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="play_button btn_ok"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby', mode='create') }}`">Crea una stanza</button>
+                <button class=" play_button btn_ok"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
+                <button hidden class="play_button bnt_err"  id="left_bn_code" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="annulla()">Annulla</button>
+                <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit">Entra</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block body %}
 
@@ -107,30 +133,7 @@
     </div>
     <!--modal per avviare la partita online permettendo di creare o entrare in una stanza-->
     <!--data-bs-backdrop='false' da errore ma se nonn lo metto su telefono non funziona nulla-->
-    <div id="md_online" class="modal fade " data-bs-backdrop='false'>
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div id="md_title"  class="modal-header">
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-header">
-                    <h2 class="modal-title " id="md_body">Gioca online con i tuoi amici</h2>
-                    <div hidden class="input-group mb-3" id="md_body_cod">
-                        <form action="{{ url_for('lobby', mode='enter') }}" id="enterRoomForm" method="post">
-                            <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice" name="code"/>
-                        </form>
-                        
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="play_button btn_ok"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby', mode='create') }}`">Crea una stanza</button>
-                    <button class=" play_button btn_ok"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
-                    <button hidden class="play_button bnt_err"  id="left_bn_code" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="annulla()">Annulla</button>
-                    <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit">Entra</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 {% endblock %}
 

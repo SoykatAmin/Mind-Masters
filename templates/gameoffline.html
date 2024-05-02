@@ -8,28 +8,27 @@
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
         //salvare nella variabile di sessione il codice generato
-        startPVE()
+        
     </script>
 
 {% endblock %}
-
-{% block body %}
-    <!--modal he mosatra il risultato della partita vittoria/sconfitta -->
-    <div id="md_end" class="modal fade " data-bs-backdrop="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color: #4d4d4d;">
-                <div class="modal-header ">
-                    <h2 class="modal-title " id="md_title"></h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
-                <div class="modal-footer">
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
-                </div>
+{% block modal %}
+<div id="md_dif" class="modal fade " data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #4d4d4d;">
+            <div class="modal-body text-center" id="md_body_msg"></div>
+            <div class="modal-footer">
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('F')">facile</button>
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('N')">normale</button>
+                <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('D')">difficile</button>
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
+{% block body %}
+    <!--modal he mosatra il risultato della partita vittoria/sconfitta -->
+    
     
     <div class="main-container">
         <div class="game_board">
@@ -176,7 +175,7 @@
 
                     <div class="space"></div>
 
-                    <div class="item-11</div>">
+                    <div class="item-11">
                         <button id="sx-btn" onclick="sx()">
                             <h2>&#x2190</h2>
                         </button>
@@ -203,8 +202,11 @@
     <br>
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
-        avviaEventi()
-        keyButton()
+        
+        var modal_dif = new bootstrap.Modal('#md_dif');
+        modal_dif.show();
+        modal_aperto = true;
+        
         
     </script>
     <!-- Modal -->

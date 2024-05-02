@@ -1,14 +1,4 @@
 
-/*
-
-window.addEventListener('beforeunload', function(event) {
-    console.log("beforeunload");
-    if(game_started){
-        event.returnValue = "Sei sicuro di voler abbandonare la partita?";
-    }
-});*/
-
-
 // Variabile per tenere traccia del turno corrente e che righa modificare della tavola da gioco
 var x = 1;
 //variabile per tenere traccia della colonna
@@ -58,6 +48,9 @@ function getStatus(posizioneCorretta){
         return 3;   //partita in corso
     }
 }
+var modal_err;
+//variablie che tiene traccia della difficoltà del gioco(solo per la modalità PVE), sono tre F (facile), N (normale), D (difficile)
+var difficoltà_PVE;
 
 /**
  * Calcola il numero di posizioni corrette e posizioni errate nel codice del giocatore rispetto al codice segreto.
@@ -70,18 +63,27 @@ function getCode(x){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
         var codelm = document.getElementById(`ball-${x}-${i + 1}`);
+        if(codelm.style.backgroundColor==""){
+            codelm.style.backgroundColor="white";
+        }
         //controlla se sono stati inseriti tutti i colori o ci sono caselle vuote
-        if (codelm.style.backgroundColor == "" || codelm.style.backgroundColor == "white") {    
-            document.getElementById("md_err_body").innerHTML = "Inserisci tutti i colori prima di confermare il codice!";
-            const modal = new bootstrap.Modal('#md_err');
-            modal.show();
+        if (codelm.style.backgroundColor=="white" && difficoltà_PVE!='D') {    
+            document.getElementById("md_err_body").innerHTML = "Hai lasciato delle caselle vuote, inserisci tutti i colori prima di continuare!";
+            modal_err = new bootstrap.Modal('#md_err');
+            modal_err.show();
             modal_aperto=true;
-            return;
-        } else {
+            return -1;
+        } else if(color_code.includes(codelm.style.backgroundColor)&& difficoltà_PVE=='F'){
+            document.getElementById("md_err_body").innerHTML = "Hai inserito più volte lo stesso colore, inserisci i colori una sola volta prima di continuare!";
+            modal_err = new bootstrap.Modal('#md_err');
+            modal_err.show();
+            modal_aperto=true;
+            return -1;
+        }else {
             color_code.push(codelm.style.backgroundColor);
         }
     }
-    console.log("sdffsdfsdfdf" + color_code);
+    console.log(color_code);
     return color_code;
 }
 
@@ -92,6 +94,9 @@ function suggestion_aux(ex) {
     posizioneErrata = 0;
 
     var color_code = getCode(ex);
+    if(color_code==-1){
+        return -1;
+    }
     player_code = stringToCodice(color_code);
     console.log("Codice inserito " + player_code);
     // Confronta i valori inseriti dal giocatore con il codice segreto
@@ -124,12 +129,14 @@ legge il colore di sfondo dagli oggetti con id="ball-x-y" dove x sono la righa e
 Se il codice è corretto iposta win a true e chiama la funzione terminaPartita() con il messaggio da stampare a schermo
 in caso di codice non corretto chiama la funzione suggerimeti() ed incrementa la x nel caso fosse l'ultimo tentativo
 x=8 chiama la funzione terminaPartita()*/
-
 function confrontaCodici() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
     // Variabile per tenere traccia del numero di colori corretti ma in posizione errata
-    posizioneCorretta = suggestion_aux(x);
+    posizioneCorretta=suggestion_aux(x);
+    if(posizioneCorretta==-1){
+        return;//non fa nulla se il codice non è valido 
+    }
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (posizioneCorretta === 4) {
         //suggerimenti(posizioneCorretta, posizioneErrata);
@@ -148,10 +155,11 @@ function confrontaCodici() {
     } else {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
+        x++;
         scrollWin();
         //suggerimenti(posizioneCorretta, posizioneErrata);
         Colorful = [0, 0, 0, 0];
-        x++;
+    
         avviaEventi();
     }
 }
@@ -162,7 +170,9 @@ function confrontaCodiciPVP() {
     
     var color_code=getCode(x);
     player_code = stringToCodice(color_code);
-
+    if(posizioneCorretta==-1){
+        return;//non fa nulla se il codice non è valido 
+    }
     /* Insert move to database */
     stringCode = player_code.join("");
     var row = x-1;
@@ -182,16 +192,9 @@ function confrontaCodiciPVP() {
         end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
-        $.ajax({
-            type: 'POST',
-            url: '/endGame',
-            data: JSON.stringify({gameID: gameID, winner: username}),
-            contentType: 'application/json',
-            success: function(data) {
-            }
-        });
+        endGame();
         // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
-        var interval = setInterval(function() {
+        var endingInterval = setInterval(function() {
             $.ajax({
                 type: 'POST',
                 url: '/hasEnded',
@@ -201,20 +204,19 @@ function confrontaCodiciPVP() {
                     winnerUsername = data.winner;
                     var ended = data.ended;
                     if (ended) {
-                        clearInterval(interval);
+                        clearInterval(endingInterval);
                         console.log(winnerUsername);
                         if (username == winnerUsername) {
                             win = true;
-                            if (x == 1) {
+                            if(x == 1) {
                                 terminaPartita("Che gigachad! Hai vinto al primo turno!");
                             } else {
                                 terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
                             }
-                        } else if (winnerUsername == "draw") {
+                        } else if(winnerUsername == "draw") {
                             draw = True;
                             terminaPartita("Pareggio.");
-                        }else {
-                            win = false;
+                        }else{
                             terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
                         }
                     }
@@ -230,9 +232,10 @@ function confrontaCodiciPVP() {
     } else {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
         ball_selected.classList.remove("ball-selected");
+        x++;
         scrollWin();
         Colorful = [0, 0, 0, 0];
-        x++;
+        
         avviaEventi();
     }
 }
@@ -291,19 +294,26 @@ function suggerimenti(correct, color, x) {
  * Inizializza l'array Colorful con zeri, imposta x a 1 e imposta end_game a false.
  * Chiama la funzione game_timer.
  */
-function startPVE() {
+function startPVE(dif) {
     game_started = true;
+    difficoltà_PVE=dif;
+    
     if (debug) {
         secret_code = [1,1,2,3];//il codiece di debug è red red green blue
     }else{
-        for (let i = 0; i < 4; i++) {
-            secret_code.push(Math.floor(Math.random() * 8)+1);
-        } 
+        if(dif=="F"){
+            createEasyCode();
+        }else if(dif=="N"){
+            createNormalCode();
+        }else if(dif=="D"){
+            createHardCode();
+        }
     }
     Colorful=[0,0,0,0];
-    x=1;
     end_game = false;
     game_timer();
+    avviaEventi();
+    keyButton();
 }
 
 function startPVP() {
@@ -316,6 +326,41 @@ function startPVP() {
     game_timer();
 }
 
+/**
+ * funzione per creare un codice segreto casuale senza ripetizioni (difficoltà facile)
+ */
+function createEasyCode() {
+   
+    var i = 0;
+    while (i < 4) {
+        var color = Math.floor(Math.random() * 8) + 1;
+        if(!secret_code.includes(color)){
+            secret_code.push(color);
+            i++;
+        }
+    }
+    return secret_code;
+}
+
+/**
+ * funzione per creare un codice segreto casuale con ripetizioni (difficoltà normale)
+ */
+function createNormalCode() {
+    for (let i = 0; i < 4; i++) {
+        secret_code.push(Math.floor(Math.random() * 8)+1);
+    }
+    return secret_code;
+}
+/**
+ * Funzione per creare un codice segreto casuale con ripetizioni e spazzi vuoti (difficoltà difficile)
+ */
+function createHardCode() {
+    for (let i = 0; i < 4; i++) {
+        secret_code.push(Math.floor(Math.random() * 9));
+    }
+    console.log(secret_code);
+    return secret_code;
+}
 /**Avvia un timer per il gioco.
  Imposta il tempo rimasto in base alla modalità di debug.
  Avvia un timer che si ripete ogni secondo.
@@ -327,13 +372,14 @@ function game_timer() {
         timeleft = 240; // 4 minuti in secondi
     }
     // Avvia un timer che si ripete ogni secondo
-    var downloadTimer = setInterval(() => {
+    var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
-            clearInterval(downloadTimer);
+            clearInterval(gameTimer);
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
+            endGame();
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
@@ -352,7 +398,7 @@ function game_timer() {
         timeleft--;
         // Verifica se il gioco è terminato e interrompe il timer
         if (end_game) {
-            clearInterval(downloadTimer);
+            clearInterval(gameTimer);
         }
     }, 1000);
 }
@@ -400,7 +446,8 @@ function avviaEventi() {
     var delItem2= document.getElementById(`delete-ball-${x}-2`);
     var delItem3= document.getElementById(`delete-ball-${x}-3`);
     var delItem4= document.getElementById(`delete-ball-${x}-4`);
-
+    
+    // Selezione della prima palla
     var startball = document.getElementById(`ball-${x}-1`);
     startball.classList.add("ball-selected");
     
@@ -502,17 +549,28 @@ function avviaEventi() {
 
 // Funzione che fa scorrere lo schermo al div successivo
 function scrollWin() {
+    var screenHeight=window.innerHeight;
+    var targetElement;
     // Verifica se il turno corrente è maggiore di 2
     if (x > 2) {
         // Se sì, seleziona l'elemento div target tramite il suo ID
-        const targetElement = document.getElementById(`rig-${x-2}`);
+        if(screenHeight <= 300){
+            targetElement = document.getElementById(`rig-${x}`);
+            console.log("Ciaoooo");
+        }else if(screenHeight <= 600){
+            targetElement = document.getElementById(`rig-${x-1}`);
+        }else{
+            targetElement = document.getElementById(`rig-${x-2}`);
+        }
         // Scorri lo schermo in modo fluido verso l'elemento target
         targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+            behavior: 'smooth',  
         });
     }else{
-        const targetElement = document.getElementById(`rig-${x}`);
+        targetElement = document.getElementById(`rig-${x}`);
+        if(x>=1 && screenHeight <= 370){
+            targetElement = document.getElementById(`rig-${x+2}`);
+        }
         targetElement.scrollIntoView({
             behavior: 'smooth',
             block: 'end'
@@ -533,19 +591,8 @@ function terminaPartita(msg){
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
-    document.getElementById("invcod").disabled = true;
-    document.getElementById("btn-color-1").disabled = true;
-    document.getElementById("btn-color-2").disabled = true;
-    document.getElementById("btn-color-3").disabled = true;
-    document.getElementById("btn-color-4").disabled = true;
-    document.getElementById("btn-color-5").disabled = true;
-    document.getElementById("btn-color-6").disabled = true;
-    document.getElementById("btn-color-7").disabled = true;
-    document.getElementById("btn-color-8").disabled = true;
-    document.getElementById("dx-btn").disabled = true;
-    document.getElementById("sx-btn").disabled = true;
-    document.getElementById("cancCol").disabled = true;
-
+   
+    blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
     // Aggiungi un ritardo per far vedere il risultato
@@ -559,22 +606,41 @@ function terminaPartita(msg){
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
         }
         // Mostra il messaggio nel corpo del modal
-        document.getElementById("md_body").innerHTML = msg;
+        
         
         // Mostra il modal
-        //TODO :fare che ciudei modal gia aperti
-        const close_md = document.getElementById('md_err');
-        close_md.setAttribute("hidden", "hidden");
-        console.log("chiudo");
+        if(modal_err!=null){
+            modal_err.hide();
+        }
+        console.log(msg);
+        document.getElementById("md_body").innerHTML = msg;
         const modal = new bootstrap.Modal('#md_end');
         modal.show();
     }, 500);
 }
 
+function blockbutton(){
+    document.getElementById("invcod").disabled = true;
+    document.getElementById("btn-color-1").disabled = true;
+    document.getElementById("btn-color-2").disabled = true;
+    document.getElementById("btn-color-3").disabled = true;
+    document.getElementById("btn-color-4").disabled = true;
+    document.getElementById("btn-color-5").disabled = true;
+    document.getElementById("btn-color-6").disabled = true;
+    document.getElementById("btn-color-7").disabled = true;
+    document.getElementById("btn-color-8").disabled = true;
+    document.getElementById("dx-btn").disabled = true;
+    document.getElementById("sx-btn").disabled = true;
+    document.getElementById("cancCol").disabled = true;
+}
+
 //Funzione per convertire il codice in stringa di colori
 function codiceToString(codice){
-    var str = colori[codice[0]] + "," + colori[codice[1]] + "," + colori[codice[2]] + "," + colori[codice[3]];
-    return str;
+    var str_code_arr=[];
+    for (let i = 0; i < codice.length; i++) {
+        str_code_arr.push(colors[codice[i]]);
+    }
+    return str_code_arr;
 }
 
 //Funzione per convertire colori in codice dato un array di colori genera il codice corrispondente
@@ -687,7 +753,9 @@ function keyButton(){
     });
 }
 
-
+/*
+For online games, it retrieves the moves from the database and displays them on the screen.
+*/
 window.onload = function() {
     var url = window.location.href;
     if(url.includes("online-game")){
@@ -708,7 +776,7 @@ window.onload = function() {
                     var codeArray = code.split('').map(Number);
                     var posizioneCorretta=0;
 
-                    for (let j = 0; j < 4; j++) {
+                    for (let j = 0; j < 4; j++) {\
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
@@ -735,3 +803,20 @@ window.onload = function() {
         }
     }
 };
+
+// Inserisce il tempo di fine nel database se esce dalla pagina
+window.onbeforeunload = function() {
+    endGame();
+}
+
+// Inserisce il tempo di fine nel database
+function endGame() {
+    $.ajax({
+        type: 'POST',
+        url: '/endGame',
+        data: JSON.stringify({gameID: gameID, winner: username}),
+        contentType: 'application/json',
+        success: function(data) {
+        }
+    });
+}
