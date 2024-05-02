@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Toggle of class 'collapsed' of sidebar
         if(screenWidth <= screenLimit){
             toggleSidebarButton.style.visibility = 'hidden';
-            closeSidebarButton.style.visibisidebarlity = 'visible';
+            closeSidebarButton.style.visibility = 'visible';
         }else{
             closeSidebarButton.style.visibility = 'hidden';
         }
@@ -70,9 +70,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // console.log(isSidebarCollapsed);
         if (window.innerWidth <= screenLimit) {
             // If the window is smaller than screenLimit
+            closeSidebarButton.style.visibility = 'visible';
             if (!isSidebarCollapsed) {
                 // If the sidebar is open, close it and save the state
-                closeSidebarButton.style.visibility = 'hidden';
+                
                 toggleSidebarButton.style.visibility = 'visible';
                 sidebar.classList.add('closed');
                 localStorage.setItem('sidebarCollapsed', 'true');

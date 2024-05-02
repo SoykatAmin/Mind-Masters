@@ -776,7 +776,7 @@ window.onload = function() {
                     var codeArray = code.split('').map(Number);
                     var posizioneCorretta=0;
 
-                    for (let j = 0; j < 4; j++) {\
+                    for (let j = 0; j < 4; j++) {
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
