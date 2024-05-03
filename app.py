@@ -10,7 +10,6 @@ import datetime
 #variabili globali e inizializzazione
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-partite=[]#lista delle partite in corso
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 

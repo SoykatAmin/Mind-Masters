@@ -3,14 +3,11 @@
 document.addEventListener("DOMContentLoaded", function() {
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
     
-    const toggleSidebarButton = document.getElementById('sidebar-button');
-    const closeSidebarButton = document.getElementById('close-sidebar-button');
-    const sidebar = document.getElementById('sidebar');
     toggle = true;
     let sidebarOpen = true;
     let sidebarClosed = false;
     screenWidth = window.innerWidth;
-    const screenLimit = 1300;
+    
  
     // Fuction for the sidebar toggle button
     toggleSidebarButton.addEventListener('click', function toggleSidebar() {
@@ -52,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Function to manage the sidebar state on page load
     window.addEventListener('load', function() {
+
+        const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (window.innerWidth <= screenLimit) {
             sidebar.classList.add('closed');
             localStorage.setItem('sidebarCollapsed', 'true');
@@ -81,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // If the window is larger than screenLimit
             if (isSidebarCollapsed && toggle) {
                 // If the sidebar is closed and the user has manually opened it, reopen it and save the state
+                closeSidebarButton.style.visibility = 'hidden';
                 toggleSidebarButton.style.visibility = 'visible';
                 sidebar.classList.remove('closed');
                 localStorage.setItem('sidebarCollapsed', 'false');
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-function accesibility() {
+function accessibility() {
     if(localStorage.getItem('accessibility')==null){
         localStorage.setItem('accessibility', true);
         $.ajax({

@@ -75,6 +75,7 @@
         {% block modal %}{% endblock %}
         <!-- Sidebar -->
         <aside id="sidebar">
+            
             <div class="h-80">
                 <div class="sidebar-logo">
                     <div class="logo">
@@ -127,9 +128,9 @@
                             <label class="switch allinea">
                                 <label class="switch allinea" >
                                     {% if session['acc'] %} 
-                                        <input  id="checkbox" onclick="accesibility()" type="checkbox" checked>
+                                        <input  id="checkbox" onclick="accessibility()" type="checkbox" checked>
                                     {%else%}
-                                        <input id="checkbox" onclick="accesibility()" type="checkbox" >
+                                        <input id="checkbox" onclick="accessibility()" type="checkbox" >
                                     {%endif%}
                                     <span class="slider round"></span>
                                 </label>
@@ -173,6 +174,25 @@
             
         </div>
     </div>
+
+
+    <script>
+        // When the page loads, check if the sidebar is collapsed or not.
+        const toggleSidebarButton = document.getElementById('sidebar-button');
+        const sidebar = document.getElementById('sidebar');
+        const isSidebarClosed = localStorage.getItem('sidebarCollapsed');
+        const closeSidebarButton = document.getElementById('close-sidebar-button');
+        const screenLimit = 1300;
+        if (isSidebarClosed === 'true') {
+            sidebar.classList.add('closed');
+        }else{
+            sidebar.classList.remove('closed');
+        }
+
+        if (window.innerWidth > screenLimit) {
+            closeSidebarButton.style.visibility = 'hidden';
+        }
+    </script>
 
     
 </body>
