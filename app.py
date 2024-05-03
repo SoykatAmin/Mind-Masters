@@ -350,6 +350,7 @@ def create_game():
     data = request.json
     player2 = data.get('player2')
     lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    # check if there's already a game created by the user
     if lobby is None:
         enterLobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
         if enterLobby is not None:
