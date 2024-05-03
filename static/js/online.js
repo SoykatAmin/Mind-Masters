@@ -6,7 +6,7 @@ function iserisciCodice(){
     var left = document.getElementById("left_bn");
     var right = document.getElementById("right_bn");
    
-    var body = document.getElementById("md_body");
+    var body = document.getElementById("md_body_online");
     body.setAttribute("hidden", "hidden");
     var body_cod= document.getElementById("md_body_cod");
     body_cod.removeAttribute("hidden");
@@ -25,7 +25,7 @@ function annulla(){
     setTimeout(function() {
         var md_title = document.getElementById("md_title");
         md_title.removeAttribute("hidden");
-        var body = document.getElementById("md_body");
+        var body = document.getElementById("md_body_online");
         body.removeAttribute("hidden");
         var left = document.getElementById("left_bn");
         var right = document.getElementById("right_bn");

@@ -1,7 +1,6 @@
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
     
     const toggleSidebarButton = document.getElementById('sidebar-button');
@@ -18,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Toggle of class 'collapsed' of sidebar
         if(screenWidth <= screenLimit){
             toggleSidebarButton.style.visibility = 'hidden';
-            closeSidebarButton.style.visibisidebarlity = 'visible';
+            closeSidebarButton.style.visibility = 'visible';
         }else{
             closeSidebarButton.style.visibility = 'hidden';
         }
@@ -70,9 +69,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // console.log(isSidebarCollapsed);
         if (window.innerWidth <= screenLimit) {
             // If the window is smaller than screenLimit
+            closeSidebarButton.style.visibility = 'visible';
             if (!isSidebarCollapsed) {
                 // If the sidebar is open, close it and save the state
-                closeSidebarButton.style.visibility = 'hidden';
+                
                 toggleSidebarButton.style.visibility = 'visible';
                 sidebar.classList.add('closed');
                 localStorage.setItem('sidebarCollapsed', 'true');
@@ -89,7 +89,56 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-    
+    //-------gestione accessibilita-----//
+   
+
 });
+
+
+function accesibility() {
+    if(localStorage.getItem('accessibility')==null){
+        localStorage.setItem('accessibility', true);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:true}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+    
+    }
+    if(localStorage.getItem('accessibility') == 'false'){
+        localStorage.setItem('accessibility', true);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:true}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+        
+    }
+    else{
+        localStorage.setItem('accessibility', false);
+        $.ajax({
+            type: 'POST',
+            url: '/accessibility',
+            data: JSON.stringify({acc:false}),
+            contentType: 'application/json',
+            success: function(data) {
+                
+            }
+        });
+        
+    }   
+    console.log(localStorage.getItem('accessibility')); 
+}
+
+
+
 
 

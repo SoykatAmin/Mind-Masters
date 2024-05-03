@@ -15,6 +15,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 #gestione accessibilità utente
+@app.route('/accessibility', methods=['GET', 'POST'])
+def accessibility():
+    data = request.json
+    session['acc'] = data.get('acc')
+    print(session['acc'])
+    return jsonify(data)
 
 
 # DATABASE CONFIGURATION
@@ -158,6 +164,9 @@ def register():
 
         if username in [user.username for user in User.query.all()]:
             msg = 'Username already exists'
+            return render_template('auth/register.html', msg=msg)
+        if email in [user.email for user in User.query.all()]:
+            msg = 'Email already exists'
             return render_template('auth/register.html', msg=msg)
         
         # Save hashed password to database for security purposes
@@ -430,6 +439,9 @@ def registerMove():
     id_game = data.get('gameID')
     row = data.get('row')
     code = data.get('code')
+    new_move = Mossa.query.filter_by(partita_id=id_game, user_id=current_user.username, riga=row).first()
+    if new_move is not None:
+        return jsonify(data)
     new_move = Mossa(user_id=current_user.username, partita_id=id_game, riga=row, colore=code)
     print('Mossa registrata' + str(new_move))
     db.session.add(new_move)
@@ -445,9 +457,11 @@ def endGame():
     online_game = Partita_online.query.filter_by(id=id_game).first()
     if online_game is not None:
         if player == online_game.player1:
-            online_game.oraFine1 = datetime.datetime.now()
+            if online_game.oraFine1 is None:
+                online_game.oraFine1 = datetime.datetime.now()
         else:
-            online_game.oraFine2 = datetime.datetime.now()
+            if online_game.oraFine2 is None:
+                online_game.oraFine2 = datetime.datetime.now()
         db.session.commit()
 
     return jsonify(data)

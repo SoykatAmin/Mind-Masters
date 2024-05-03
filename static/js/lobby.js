@@ -35,11 +35,11 @@ function randomFrasi(){
     document.getElementById("frasi").innerHTML = frase;
 }
 
-function initiateLobby(){
+function loadPage(){
     $(document).ready(function() {
         timeleft = 5000;
         var idGame = null;
-        var timeSpeed = 1000;    // Tempo di aggiornamento in millisecondi, non diminuire troppo altrimenti si mandano troppe richieste al server aumentando il numero di partite create. Manda tutto in crash
+        var timeSpeed = 800;    // Tempo di aggiornamento in millisecondi, non diminuire troppo altrimenti si mandano troppe richieste al server aumentando il numero di partite create. Manda tutto in crash
         setInterval(function() {
             $.get('/isConnected', function(data) {
                 // Accesso ai dati JSON restituiti
@@ -47,7 +47,6 @@ function initiateLobby(){
                 var secondPlayer = data.username;           // username of the connected player
                 var creator = data.creator;                 // true if the user is the creator of the game
                 var disconnect = data.disconnect;           // true if the creator has disconnected
-                
                 if (disconnect) {
                     window.location.href = '/';
                 }

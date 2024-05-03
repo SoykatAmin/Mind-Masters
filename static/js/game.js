@@ -5,31 +5,22 @@ var x = 1;
 var y = 1;
 // Array per tenere traccia delle colonne selezionate
 var Colorful = [0, 0, 0, 0];
-
 // Array per memorizzare il codice segreto
 var secret_code = [];
-
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = true;
-
+var debug = false;
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
-
 // uguale a sopra pero in italiano pr stamparli a schermo
 var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Celeste", "Marrone"];
-
 // Flag per indicare se il gioco è terminato
 var end_game = false;
-
 // Tempo rimasto in secondi per il timer del gioco
 var timeleft = 900; // 15 minuti
-
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
-
 // Flag per indicare se il gioco è finito in pareggio
 var draw = false;
-
 // Variabile che indice l'username del vincitore
 var winnerUsername = "";
 
@@ -37,6 +28,17 @@ var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
 var game_started = false;
 //console.log(localStorage.getItem("acc"))
+var accessibilita=localStorage.getItem('accessibility')
+
+function getStatus(posizioneCorretta){
+    if(posizioneCorretta==4){
+        return 1;   //vittoria
+    }else if(x==8){
+        return 2;   //sconfitta
+    }else{
+        return 3;   //partita in corso
+    }
+}
 var modal_err;
 //variablie che tiene traccia della difficoltà del gioco(solo per la modalità PVE), sono tre F (facile), N (normale), D (difficile)
 var difficoltà_PVE;
@@ -48,7 +50,6 @@ var difficoltà_PVE;
  * @param {number} posizioneErrata - Il numero di posizioni errate nel codice del giocatore.
  * @param {Array} player_code - Il codice inserito dal giocatore.
  */
-
 function getCode(x){
     var color_code=[];
     for (let i = 0; i < 4; i++) {
@@ -176,8 +177,9 @@ function confrontaCodiciPVP() {
     });
 
     posizioneCorretta=suggestion_aux(x);
+    var status = getStatus(posizioneCorretta);
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
-    if (posizioneCorretta === 4) {
+    if (status === 1) {
         end_game = true;
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
@@ -213,7 +215,7 @@ function confrontaCodiciPVP() {
             });
         }, 500);
 
-    } else if (x == 8) {
+    } else if (status == 2) {
         end_game = true;
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
@@ -402,6 +404,9 @@ function changeColor(color) {
     var targetDiv=0;
     targetDiv = document.getElementById(`ball-${x}-${y}`);
     targetDiv.style.backgroundColor = color;
+    if(accessibilita=='true'){
+        document.getElementById(`text-ball-${x}-${y}`).innerHTML=colors.indexOf(color);
+    }
     Colorful[y-1] = 1;
     //trova il primo elemnto di colorful che è uguale a 0
     var next=0;
@@ -422,7 +427,6 @@ function changeColor(color) {
             moveBall(y+1);
         }
     }
-
 }
 // Funzione per rimuovere i colori selezionati quando ci si clicca sopra
 function avviaEventi() {
@@ -436,6 +440,11 @@ function avviaEventi() {
     var delItem2= document.getElementById(`delete-ball-${x}-2`);
     var delItem3= document.getElementById(`delete-ball-${x}-3`);
     var delItem4= document.getElementById(`delete-ball-${x}-4`);
+
+    var textItem1=document.getElementById(`text-ball-${x}-1`);
+    var textItem2=document.getElementById(`text-ball-${x}-2`);
+    var textItem3=document.getElementById(`text-ball-${x}-3`);
+    var textItem4=document.getElementById(`text-ball-${x}-4`);
     
     // Selezione della prima palla
     var startball = document.getElementById(`ball-${x}-1`);
@@ -446,46 +455,48 @@ function avviaEventi() {
     itemElement1.addEventListener('click', () => {
         if (/*Colorful[0] == 1 && */xatt == x) {
             delItem1.setAttribute("hidden", "hidden");
-           
+            textItem1.innerHTML="";
             itemElement1.style.backgroundColor = 'white';
             Colorful[0] = 0;
             moveBall(1);
-            console.log(x + " rimosso");
+            ;
         }
     });
     //vede se il muose è sopra
     itemElement1.addEventListener("mouseover", () => { 
         if (Colorful[0] == 1 && xatt == x) {
+            textItem1.setAttribute("hidden","hidden");
             delItem1.removeAttribute("hidden");
         }
-        console.log("mouse enter");
+        
     }, false);
     //vede se il mouse è tolto
     itemElement1.addEventListener("mouseleave", () => { 
         delItem1.setAttribute("hidden", "hidden");
-        console.log("mouse leave");
+        textItem1.removeAttribute("hidden");
     }, false);
 
     var itemElement2 = document.getElementById(`ball-${x}-2`);
     itemElement2.addEventListener('click', () => {
         if (/*Colorful[1] == 1 &&*/ xatt == x) {
             delItem2.setAttribute("hidden", "hidden");
-            
+            textItem2.innerHTML="";
             itemElement2.style.backgroundColor = 'white';
             Colorful[1] = 0;
             moveBall(2);
-            console.log("rimosso");
+            ;
         }
     });
     itemElement2.addEventListener("mouseover", () => { 
         if (Colorful[1] == 1 && xatt == x) {
+            textItem2.setAttribute("hidden","hidden");
             delItem2.removeAttribute("hidden");
         }
-        console.log("mouse enter");
+        
     }, false);
     itemElement2.addEventListener("mouseleave", () => { 
         delItem2.setAttribute("hidden", "hidden");
-        console.log("mouse leave");
+        textItem2.removeAttribute("hidden");
     }, false);
 
 
@@ -494,22 +505,23 @@ function avviaEventi() {
     itemElement3.addEventListener('click', () => {
         if (/*Colorful[2] == 1 && */xatt == x) {
             delItem3.setAttribute("hidden", "hidden");
+            textItem3.innerHTML="";
             itemElement3.style.backgroundColor = 'white';
             Colorful[2] = 0;
             moveBall(3);
-            console.log("rimosso");
         }
     });
     itemElement3.addEventListener("mouseover", () => {
         if (Colorful[2] == 1 && xatt == x) {
+            textItem3.setAttribute("hidden","hidden");
             delItem3.removeAttribute("hidden");
+
         }
-        console.log("mouse enter");
     }
     , false);
     itemElement3.addEventListener("mouseleave", () => {
         delItem3.setAttribute("hidden", "hidden");
-        console.log("mouse leave");
+        textItem3.removeAttribute("hidden");
     }
     , false);
 
@@ -517,22 +529,24 @@ function avviaEventi() {
     itemElement4.addEventListener('click', () => {
         if (/*Colorful[3] == 1 && */xatt == x) {
             delItem4.setAttribute("hidden", "hidden");
+            textItem4.innerHTML="";
             itemElement4.style.backgroundColor = 'white';
             Colorful[3] = 0;
             moveBall(4);
-            console.log("rimosso");
+            
         }
     });
     itemElement4.addEventListener("mouseover", () => {
         if (Colorful[3] == 1 && xatt == x) {
+            textItem4.setAttribute("hidden","hidden");
             delItem4.removeAttribute("hidden");
         }
-        console.log("mouse enter");
+        
     }
     , false);
     itemElement4.addEventListener("mouseleave", () => {
         delItem4.setAttribute("hidden", "hidden");
-        console.log("mouse leave");
+        textItem4.removeAttribute("hidden");
     }
     , false);
 }
@@ -682,6 +696,9 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
+    if(accessibilita=='true'){
+        document.getElementById(`text-ball-${x}-${y}`).innerHTML="";
+    }
     if(Colorful[y-1]==1){
         itemElement.style.backgroundColor = 'white';
         Colorful[y-1] = 0;
@@ -771,7 +788,17 @@ window.onload = function() {
                         codelm.style.backgroundColor = colors[codeArray[j]];
                     }
                     posizioneCorretta=suggestion_aux(x);
-                    x++;
+                    var status = getStatus(posizioneCorretta);
+                    if(status==1){
+                        end_game=true;
+                        win=true;
+                        if (x == 1) {
+                            terminaPartita("Che gigachad! Hai vinto al primo turno!");
+                        } else {
+                            terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
+                        }
+                    }
+                    confrontaCodiciPVP();
                 }
                 x = length+1;
                 avviaEventi();
