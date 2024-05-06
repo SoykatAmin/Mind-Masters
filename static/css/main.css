@@ -82,16 +82,30 @@ body {
     }
 }
 
-#sidebar {
-    width: 20vw; /* 20% della larghezza della viewport */
-    max-width: 264px; /* Larghezza massima di 264px */
-    min-width: 264px; /* Larghezza minima (20% di 264px) */
-    transition: all 0.35s ease-in-out;
-    box-shadow: 0 0 35px 0 rgba(18, 20, 24, 0.5);
-    display: flex;
-    flex-direction: column;
-    background-color: 222831;
+#sidebar-wrapper {
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 264px; /* Larghezza della sidebar */
+    height: 100vh; /* Altezza della sidebar (100% dell'altezza del viewport) */
+    
 }
+
+#sidebar {
+    background:#363636;
+    z-index: 1000; /* Valore z-index elevato per posizionarsi sopra */
+    position: relative; /* Posizionamento relativo all'interno del wrapper */
+    width: 264px; /* Larghezza della sidebar */
+    height: 100vh; /* Altezza della sidebar (100% dell'altezza del viewport) */
+    background-color: 222831;
+    transition: margin-left 0.5s ease; /* Aggiunge una transizione fluida per il margine sinistro */
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.5); 
+}
+
+#sidebar-button {
+    position: fixed;
+  }
 
 /* Sidebar division */
 
@@ -107,17 +121,12 @@ body {
 
 /* Sidebar collapse */
 
-#sidebar.closed {
-    margin-left: -264px;
-}
-
 .main {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
-    transition: all 0.35s ease-in-out;
 }
 
 .sidebar-logo {
@@ -261,24 +270,6 @@ a.sidebar-link {
 @media (min-width:768px) {
     .content {
         width: auto;
-    }
-}
-
-@media (max-width:1300px) {
-    .wrapper {
-        align-items: stretch;
-        display: grid;
-        grid-template-columns: 0 auto;
-        width: 100%;
-        color: #fff;
-        background-color: #363636;
-    }
-    #sidebar {
-        z-index: 1;
-        background-color: #363636;
-    }
-    .main {
-        z-index: 0;
     }
 }
 

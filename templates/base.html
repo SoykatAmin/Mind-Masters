@@ -34,141 +34,146 @@
 <body>
     
     <!-- HTML code that will persist in all pages. It has the general outline and a responsive sidebar. -->
+
+    <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
+    <div id="md_err" class="modal fade " data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-body text-center" id="md_err_body"></div>
+                <div class="modal-footer">
+                    <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="md_msg" class="modal fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-header ">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="md_body_msg" style="font-size: 1.2em;">Codice inviato, attendi che lo inserisca anche l'altro giocatore</div>
+            </div>
+        </div>
+    </div>
+    <div id="md_end" class="modal fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4d4d4d;">
+                <div class="modal-header ">
+                    <h2 class="modal-title " id="md_title"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
+                <div class="modal-footer">
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block modal %}{% endblock %}
     
     <div class="wrapper">
-        <!--modal per avvisare l'utente di qualcosa che non va es: non ha inserito tutti i colori-->
-        <div id="md_err" class="modal fade " data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color: #4d4d4d;">
-                    <div class="modal-body text-center" id="md_err_body"></div>
-                    <div class="modal-footer">
-                        <button class="play_button bnt_err" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false">ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="md_msg" class="modal fade" data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color: #4d4d4d;">
-                    <div class="modal-header ">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center" id="md_body_msg" style="font-size: 1.2em;">Codice inviato, attendi che lo inserisca anche l'altro giocatore</div>
-                </div>
-            </div>
-        </div>
-        <div id="md_end" class="modal fade " data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color: #4d4d4d;">
-                    <div class="modal-header ">
-                        <h2 class="modal-title " id="md_title"></h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
-                    <div class="modal-footer">
-                        <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
-                        <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% block modal %}{% endblock %}
-        <!-- Sidebar -->
-        <aside id="sidebar">
-            
-            <div class="h-80">
-                <div class="sidebar-logo">
-                    <div class="logo">
-                        <a href="{{ url_for('index') }}">Mind Masters</a>
-                    </div>
-                    <div class="close-button">
-                        <button type="button" class="btn-close btn-close-white" aria-label="Close" id="close-sidebar-button"></button>
-                    </div>
-                </div>
-                <!-- Sidebar Navigation -->
-                <ul class="sidebar-nav">
-                    
-                    <li class="sidebar-item">
-                        <a href="{{ url_for('rules') }}" class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
-                            Regole
-                        </a>
-                    </li>
-                    <!-- If the user is not logged in, show the register and login buttons.-->
-                    {% if not session['username'] %}
-                        <li class="sidebar-item">
-                            <a href="{{ url_for('register') }}" class="sidebar-link">
-                                <i class="fa-solid fa-list pe-2"></i>
-                                Registrati
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ url_for('login') }}" class="sidebar-link">
-                                <i class="fa-solid fa-list pe-2"></i>
-                                Accedi
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    <!-- If the user is logged in, show the logout button. -->
-
-                    {% if session['username'] %}
-                        <li class="sidebar-item">
-                            <a href="{{ url_for('logout') }}" class="sidebar-link">
-                                <i class="fa-solid fa-list pe-2"></i>
-                                Logout
-                            </a>
-                        </li>
-                    {% endif %}
-                    {%if request.path == '/'%}
-                    <li class="sidebar-item">
-                        <a class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
-                            accessibilità
-                            <label class="switch allinea">
-                                <label class="switch allinea" >
-                                    {% if session['acc'] %} 
-                                        <input  id="checkbox" onclick="accessibility()" type="checkbox" checked>
-                                    {%else%}
-                                        <input id="checkbox" onclick="accessibility()" type="checkbox" >
-                                    {%endif%}
-                                    <span class="slider round"></span>
-                                </label>
-                            </label>
-                        </a>
-                    </li>
-                    
-                    {%endif%}
-                </ul>
-
-            </div>
-            <div class="h-20">
-                <!-- Footer -->
-                    <div class="footer">
-                        <div class="row">
-                            <!-- List of links -->
-                            <ul>
-                                <li><a href="#">Contattaci</a></li>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Termini & Condizioni</a></li>
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <!-- Copyright information -->
-                            Copyright © 2024 Mind Masters - All rights reserved
-                        </div>
-                    </div>
+        
+        <div id="sidebar-wrapper">
+            <button class="btn" type="button" id="sidebar-button" data-bs-theme="dark">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Sidebar -->
+            <aside id="sidebar">
                 
-            </div>
-            
-        </aside>
+                <div class="h-80">
+                    <div class="sidebar-logo">
+                        <div class="logo">
+                            <a href="{{ url_for('index') }}">Mind Masters</a>
+                        </div>
+                        <div class="close-button">
+                            <button type="button" class="btn-close btn-close-white" aria-label="Close" id="close-sidebar-button"></button>
+                        </div>
+                    </div>
+                    <!-- Sidebar Navigation -->
+                    <ul class="sidebar-nav">
+                        
+                        <li class="sidebar-item">
+                            <a href="{{ url_for('rules') }}" class="sidebar-link">
+                                <i class="fa-solid fa-list pe-2"></i>
+                                Regole
+                            </a>
+                        </li>
+                        <!-- If the user is not logged in, show the register and login buttons.-->
+                        {% if not session['username'] %}
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('register') }}" class="sidebar-link">
+                                    <i class="fa-solid fa-list pe-2"></i>
+                                    Registrati
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('login') }}" class="sidebar-link">
+                                    <i class="fa-solid fa-list pe-2"></i>
+                                    Accedi
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <!-- If the user is logged in, show the logout button. -->
+
+                        {% if session['username'] %}
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('logout') }}" class="sidebar-link">
+                                    <i class="fa-solid fa-list pe-2"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        {% endif %}
+                        {%if request.path == '/'%}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link">
+                                <i class="fa-solid fa-list pe-2"></i>
+                                accessibilità
+                                <label class="switch allinea">
+                                    <label class="switch allinea" >
+                                        {% if session['acc'] %} 
+                                            <input  id="checkbox" onclick="accessibility()" type="checkbox" checked>
+                                        {%else%}
+                                            <input id="checkbox" onclick="accessibility()" type="checkbox" >
+                                        {%endif%}
+                                        <span class="slider round"></span>
+                                    </label>
+                                </label>
+                            </a>
+                        </li>
+                        
+                        {%endif%}
+                    </ul>
+
+                </div>
+                <div class="h-20">
+                    <!-- Footer -->
+                        <div class="footer">
+                            <div class="row">
+                                <!-- List of links -->
+                                <ul>
+                                    <li><a href="#">Contattaci</a></li>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Termini & Condizioni</a></li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <!-- Copyright information -->
+                                Copyright © 2024 Mind Masters - All rights reserved
+                            </div>
+                        </div>
+                    
+                </div>
+                
+            </aside>
+        </div>
         <!-- Main Component -->
-        <div class="main">
+        <div class="main" id="main-content">
             <main class="content">
-                <button class="btn" type="button" id="sidebar-button" data-bs-theme="dark">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                
                 {% block body %}{% endblock %}
             </main>
             
@@ -180,18 +185,37 @@
         // When the page loads, check if the sidebar is collapsed or not.
         const toggleSidebarButton = document.getElementById('sidebar-button');
         const sidebar = document.getElementById('sidebar');
-        const isSidebarClosed = localStorage.getItem('sidebarCollapsed');
+        isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
         const closeSidebarButton = document.getElementById('close-sidebar-button');
         const screenLimit = 1300;
-        if (isSidebarClosed === 'true') {
-            sidebar.classList.add('closed');
-        }else{
-            sidebar.classList.remove('closed');
+        toggle = true;
+
+        function closeSidebar() {
+            sidebar.style.marginLeft = '-264px'; // Chiudi la sidebar
+            sidebar.style.boxShadow = 'none';
+            //main.style.marginLeft = '0';
+            toggle = !toggle;
+            closeSidebarButton.style.visibility = 'hidden';
+            toggleSidebarButton.style.visibility = 'visible';
+            localStorage.setItem('sidebarCollapsed', 'true');
         }
 
-        if (window.innerWidth > screenLimit) {
-            closeSidebarButton.style.visibility = 'hidden';
+        function openSidebar() {
+            sidebar.style.boxShadow = '5px 10px 15px rgba(0, 0, 0, 0.5)';
+            sidebar.style.marginLeft = '0'; // Apri la sidebar
+            //main.style.marginLeft = '264px'; // Sposta il contenuto principale
+            toggle = !toggle;
+            closeSidebarButton.style.visibility = 'visible';
+            toggleSidebarButton.style.visibility = 'hidden';
+            localStorage.setItem('sidebarCollapsed', 'false');
         }
+
+        if (!isSidebarClosed) {
+            closeSidebar();
+        }else{
+            openSidebar();
+        }
+      
     </script>
 
     
