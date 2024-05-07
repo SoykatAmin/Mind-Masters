@@ -110,15 +110,18 @@ body, html {
 
 .input-color-button {
   border-radius: 50%; /* Crea un cerchio */
+  text-align: center;
 }
 
 #cancCol, #invcod, #dx-btn, #sx-btn{
   border-radius: 50%;
+  text-align: center;
 }
 
-.btn-close {
-  background-color: #fff; /* Set white background color with !important */
+.btn-close-game{
+  background-color: #fff; 
 }
+
 
 .timer{
   position: fixed;

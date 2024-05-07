@@ -293,7 +293,7 @@ function startPVE(dif) {
     difficoltà_PVE=dif;
     
     if (debug) {
-        secret_code = [1,1,2,3];//il codiece di debug è red red green blue
+        secret_code = [1,2,3,4];//il codiece di debug è red red green blue
     }else{
         if(dif=="F"){
             createEasyCode();
@@ -369,15 +369,20 @@ function game_timer() {
     var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
+            console.log("Tempo scaduto");
             clearInterval(gameTimer);
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
-            endGame();
+            //per il multiplayer
+            if(typeof gameID !== 'undefined' && gameID !== null){
+                endGame();
+            }
             document.getElementById("countdown").innerHTML = "Tempo scaduto";
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
+            console.log("Tempo rimasto: " + timeleft);
             // Calcola i minuti e i secondi rimanenti
             localStorage.setItem("timeleft", timeleft);
             

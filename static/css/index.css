@@ -137,10 +137,7 @@ input:checked + .slider:before {
   
 }
 
-/*cambia lo sfondo dei modal*/
-.modal-content{
-  background-color: #4d4d4d;
-}
+
 
 /* Left side game board example */
 

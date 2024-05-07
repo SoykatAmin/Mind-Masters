@@ -38,8 +38,8 @@
                                         {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
                                             <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}" >
 
-                                                <div class="btn-close" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
-                                                
+                                                <div class="btn-close btn-close-game" hidden id="delete-ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                                <div class="ball-text" id="text-ball-{{ballRow.value}}-{{ballCol.value}}"></div>
                                             </div>
                                             {% set ballCol.value = ballCol.value + 1 %}
                                             {% if v == 8 %}
