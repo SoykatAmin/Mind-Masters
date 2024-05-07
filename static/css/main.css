@@ -246,12 +246,25 @@ a.sidebar-link {
     --c:  #ADADAD; 
   }
   
+
+  .contenitore-pulsanti-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tre colonne con larghezza uguale */
+    grid-gap: 10px; /* Spazio tra i pulsanti */
+  }
+
+  .contenitore-pulsanti-2{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* due colonne con larghezza uguale */
+    grid-gap: 10px; /* Spazio tra i pulsanti */
+  }
+
   .btn_ok{
     /*colore del testo bianco */
     color: white;
     --c: #4c63e6;
     /*limita la larghezza */
-    width: 40%;
+    /* width: 40%; */
     /*padding */
     padding: 15px;
    

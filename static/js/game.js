@@ -8,7 +8,7 @@ var Colorful = [0, 0, 0, 0];
 // Array per memorizzare il codice segreto
 var secret_code = [];
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = true;
+var debug = false;
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 // uguale a sopra pero in italiano pr stamparli a schermo

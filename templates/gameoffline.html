@@ -16,8 +16,18 @@
 <div id="md_dif" class="modal fade " data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color: #4d4d4d;">
-            <div class="modal-body text-center" id="md_body_msg"></div>
-            <div class="modal-footer">
+            <div class="modal-header">
+                <h2 class="modal-title">Scegli la difficoltà</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-content">
+                    <h5><span style="font-weight: bold;">Facile</span>: il codice segreto non contiene colori ripetuti.<br>
+                    <span style="font-weight: bold;">Normale</span>: il codice segreto può contenere colori ripetuti.<br>
+                    <span style="font-weight: bold;">Difficile</span>: il codice segreto può contenere anche spazi vuoti.
+                    </h5>
+                </div>
+            </div>
+            <div class="modal-footer contenitore-pulsanti-3">
                 <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('F')">facile</button>
                 <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('N')">normale</button>
                 <button class="play_button btn_ok" data-bs-dismiss="modal"  style="margin: 0 auto;" onclick="modal_aperto=false;startPVE('D')">difficile</button>
