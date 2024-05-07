@@ -80,8 +80,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Sidebar -->
-            <aside id="sidebar">
-                
+            {%if  session['side']%}
+                <aside id="sidebar" style="margin-left: -264px; box-shadow: none;">
+            {%else%}
+                <aside id="sidebar">
+            {%endif%}
                 <div class="h-80">
                     <div class="sidebar-logo">
                         <div class="logo">
@@ -198,6 +201,16 @@
             closeSidebarButton.style.visibility = 'hidden';
             toggleSidebarButton.style.visibility = 'visible';
             localStorage.setItem('sidebarCollapsed', 'true');
+            
+            $.ajax({
+                type: 'POST',
+                url: '/sidebar',
+                data: JSON.stringify({side:true}),
+                contentType: 'application/json',
+                success: function(data) {
+                  console.log(data);
+                }
+            });
         }
 
         function openSidebar() {
@@ -205,16 +218,26 @@
             sidebar.style.marginLeft = '0'; // Apri la sidebar
             //main.style.marginLeft = '264px'; // Sposta il contenuto principale
             toggle = !toggle;
+            //sidebar.removeAttribute('hidden');
             closeSidebarButton.style.visibility = 'visible';
             toggleSidebarButton.style.visibility = 'hidden';
             localStorage.setItem('sidebarCollapsed', 'false');
+            $.ajax({
+                type: 'POST',
+                url: '/sidebar',
+                data: JSON.stringify({side:false}),
+                contentType: 'application/json',
+                success: function(data) {
+                   console.log(data);
+                }
+            });
         }
 
-        if (!isSidebarClosed) {
-            closeSidebar();
-        }else{
-            openSidebar();
-        }
+        // if (!isSidebarClosed) {
+        //     closeSidebar();
+        // }else{
+        //     openSidebar();
+        // }
       
     </script>
 

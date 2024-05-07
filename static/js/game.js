@@ -8,7 +8,7 @@ var Colorful = [0, 0, 0, 0];
 // Array per memorizzare il codice segreto
 var secret_code = [];
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = false;
+var debug = true;
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 // uguale a sopra pero in italiano pr stamparli a schermo
@@ -243,7 +243,9 @@ Successivamente, la funzione applica gli stili corretti agli elementi HTML dei s
 in occ*/
 function suggerimenti(correct, color, x) {
     var occ = [0, 0, 0, 0];
-    console.log("Correct: " + correct + " Color: " + color)
+    if(debug){
+        console.log("Correct: " + correct + " Color: " + color)
+    }
     
     // Riempimento dell'array occ con 1 per ogni colore corretto ma in posizione errata e 2 per ogni colore corretto e in posizione corretta
     //viene riempito in maniera casuale per non suggerire al giocatore a quale colore si rifrisce il suggerimento
@@ -260,6 +262,7 @@ function suggerimenti(correct, color, x) {
             var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
             suggestion.style.backgroundColor = "black";
             suggestion.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+            suggestion.style.borderBottom = "none";
         } else {
             i--;
         }

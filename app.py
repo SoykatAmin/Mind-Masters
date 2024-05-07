@@ -21,6 +21,15 @@ def accessibility():
     print(session['acc'])
     return jsonify(data)
 
+#gestione sidebar
+@app.route('/sidebar', methods=['GET', 'POST'])
+def sidebar():
+    data = request.json
+    session['side'] = data.get('side')
+    print(session['side'])
+    return jsonify(data)
+
+
 
 # DATABASE CONFIGURATION
 
