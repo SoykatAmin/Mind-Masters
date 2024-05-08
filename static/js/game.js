@@ -17,6 +17,8 @@ var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Cel
 var end_game = false;
 // Tempo rimasto in secondi per il timer del gioco
 var timeleft = 900; // 15 minuti
+// Tempo rimasto nel formato MM:SS
+var timeFormat;
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 // Flag per indicare se il gioco è finito in pareggio
@@ -390,6 +392,16 @@ function game_timer() {
             var seconds = timeleft % 60;
             // Formatta il tempo rimasto come MM:SS
             var formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeFormat = moment().minute(30).second(45);
+            timeFormat.year(2000);
+            timeFormat.month(0);
+            timeFormat.day(0);
+            timeFormat.hour(0);
+            timeFormat.minute(minutes);
+            timeFormat.second(seconds);
+            timeFormat.millisecond(0);
+            console.log(timeFormat.format("YYYY-MM-DD HH:mm:ss:SSSSSS"));
             // Aggiorna l'elemento HTML con il tempo rimasto
             document.getElementById("countdown").innerHTML = "Tempo rimasto " + formattedTime;
         }
@@ -829,7 +841,7 @@ function endGame() {
     $.ajax({
         type: 'POST',
         url: '/endGame',
-        data: JSON.stringify({gameID: gameID, winner: username}),
+        data: JSON.stringify({gameID: gameID, winner: username, time: timeFormat.format("YYYY-MM-DD HH:mm:ss")}),
         contentType: 'application/json',
         success: function(data) {
         }

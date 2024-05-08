@@ -26,7 +26,6 @@ def accessibility():
 def sidebar():
     data = request.json
     session['side'] = data.get('side')
-    print(session['side'])
     return jsonify(data)
 
 
@@ -462,14 +461,17 @@ def endGame():
     data = request.json
     id_game = data.get('gameID')
     player = data.get('winner')
+    time = data.get('time')
+    print(time)
+    print(datetime.datetime.now())
     online_game = Partita_online.query.filter_by(id=id_game).first()
     if online_game is not None:
         if player == online_game.player1:
             if online_game.oraFine1 is None:
-                online_game.oraFine1 = datetime.datetime.now()
+                online_game.oraFine1 = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
         else:
             if online_game.oraFine2 is None:
-                online_game.oraFine2 = datetime.datetime.now()
+                online_game.oraFine2 = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
         db.session.commit()
 
     return jsonify(data)
@@ -488,22 +490,34 @@ def hasEnded():
             maxRowMoves1 = Mossa.query.filter_by(partita_id=id_game, user_id=online_game.player1).order_by(Mossa.riga.desc()).first()
             maxRowMoves2 = Mossa.query.filter_by(partita_id=id_game, user_id=partita.player2).order_by(Mossa.riga.desc()).first()
             # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
+            print("asdasdasd")
             if maxRowMoves1 is None and maxRowMoves2 is None:
+                
                 data['winner'] = 'draw'
             elif maxRowMoves1 is None:
                 data['winner'] = partita.player2
             elif maxRowMoves2 is None:
                 data['winner'] = online_game.player1
             else:
-                if maxRowMoves1.colore == online_game.codice1 and maxRowMoves2.colore == online_game.codice2:
+                if maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
+
+                    print(online_game.oraFine1)
+                    print(online_game.oraFine2)
+                    print("aaaaadsd")
+                    print(online_game.oraFine1 < online_game.oraFine2)
+                    print(online_game.oraFine1 > online_game.oraFine2)
+ 
                     if maxRowMoves1.riga < maxRowMoves2.riga:
                         data['winner'] = online_game.player1
                     elif maxRowMoves1.riga > maxRowMoves2.riga:
                         data['winner'] = partita.player2
                     else:
-                        if online_game.oraFine1 < online_game.oraFine2:
+                        datetime1 = online_game.oraFine1
+                        datetime2 = online_game.oraFine2
+                    
+                        if datetime1 > datetime2:
                             data['winner'] = online_game.player1
-                        elif online_game.oraFine1 > online_game.oraFine2:
+                        elif datetime1 < datetime2:
                             data['winner'] = partita.player2
                         else:
                             data['winner'] = 'draw'
@@ -517,6 +531,7 @@ def hasEnded():
                 else:
                     data['winner'] = 'draw' 
             data['ended'] = True
+    
     return jsonify(data)
 
 @app.route('/hasInsertedCode', methods=['POST'])

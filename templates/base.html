@@ -22,6 +22,7 @@
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script>
         // When the page loads, scroll to the top for better user experience and to avoid bugs.
@@ -80,11 +81,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Sidebar -->
-            {%if  session['side']%}
+
                 <aside id="sidebar" style="margin-left: -264px; box-shadow: none;">
-            {%else%}
-                <aside id="sidebar">
-            {%endif%}
+
                 <div class="h-80">
                     <div class="sidebar-logo">
                         <div class="logo">
@@ -133,7 +132,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link">
                                 <i class="fa-solid fa-list pe-2"></i>
-                                accessibilità
+                                Accessibilità
                                 <label class="switch allinea">
                                     <label class="switch allinea" >
                                         {% if session['acc'] %} 
@@ -188,9 +187,11 @@
         // When the page loads, check if the sidebar is collapsed or not.
         const toggleSidebarButton = document.getElementById('sidebar-button');
         const sidebar = document.getElementById('sidebar');
+        localStorage.setItem('sidebarCollapsed', 'true');
         isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
         const closeSidebarButton = document.getElementById('close-sidebar-button');
         const screenLimit = 1300;
+
         toggle = true;
 
         function closeSidebar() {

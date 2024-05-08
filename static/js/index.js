@@ -42,14 +42,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log('sidebar chiusa al ridimensionamento della pagina');
                 closeSidebar();
             }
-        } else {
+        } /* else {
             // If the window is larger than screenLimit
             if (isSidebarClosed && toggle) {
                 console.log('sidebar aperta al ridimensionamento della pagina');
                 // If the sidebar is closed and the user has manually opened it, reopen it and save the state
                 openSidebar();
             }
-        }
+        }*/
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
