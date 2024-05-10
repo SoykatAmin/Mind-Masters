@@ -11,29 +11,41 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div id="md_title"  class="modal-header">
-                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="annulla()"></button>
             </div>
             <div class="modal-header">
                 <h2 class="modal-title " id="md_body_online">Gioca online con i tuoi amici</h2>
-                <div hidden class="input-group mb-3" id="md_body_cod">
+                <div hidden class="input-group mb-3" id="md_body_cod" style="text-align: center;">
+                    {%if err%}
+                        <h5 id="err" style="color: rgb(245, 75, 75);" >{{err}}</h5>
+                    {%endif%}
                     <form action="{{ url_for('lobby', mode='enter') }}" id="enterRoomForm" method="post">
                         <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice" name="code"/>
                     </form>
                     
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer contenitore-pulsanti-2">
                 <button class="play_button btn_ok"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby', mode='create') }}`">Crea una stanza</button>
                 <button class=" play_button btn_ok"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una stanza</button>
-                <button hidden class="play_button bnt_err"  id="left_bn_code" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="annulla()">Annulla</button>
-                <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit">Entra</button>
+                <button hidden class="play_button btn_ok"  id="left_bn_code" data-bs-dismiss="modal" style="--c:#fc1c1c; margin: 0 auto;" onclick="annulla()">Annulla</button>
+                <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit" onclick="window.location.href = `{{ url_for('lobby', mode='enter') }}`">Entra</button>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
+
 {% block body %}
+    {%if err %}
+        <script>
+            iserisciCodice();
+            callModal();
+            
+        </script>
+        
+    {% endif %}
 
     <!-- This is the homepage of this project. It contains a game board, and two buttons that allow users to start a new game against another user or a computer -->
 
