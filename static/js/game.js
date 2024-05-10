@@ -801,22 +801,10 @@ window.onload = function() {
                     var row = data[i].row;
                     var code = data[i].code;
                     var codeArray = code.split('').map(Number);
-                    var posizioneCorretta=0;
 
                     for (let j = 0; j < 4; j++) {
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
-                    }
-                    posizioneCorretta=suggestion_aux(x);
-                    var status = getStatus(posizioneCorretta);
-                    if(status==1){
-                        end_game=true;
-                        win=true;
-                        if (x == 1) {
-                            terminaPartita("Che gigachad! Hai vinto al primo turno!");
-                        } else {
-                            terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
-                        }
                     }
                     confrontaCodiciPVP();
                 }
