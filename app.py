@@ -310,6 +310,9 @@ def lobby():
         
         # if the lobby exists, add the user to the lobby
         if isCorrectLobby:
+            isThereAnotherPlayer = EntraLobby.query.filter_by(lobby_id=isCorrectLobby.id).first()
+            if isThereAnotherPlayer is not None:
+                return render_template('index.html', code=code, msg='Lobby piena')
             enter = EntraLobby(user_id=current_user.username, lobby_id=isCorrectLobby.id)
             db.session.add(enter)
             db.session.commit()
