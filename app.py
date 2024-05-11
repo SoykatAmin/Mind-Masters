@@ -129,6 +129,8 @@ class Lobby(db.Model):
         codice = db.Column(db.String(6), unique=True, nullable=False)
         player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
         idGame = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=True)
+        replay1 = db.Column(db.Boolean, nullable=False, default=False)               #se è una partita da rigiocare o no. all'inizio è false, viene messa a true 
+        replay2 = db.Column(db.Boolean, nullable=False, default=False)
 
 class EntraLobby(db.Model):
         
@@ -233,12 +235,12 @@ def gameonline():
         data = request.json
         game_id = data.get('id')
         code = data.get('code')
-        print("game id: " + str(game_id) + " code to win: " + code)
         lobby = Lobby.query.filter_by(idGame=game_id).first()
-        print(lobby)
         online_game = Partita_online.query.filter_by(id=game_id).first()
         if lobby is not None:
             print("Daaaaaaaaaaai")
+            lobby.replay1 = False
+            lobby.replay2 = False
             # if the current user is the creator of the lobby, update the code for the first player
             if lobby.player1 == current_user.username:
                 if online_game is not None:
@@ -258,6 +260,11 @@ def gameonline():
     else:
         id = request.args.get('id')
         print(str(id))
+        lobby = Lobby.query.filter_by(idGame=id).first()
+        if lobby is not None:
+            lobby.replay1 = False
+            lobby.replay2 = False
+            db.session.commit()
         online_game = Partita_online.query.filter_by(id=id).first()
         code = ''
         if online_game is not None:
@@ -290,11 +297,13 @@ def lobby():
             codeArray = random.choices('0123456789', k=6)                               #array of 6 random numbers
             code = ''.join(codeArray)                                                   #join the array to create a string
             new_lobby = Lobby(codice=code, player1=current_user.username)               #prepare the new lobby
+            new_lobby.replay1 = False
+            new_lobby.replay2 = False
             db.session.add(new_lobby)
             db.session.commit()
 
         # return the lobby page with the code, lobby creator and a message for the user 
-        return render_template('lobby.html', code=code, creator=current_user.username, msg=msg)
+        return render_template('lobby.html', code=code, creator=current_user.username, msg=msg, replay1=True, replay2=False)
     
     elif mode == 'enter':
         msg='Sei entrato in una lobby'
@@ -302,23 +311,24 @@ def lobby():
         if EntraLobby.query.filter_by(user_id=current_user.username).first() is not None:
             lobby_id = EntraLobby.query.filter_by(user_id=current_user.username).first().lobby_id
             code = Lobby.query.filter_by(id=lobby_id).first().codice
-            return render_template('lobby.html', code=code, creator=Lobby.query.filter_by(id=lobby_id).first().player1, msg=msg)
+            return render_template('lobby.html', code=code, creator=Lobby.query.filter_by(id=lobby_id).first().player1, msg=msg, replay1=True, replay2=True)
         
         # enter a lobby with the code provided by the user
         code = request.form['code']
         if code == '':
-            return render_template('index.html', code=code,err='Inserisci un codice')
+            return render_template('index.html', code=code, err='Inserisci un codice')
         isCorrectLobby = Lobby.query.filter_by(codice = code).first()
-        
+        isCorrectLobby.replay1 = True
+        isCorrectLobby.replay2 = True
         # if the lobby exists, add the user to the lobby
         if isCorrectLobby:
             isThereAnotherPlayer = EntraLobby.query.filter_by(lobby_id=isCorrectLobby.id).first()
             if isThereAnotherPlayer is not None:
-                return render_template('index.html', code=code, msg='Lobby piena')
+                return render_template('index.html', code=code, msg=current_user.username, err='Lobby piena')
             enter = EntraLobby(user_id=current_user.username, lobby_id=isCorrectLobby.id)
             db.session.add(enter)
             db.session.commit()
-            return render_template('lobby.html', code=code, msg=msg, creator=isCorrectLobby.player1)
+            return render_template('lobby.html', code=code, msg=msg, creator=isCorrectLobby.player1, replay1=True, replay2=True)
         
         # if the lobby doesn't exist, return the index page with an error message
         else:
@@ -326,6 +336,24 @@ def lobby():
 
     return render_template('index.html', msg='Errore')
 
+@app.route('/replay', methods=['GET', 'POST'])
+@login_required
+def replay():
+    # select mode from url query string (create or enter)
+    lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    if lobby is not None:
+        lobby.replay1 = True
+        db.session.commit()
+        return render_template('lobby.html', code=lobby.codice, creator=current_user.username, msg='Hai creato una lobby', replay1=lobby.replay1, replay2=lobby.replay2)
+    else:
+        Entra = EntraLobby.query.filter_by(user_id=current_user.username).first()
+        if Entra is not None:
+            lobby = Lobby.query.filter_by(id=Entra.lobby_id).first()
+            if lobby is not None:
+                lobby.replay2 = True
+                db.session.commit()
+                return render_template('lobby.html', code=lobby.codice, creator=lobby.player1, msg='Sei entrato in una lobby', replay1=lobby.replay1, replay2=lobby.replay2)
+    return render_template('index.html', msg='Errore', replay1=False, replay2=False)
 # funzioni per il dialogo client-server
 @app.route('/isConnected')
 def isConnected():
@@ -357,6 +385,27 @@ def isConnected():
     # should never happen
     return jsonify({'connected': False})
 
+@app.route('/isReplay')
+@login_required
+def isReplay():
+    lobby = Lobby.query.filter_by(player1=current_user.username).first()
+    data = {'replay1': False, 'replay2': False, 'disconnect': False}
+    if lobby is not None:
+        
+        data['replay1'] = lobby.replay1
+        data['replay2'] = lobby.replay2
+    else:
+        
+        enter = EntraLobby.query.filter_by(user_id=current_user.username).first()
+        if enter is not None:
+            lobby = Lobby.query.filter_by(id=enter.lobby_id).first()
+            if lobby is not None:
+                data['replay1'] = lobby.replay1
+                data['replay2'] = lobby.replay2   
+        else:
+            data['disconnect'] = True
+    return jsonify(data)
+
 @app.route('/game-online-code', methods=['GET', 'POST'])
 @login_required
 def gameonlinecode():
@@ -371,19 +420,6 @@ def create_game():
     data = request.json
     player2 = data.get('player2')
     lobby = Lobby.query.filter_by(player1=current_user.username).first()
-    # check if there's already a game created by the user
-    if lobby is None:
-        enterLobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
-        if enterLobby is not None:
-            lobby = Lobby.query.filter_by(id=enterLobby.lobby_id).first()
-            if lobby is not None:
-                if lobby.codice is not None:
-                    data = {'id': lobby.idGame}
-                    return jsonify(data)
-    else: 
-        if lobby.idGame is not None:
-            data = {'id': lobby.idGame}
-            return jsonify(data)
     new_Game = Partita()
     new_Game.OraInizio = datetime.datetime.now()
     new_Game.player2 = player2

@@ -1,6 +1,8 @@
 // Variabile che indice l'username del vincitore
 var winnerUsername = "";
-
+// Tempo rimasto nel formato MM:SS
+var timeFormat;
+var formattedTime;
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
@@ -25,6 +27,7 @@ function confrontaCodiciPVP() {
 
     posizioneCorretta=suggestion_aux(x);
     var status = getStatus(posizioneCorretta);
+    
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (status === 1) {
         end_game = true;
@@ -33,6 +36,7 @@ function confrontaCodiciPVP() {
         endGame();
         // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
         var endingInterval = setInterval(function() {
+            
             $.ajax({
                 type: 'POST',
                 url: '/hasEnded',
@@ -52,7 +56,7 @@ function confrontaCodiciPVP() {
                                 terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
                             }
                         } else if(winnerUsername == "draw") {
-                            draw = True;
+                            draw = true;
                             terminaPartita("Pareggio.");
                         }else{
                             terminaPartita("Mi dispiace, hai perso. Il vincitore è " + winnerUsername);
@@ -88,11 +92,29 @@ function startPVP() {
     game_timerPVP();
 }
 
+function getTime() {
+    var minutes = Math.floor(timeleft / 60);
+    var seconds = timeleft % 60;
+    // Formatta il tempo rimasto come MM:SS
+    formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    timeFormat = moment().minute(30).second(45);
+    timeFormat.year(2000);
+    timeFormat.month(0);
+    timeFormat.day(0);
+    timeFormat.hour(0);
+    timeFormat.minute(minutes);
+    timeFormat.second(seconds);
+    timeFormat.millisecond(0);
+    console.log(timeFormat.format("YYYY-MM-DD HH:mm:ss:SSSSSS"));
+}
+
 function game_timerPVP() {
     // Imposta il tempo rimasto in base alla modalità di debug
     if (debug) {
         timeleft = 240; // 4 minuti in secondi
     }
+    getTime();
     // Avvia un timer che si ripete ogni secondo
     var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
@@ -111,23 +133,12 @@ function game_timerPVP() {
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
             console.log("Tempo rimasto: " + timeleft);
+            console.log("Tempo rimasto: ");
             // Calcola i minuti e i secondi rimanenti
             localStorage.setItem("timeleft", timeleft);
             
-            var minutes = Math.floor(timeleft / 60);
-            var seconds = timeleft % 60;
-            // Formatta il tempo rimasto come MM:SS
-            var formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            getTime();
             
-            timeFormat = moment().minute(30).second(45);
-            timeFormat.year(2000);
-            timeFormat.month(0);
-            timeFormat.day(0);
-            timeFormat.hour(0);
-            timeFormat.minute(minutes);
-            timeFormat.second(seconds);
-            timeFormat.millisecond(0);
-            console.log(timeFormat.format("YYYY-MM-DD HH:mm:ss:SSSSSS"));
             // Aggiorna l'elemento HTML con il tempo rimasto
             document.getElementById("countdown").innerHTML = "Tempo rimasto " + formattedTime;
         }
@@ -138,13 +149,16 @@ function game_timerPVP() {
             clearInterval(gameTimer);
         }
     }, 1000);
+    populateMoves();
 }
 
 /*
 For online games, it retrieves the moves from the database and displays them on the screen.
 */
-window.onload = function() {
+
+function populateMoves() {
     var url = window.location.href;
+    
     if(url.includes("online-game")){
         $.ajax({
             type: 'POST',
@@ -168,7 +182,6 @@ window.onload = function() {
                     }
                     confrontaCodiciPVP();
                 }
-                x = length+1;
                 avviaEventi();
             }
         });
@@ -186,10 +199,11 @@ window.onbeforeunload = function() {
 
 // Inserisce il tempo di fine nel database
 function endGame() {
+    format = timeFormat.format("YYYY-MM-DD HH:mm:ss");
     $.ajax({
         type: 'POST',
         url: '/endGame',
-        data: JSON.stringify({gameID: gameID, winner: username, time: timeFormat.format("YYYY-MM-DD HH:mm:ss")}),
+        data: JSON.stringify({gameID: gameID, winner: username, time: format}),
         contentType: 'application/json',
         success: function(data) {
         }

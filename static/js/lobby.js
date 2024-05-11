@@ -40,6 +40,7 @@ function loadPage(){
         timeleft = 5000;
         var idGame = null;
         var timeSpeed = 800;    // Tempo di aggiornamento in millisecondi, non diminuire troppo altrimenti si mandano troppe richieste al server aumentando il numero di partite create. Manda tutto in crash
+        
         setInterval(function() {
             $.get('/isConnected', function(data) {
                 // Accesso ai dati JSON restituiti
@@ -47,6 +48,21 @@ function loadPage(){
                 var secondPlayer = data.username;           // username of the connected player
                 var creator = data.creator;                 // true if the user is the creator of the game
                 var disconnect = data.disconnect;           // true if the creator has disconnected
+                
+                $.get('/isReplay', function(data) {
+                    if (data.replay1) {
+                        replay1 = data.replay1;
+                    }
+                    if (data.replay2) {
+                        replay2 = data.replay2;
+                    }
+                    console.log(data.disconnect);
+                    if(data.disconnect){
+                        console.log("disconnesso");
+                        disconnect = data.disconnect;
+                        window.location.href = '/';
+                    }
+                });
                 if (disconnect) {
                     window.location.href = '/';
                 }
@@ -56,7 +72,7 @@ function loadPage(){
                     $('#players').html('');
                 }
                 // Utilizzo dei dati
-                if (connected) {
+                if (connected & replay1 & replay2) {
                     if(creator){
                         $('#players').html('Utente connesso: ' + secondPlayer);
                     }

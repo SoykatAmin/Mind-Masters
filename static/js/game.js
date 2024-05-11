@@ -17,8 +17,7 @@ var colori = ["Bianco", "Rosso", "Verde", "Blu", "Rosa", "Giallo", "Viola", "Cel
 var end_game = false;
 // Tempo rimasto in secondi per il timer del gioco
 var timeleft = 900; // 15 minuti
-// Tempo rimasto nel formato MM:SS
-var timeFormat;
+
 // Flag per indicare se il giocatore ha vinto il gioco
 var win = false;
 // Flag per indicare se il gioco è finito in pareggio
@@ -521,19 +520,22 @@ function terminaPartita(msg){
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
-   
     blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
     // Aggiungi un ritardo per far vedere il risultato
     setTimeout(()=> {
         // Mostra il titolo del modal in base al risultato
+        console.log(win)
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
+            document.getElementById("md_titleOnline").innerHTML = "Complimenti hai vinto";
         }else if(draw){
             document.getElementById("md_title").innerHTML = "Pareggio";
+            document.getElementById("md_titleOnline").innerHTML = "Pareggio";
         }else {
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
+            document.getElementById("md_titleOnline").innerHTML = "Mi dispiace hai perso";
         }
         // Mostra il messaggio nel corpo del modal
         
@@ -544,7 +546,14 @@ function terminaPartita(msg){
         }
         console.log(msg);
         document.getElementById("md_body").innerHTML = msg;
-        const modal = new bootstrap.Modal('#md_end');
+        document.getElementById("md_bodyOnline").innerHTML = msg;
+        var modal;
+        var url = window.location.href;
+        if(url.includes("online-game")){
+            modal = new bootstrap.Modal('#md_endOnline');
+        }else{
+            modal = new bootstrap.Modal('#md_end');
+        }
         modal.show();
     }, 500);
 }
