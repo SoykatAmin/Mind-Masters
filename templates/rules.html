@@ -13,37 +13,55 @@
         <div class="rules">
             <div class="rule-section">
                 <h3>Obiettivo del Gioco</h3>
-                <p>Il Mastermind è un gioco di logica in cui un giocatore, noto come "decifratore", cerca di indovinare una combinazione segreta di colori o numeri, creata da un altro giocatore, il "codificatore".</p>
+                <p>Il Mastermind è un gioco di logica in cui un giocatore, noto come "decifratore", cerca di indovinare una combinazione segreta di colori, creata da un altro giocatore, il "codificatore".</p>
             </div>
             <div class="rule-section">
                 <h3>Preparazione</h3>
                 <ol>
-                    <li>Il codificatore seleziona una combinazione segreta di colori o numeri e la registra senza che il decifratore possa vederla.</li>
+                    <li>Il codificatore seleziona una combinazione segreta di colori e la registra senza che il decifratore possa vederla.</li>
                     <li>Il decifratore dispone di un numero prestabilito di tentativi per indovinare la combinazione segreta.</li>
                 </ol>
             </div>
             <div class="rule-section">
                 <h3>Gioco</h3>
                 <ol>
-                    <li>Il decifratore propone una sequenza di colori o numeri, che il codificatore confronta con la combinazione segreta.</li>
-                    <li>Il codificatore fornisce degli indizi al decifratore, di solito sotto forma di bolle colorate o simboli, per indicare quanti colori o numeri sono stati indovinati e quanti di essi sono nella posizione corretta.</li>
+                    <li>Il decifratore propone una sequenza di colori, che il codificatore confronta con la combinazione segreta.</li>
+                    <li>Il codificatore fornisce degli indizi al decifratore,sotto forma di simboli, per indicare quanti colori o sono stati indovinati e quanti di essi sono nella posizione corretta.</li>
                     <li>Il decifratore utilizza gli indizi forniti dal codificatore per raffinare le sue successive proposte e tentare di indovinare la combinazione segreta.</li>
                     <li>Il gioco continua fino a quando il decifratore indovina la combinazione segreta o esaurisce tutti i tentativi a sua disposizione.</li>
                 </ol>
             </div>
             <div class="rule-section">
-                <h3>Gioco Online</h3>
+                <h3>Gioco Singleplayer</h3>
                 <ol>
-                    <li>Nella versione online ogni giocatore agirà sia da codificatore che da decifratore. All'inizio della partita ognuno avrà 30 secondi per decidere la combinazione segreta.</li>
+                    <li>Nella versione Singleplayer il giocatore agirà da decifratore, invece il ruolo da codificatore sarà fatto in automatico dal computer</li>
+                    <li>All'avvio della partita al giocatore verrà chiesto di scegliere la difficoltà del codice:</li>
+                    <ul>
+                        <li>Facile: il codice non conterrà colori ripetuti;</li>
+                        <li>Normale: il codice può contenere colori ripetuti; </li>
+                        <li>Difficile: il codice può contenere anche spazzi vuoti; </li>
+                    </ul>
+                    <li>Una volta scelta la difficoltà il gioco verrà avviato automativamente e partira il timer di 15 minti</li>
+                    <li>La partita terminerà quando il giocatore indovina il codice vincendo,oppure allo scadere del tempo o al termine degli otto tentativi disponibi perdendo la partita</li>
+                </ol>
+            </div>
+            <div class="rule-section">
+                <h3>Gioco Multyplayer</h3>
+                <ol>
+                    <li>Nella versione online ogni giocatore agirà sia da codificatore che da decifratore.</li>
+                    <li>All'inizio della partita ognuno avrà 30 secondi per decidere la combinazione,che non può contenere spazzi vuoti, segreta che dovra indovinare il giocatore avverasio.</li>
+                    <li>Qualora un giocatore non iserisce il codice allo scadere del tempo verra generato in automatico uno in modalità Facile</li>
                     <li>Il gioco si svolgerà parallelamente. Il primo che indovina la combinazione segreta vince.</li>
-                    <li>Se nessuno indovina la combinazione segreta entro il limite di tentativi, la partita termina in parità.</li>
+                    <li>Se nessuno indovina la combinazione segreta entro il limite di tentativi o allo scadere del tempo, la partita terminerà con la sconfitta di entrabi</li>
                 </ol>
             </div>
             <div class="rule-section">
                 <h3>Indizi</h3>
+                <span>Il codificatore fornisce degli indizi al decifratore sotto forma di simboli, per indicare quanti colori sono stati indovinati e quanti di essi sono nella posizione corretta. Gli indizzi sono inseriti in posizioni casuali</span>
                 <ol>
-                    <li>Un cerchio indica che un colore o un numero è corretto e si trova nella posizione corretta.</li>
-                    <li>Un quadrato indica che un colore o un numero è corretto, ma si trova in una posizione diversa.</li>
+                    <li>Un triangolo nero indica che un colore è corretto e si trova nella posizione corretta.</li>
+                    <li>Un cerchio nero indica che un colore è corretto, ma si trova in una posizione errata.</li>
+                    <li>Un quandrato bianco vuol dire che il colore non è presente nel codice</li>
                 </ol>
             </div>
         </div>

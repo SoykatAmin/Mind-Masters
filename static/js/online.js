@@ -37,6 +37,9 @@ function annulla(){
         var right_code = document.getElementById("right_bn_code");
         left_code.setAttribute("hidden", "hidden");
         right_code.setAttribute("hidden", "hidden");
+        var err=document.getElementById("err");
+        err.innerHTML="";
+
     }, 600);
 }
 

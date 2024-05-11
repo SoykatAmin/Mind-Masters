@@ -306,6 +306,8 @@ def lobby():
         
         # enter a lobby with the code provided by the user
         code = request.form['code']
+        if code == '':
+            return render_template('index.html', code=code,err='Inserisci un codice')
         isCorrectLobby = Lobby.query.filter_by(codice = code).first()
         
         # if the lobby exists, add the user to the lobby
@@ -320,7 +322,7 @@ def lobby():
         
         # if the lobby doesn't exist, return the index page with an error message
         else:
-            return render_template('index.html', code=code, msg='Nessuna lobby disponibile')
+            return render_template('index.html', code=code, err='Nessuna lobby disponibile con il codice inserito')
 
     return render_template('index.html', msg='Errore')
 
