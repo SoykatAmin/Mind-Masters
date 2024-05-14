@@ -172,10 +172,10 @@ def register():
         email = request.form['email']
 
         if username in [user.username for user in User.query.all()]:
-            msg = 'Username already exists'
+            msg = 'Username già esistente'
             return render_template('auth/register.html', msg=msg)
         if email in [user.email for user in User.query.all()]:
-            msg = 'Email already exists'
+            msg = 'Email già esistente'
             return render_template('auth/register.html', msg=msg)
         
         # Save hashed password to database for security purposes
@@ -204,9 +204,9 @@ def login():
                 login_user(user)
                 return redirect(url_for('index'))
             else:
-                msg = 'Incorrect password'
+                msg = 'password errata'
         else:
-            msg = 'Username does not exist'
+            msg = 'Username non esistente'
 
     return render_template('auth/login.html', msg=msg)
 
@@ -353,7 +353,7 @@ def replay():
                 lobby.replay2 = True
                 db.session.commit()
                 return render_template('lobby.html', code=lobby.codice, creator=lobby.player1, msg='Sei entrato in una lobby', replay1=lobby.replay1, replay2=lobby.replay2)
-    return render_template('index.html', msg='Errore', replay1=False, replay2=False)
+    return render_template('index.html', stanzaErr='Il creatore ha abbandonato la stanza', replay1=False, replay2=False)
 # funzioni per il dialogo client-server
 @app.route('/isConnected')
 def isConnected():

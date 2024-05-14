@@ -197,6 +197,8 @@ window.onbeforeunload = function() {
     endGame();
 }
 
+
+
 // Inserisce il tempo di fine nel database
 function endGame() {
     format = timeFormat.format("YYYY-MM-DD HH:mm:ss");

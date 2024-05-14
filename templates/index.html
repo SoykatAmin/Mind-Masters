@@ -46,6 +46,15 @@
         </script>
         
     {% endif %}
+    {% if stanzaErr%}
+        <script>
+            var err = "{{stanzaErr}}";  
+            const modal = new bootstrap.Modal('#md_err');
+            const modalBody = document.getElementById('md_err_body');
+            modalBody.innerHTML = err;
+            modal.show();
+        </script>
+    {% endif %}
 
     <!-- This is the homepage of this project. It contains a game board, and two buttons that allow users to start a new game against another user or a computer -->
 
