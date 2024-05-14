@@ -16,9 +16,9 @@
             <div class="modal-header">
                 <h2 class="modal-title " id="md_body_online">Gioca online con i tuoi amici</h2>
                 <div hidden class="input-group mb-3" id="md_body_cod" style="text-align: center;">
-                    {%if err%}
-                        <h5 id="err" style="color: rgb(245, 75, 75);" >{{err}}</h5>
-                    {%endif%}
+                    
+                    <h5 id="err" style="color: rgb(245, 75, 75);" >{{err}}</h5>
+                    
                     <form action="{{ url_for('lobby', mode='enter') }}" id="enterRoomForm" method="post">
                         <input type="text" class="form-control" placeholder="Inserisci il codice della stanza" id="codice" name="code"/>
                     </form>
