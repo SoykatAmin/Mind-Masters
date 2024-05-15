@@ -213,10 +213,23 @@ function hasInsertedCode(){
             data: JSON.stringify(data),
             success: function(response){
                 var inserted = response.inserted;
+                isConnected();
                 if(inserted){
-                    window.location.href = "/online-game?id="+idGame;
+                    window.location.href = "/online-game?id=" + idGame;
                 }
             }
         });
     }, 500);
+}
+
+function isConnected(){
+    var data = {id: idGame};
+    $.get('/isConnected', function(data) {
+            var disconnect = data.disconnect;
+            var connected = data.connected;
+            console.log(disconnect);
+            if(disconnect || !connected){
+                window.location.href = "/?err=1";
+            }
+    });
 }

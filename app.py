@@ -371,7 +371,7 @@ def isConnected():
                     return jsonify({'disconnect': True})
                 else:
                     return jsonify({'connected': True, 'creator': isCreator})
-            # should never happen
+            # should never happen, or the lobby has been deleted or the user has been removed from the lobby
             return jsonify({'connected': False, 'creator': isCreator})
         # if the user is the creator of the lobby
         if lobby.player1 == current_user.username:

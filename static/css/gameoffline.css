@@ -230,11 +230,10 @@ body, html {
   }
   .game_board{
     margin-bottom: 15vh;
-
   }
 }
 
-@media (min-width: 700px) and (max-width: 900px){
+@media (min-width: 700px) and (max-width: 900px) {
   .input-color-button, #cancCol, #invcod, #dx-btn, #sx-btn {
     width: 65px;
     height: 65px;
@@ -270,5 +269,35 @@ body, html {
   .input-color-button, #cancCol, #invcod, #dx-btn, #sx-btn {
     width: 72px;
     height: 72px;
+  }
+}
+
+@media (max-height: 580px){
+  .input-color-button, #cancCol, #invcod, #dx-btn, #sx-btn {
+    width: 65px;
+    height: 65px;
+  }
+  .game_board{
+    margin-bottom: 15vh;
+  }
+}
+
+@media (max-height: 540px){
+  .input-color-button, #cancCol, #invcod, #dx-btn, #sx-btn {
+    width: 50px;
+    height: 50px;
+  }
+  .game_board{
+    margin-bottom: 15vh;
+  }
+}
+
+@media (max-height: 400px){
+  .input-color-button, #cancCol, #invcod, #dx-btn, #sx-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .game_board{
+    margin-bottom: 15vh;
   }
 }
