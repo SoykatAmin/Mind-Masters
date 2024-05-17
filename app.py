@@ -5,6 +5,7 @@ import bcrypt
 import random
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import datetime
+from flask_migrate import Migrate
 
 #classe per connessione partita  
 #variabili globali e inizializzazione
@@ -35,6 +36,9 @@ def sidebar():
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'database.db')
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -46,7 +50,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255), primary_key=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
-
     statistics = db.relationship("Statistic", backref="user", uselist=False)  # One-to-One with Statistic
 
     def get_id(self):
