@@ -70,9 +70,10 @@ input:checked + .slider:before {
 /* Main content */
 
 .container-fluid{
-    display: flex; /* Enable flexbox layout */
-    flex-direction: row; /* Default to vertical direction */
-    width: 100%; /* Make container span full page width */
+  margin-top: 3%;
+  display: flex; /* Enable flexbox layout */
+  flex-direction: row; /* Default to vertical direction */
+  width: 100%; /* Make container span full page width */
 }
 
 .leftpane {

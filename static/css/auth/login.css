@@ -1,6 +1,12 @@
-.form-body{
-    margin: 0 12%; /* 12% margin on left and right 0 margin on top and bottom*/
-    margin-bottom: 5%;
+.container {
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;     /* Centra verticalmente */
+    height: 100vh;           /* Assicura che il contenitore copra tutta l'altezza della finestra */
+}
+
+.form-body {
+    width: 60%;
     padding: 5%;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -21,4 +27,10 @@
 
 #login-button{
     margin: 5px 0;
+}
+
+@media (max-width: 720px){
+    .form-body {
+        width: 90%;
+    }
 }

@@ -225,8 +225,11 @@ def logout():
 def rules():
     return render_template('rules.html')
 
-@app.route('/gioco-computer', methods=['GET', 'POST'])
+@app.route('/about-us', methods=['GET', 'POST'])
+def about_us():
+    return render_template('about_us.html')
 
+@app.route('/gioco-computer', methods=['GET', 'POST'])
 def game():
     return render_template('gameoffline.html')
 

@@ -6,35 +6,36 @@
 {% endblock %}
 
 {% block body %}
-  <div class="form-body">
-    <div class="form-container">
-      <div class="form-header">
-        <h1>Register</h1>
-      </div>
-      <div class="form-entry">
-        {% if msg %}
-          <div class="msg" >
-            {{ msg }}
-          </div>
-        {% endif %}
-        <form action="{{ url_for('register') }}" method="post">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" class="form-control" placeholder="username@esempio.com" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-          </div>
-          <button type="submit" class="btn btn-primary" id="register-button">Register</button>
-        </form>
-        <a href="{{ url_for('login') }}">Already have an account? Login</a>
+  <div class="container">
+    <div class="form-body">
+      <div class="form-container">
+        <div class="form-header">
+          <h1>Registrati</h1>
+        </div>
+        <div class="form-entry">
+          {% if msg %}
+            <div class="msg" >
+              {{ msg }}
+            </div>
+          {% endif %}
+          <form action="{{ url_for('register') }}" method="post">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" class="form-control" placeholder="username@esempio.com" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="register-button">Registrati</button>
+          </form>
+          <a href="{{ url_for('login') }}">Hai già un account? Accedi</a>
+        </div>
       </div>
     </div>
   </div>
-
 {% endblock %}

@@ -73,21 +73,6 @@ body {
     margin:0% 1%; /* Sets the margin of the icons inside the links */
 }
 
-@media (max-width:720px){
-    .footer{
-        text-align:left;
-        padding:5%;
-    }
-    .footer .row ul li{
-        display:block;
-        margin:10px 0px;
-        text-align:left;
-    }
-    .footer .row a i{
-        margin:0% 3%;
-    }
-}
-
 #sidebar-wrapper {
     
     position: fixed;
@@ -118,7 +103,6 @@ body {
 
 .h-80{
     min-height: 90%;
-    
 }
 
 .h-20{
@@ -308,18 +292,5 @@ a.sidebar-link {
 @media (min-width:768px) {
     .content {
         width: auto;
-    }
-}
-
-/* Sidebar responsive */
-
-
-@media (max-width:720px) or (max-height: 1300px){
-    .h-80{
-        min-height: 85%;
-        
-    }
-    .h-20{
-        min-height: 15%;
     }
 }
