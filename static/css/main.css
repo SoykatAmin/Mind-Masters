@@ -294,3 +294,13 @@ a.sidebar-link {
         width: auto;
     }
 }
+
+@media (max-height: 850px) {
+    .h-80{
+        min-height: 85%;
+    }
+    
+    .h-20{
+        min-height: 15%;
+    }
+}

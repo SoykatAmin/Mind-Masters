@@ -73,7 +73,7 @@ input:checked + .slider:before {
   margin-top: 3%;
   display: flex; /* Enable flexbox layout */
   flex-direction: row; /* Default to vertical direction */
-  width: 100%; /* Make container span full page width */
+  width: 100%; /* Make container span fullx page width */
 }
 
 .leftpane {
@@ -230,3 +230,20 @@ input:checked + .slider:before {
         margin: 0 10% 0 10% /* Set margins */
     }
   }
+
+@media (max-height: 900px) and (max-width: 383px){
+  .leftpane {
+      flex: 40%
+  }
+
+  .rightpane{
+      flex: 60%; /* Set flex basis to 45% */
+  }
+}
+
+@media (max-height: 780px) and (max-width: 383px){
+  .right-container{
+    grid-template-rows: 40% 15% 17.5% 10% 17.5%;
+    grid-template-rows: 40% 15% 20% 5% 20%;
+  }
+}
