@@ -76,7 +76,7 @@ body {
 #sidebar-wrapper {
     
     position: fixed;
-    z-index: 999;
+    z-index: 0;
     top: 0;
     left: 0;
     width: 264px; /* Larghezza della sidebar */
@@ -162,6 +162,7 @@ a.sidebar-link {
     top: 1.4rem;
     transform: rotate(-135deg);
     transition: all .2s ease-out;
+  
 }
 
 .sidebar-link[data-bs-toggle="collapse"].collapsed::after {

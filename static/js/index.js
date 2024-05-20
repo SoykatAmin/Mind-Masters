@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-    //-------gestione accessibilita-----//
 
 });
 

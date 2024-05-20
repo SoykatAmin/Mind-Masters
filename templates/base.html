@@ -206,6 +206,7 @@
         isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
         const closeSidebarButton = document.getElementById('close-sidebar-button');
         const screenLimit = 1300;
+        const sidebarContainer = document.getElementById('sidebar-wrapper');
 
         toggle = true;
 
@@ -216,8 +217,10 @@
             toggle = !toggle;
             closeSidebarButton.style.visibility = 'hidden';
             toggleSidebarButton.style.visibility = 'visible';
-            localStorage.setItem('sidebarCollapsed', 'true');
+
             
+
+            localStorage.setItem('sidebarCollapsed', 'true');
             $.ajax({
                 type: 'POST',
                 url: '/sidebar',
@@ -227,6 +230,11 @@
                   console.log(data);
                 }
             });
+
+            setTimeout(()=>{
+                sidebarContainer.style.zIndex = '0';
+            }, 250);
+            
         }
 
         function openSidebar() {
@@ -238,6 +246,9 @@
             closeSidebarButton.style.visibility = 'visible';
             toggleSidebarButton.style.visibility = 'hidden';
             localStorage.setItem('sidebarCollapsed', 'false');
+
+            sidebarContainer.style.zIndex = '999';
+
             $.ajax({
                 type: 'POST',
                 url: '/sidebar',
