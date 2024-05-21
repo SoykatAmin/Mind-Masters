@@ -100,7 +100,3 @@ function accessibility() {
     console.log(localStorage.getItem('accessibility')); 
 }
 
-
-
-
-

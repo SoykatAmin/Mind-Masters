@@ -2,19 +2,19 @@
 
 {% block head %}
     <title id="title">About Us</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/about_us.css') }}">
 {% endblock %}
 
 {% block body %} 
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>About Us</h1>
-                <p>Our company is a small family business that has been operating for over 20 years. We are dedicated to providing the best service to our customers and we are always looking for ways to improve our products and services.</p>
-                <p>Our team is made up of experienced professionals who are passionate about what they do. We take pride in our work and we are committed to delivering the highest quality products to our customers.</p>
-                <p>If you have any questions or concerns, please feel free to contact us. We are always happy to help and we look forward to hearing from you.</p>
-            </div>
-        </div>
+        <h1>About Us</h1>
+        <p>Mind Masters è una riproduzione del gioco Mastermind sviluppata utilizzando Flask. Questo progetto utilizza Flask-SQLAlchemy, Flask-Bcrypt e Flask-Login per la gestione del database, la crittografia delle password e l'autenticazione degli utenti.</p>
+        <p>La webapp è stata sviluppata da:</p>
+        <ul>
+            <li>Soykat Amin</li>
+            <li>Leonardo Miralli</li>
+        </ul>
     </div>
 
 {% endblock %}
