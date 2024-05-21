@@ -53,48 +53,52 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-
+    if(localStorage.getItem('accessibility') == 'true'){
+        console.log("ao")
+        const checkbox=document.getElementById("checkbox");
+        checkbox.setAttribute("checked","");
+    }
 });
 
 
 function accessibility() {
     if(localStorage.getItem('accessibility')==null){
         localStorage.setItem('accessibility', true);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:true}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:true}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
     
     }
     if(localStorage.getItem('accessibility') == 'false'){
         localStorage.setItem('accessibility', true);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:true}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:true}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
         
     }
     else{
         localStorage.setItem('accessibility', false);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:false}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:false}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
         
     }   
     console.log(localStorage.getItem('accessibility')); 

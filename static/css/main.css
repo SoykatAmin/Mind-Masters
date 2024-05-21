@@ -96,7 +96,7 @@ border-radius: 50%;
     position: absolute;
     background: #444;
     z-index: 100;
-    left: -40px;
+    left: -30px;
     top: 100%;
     font-size: 12px;
     width: 100px;
@@ -112,6 +112,7 @@ border-radius: 50%;
     opacity: 1;
     transform: translateY(5px);
 }
+
 /*cambia lo sfondo dei modal*/
 .modal-content{
     background-color: #4d4d4d;

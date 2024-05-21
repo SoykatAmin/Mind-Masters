@@ -15,12 +15,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 #gestione accessibilità utente
-@app.route('/accessibility', methods=['GET', 'POST'])
-def accessibility():
-    data = request.json
-    session['acc'] = data.get('acc')
-    print(session['acc'])
-    return jsonify(data)
+# @app.route('/accessibility', methods=['GET', 'POST'])
+# def accessibility():
+#     data = request.json
+#     session['acc'] = data.get('acc')
+#     print(session['acc'])
+#     return jsonify(data)
 
 #gestione sidebar
 @app.route('/sidebar', methods=['GET', 'POST'])
