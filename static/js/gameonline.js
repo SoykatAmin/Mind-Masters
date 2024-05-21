@@ -119,7 +119,6 @@ function game_timerPVP() {
     var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
-            console.log("Tempo scaduto");
             clearInterval(gameTimer);
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
@@ -132,8 +131,7 @@ function game_timerPVP() {
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
-            console.log("Tempo rimasto: " + timeleft);
-            console.log("Tempo rimasto: ");
+
             // Calcola i minuti e i secondi rimanenti
             localStorage.setItem("timeleft", timeleft);
             
