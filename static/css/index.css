@@ -7,7 +7,7 @@ li {
 /* Main content */
 
 .container-fluid{
-  margin-top: 3%;
+  margin-top: 3%; 
   display: flex; /* Enable flexbox layout */
   flex-direction: row; /* Default to vertical direction */
   width: 100%; /* Make container span fullx page width */

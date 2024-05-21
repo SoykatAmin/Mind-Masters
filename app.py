@@ -229,6 +229,10 @@ def rules():
 def about_us():
     return render_template('about_us.html')
 
+@app.route('/contact-us', methods=['GET', 'POST'])
+def contact_us():
+    return render_template('contact_us.html')
+
 @app.route('/gioco-computer', methods=['GET', 'POST'])
 def game():
     return render_template('gameoffline.html')

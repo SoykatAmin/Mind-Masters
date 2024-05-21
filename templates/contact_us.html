@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title id="title">Contact Us</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/contact_us.css') }}">
+{% endblock %}
+
+{% block body %} 
+
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>For any questions or concerns, please contact us at:</p>
+        <div class="members-container">
+            <div id="first" class="member">
+                <img src="{{ url_for('static', filename='img/img_avatar.png') }}" alt="Soykat Amin">
+                <div class="name">
+                    <p>Soykat Amin</p>
+                </div>
+                <div class="description">
+                    <div class="item 1-1">
+                        <a href="https://www.linkedin.com/in/soykat-amin-7b1b3b1b3/">Linkedin</a>
+                    </div>
+                    <div class="item 1-2">
+                        <a href="https://www.github.com/SoykatAmin">Github</a>
+                    </div>
+                </div>
+            </div>
+            <div id="second" class="member">
+                <img src="{{ url_for('static', filename='img/img_avatar.png') }}" alt="Leonardo Miralli">
+                <p>Leonardo Miralli</p>
+                <div class="description">
+                    <div class="item 2-1">
+                        <a href="https://www.linkedin.com/in/leonardo-miralli-97538a30b/">Linkedin</a>
+                    </div>
+                    <div class="item 2-2">
+                        <a href="https://github.com/l3onrdo">Github</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
