@@ -60,6 +60,11 @@ Mind Masters è una riproduzione del gioco Mastermind sviluppata utilizzando Fla
     pip install flask-login
     ```
 
+    - Flask-Migrate
+    ```bash
+    pip install flask-migrate
+    ```
+
 4. **Avvia l'applicazione**
 
     ```bash
