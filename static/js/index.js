@@ -109,7 +109,7 @@ function toggleAcc(){
             targetDiv = document.getElementById(`text-ball-${i}-${j}`);
             if (targetDiv.innerHTML==''){
                 colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
-                if(colore_ball != ''){
+                if(colore_ball != '' && colore_ball != 'white'){
                     targetDiv.innerHTML=colori_home.indexOf(colore_ball);
                 }
                 
@@ -124,7 +124,8 @@ function toggleAcc(){
 var home_code=[];
 var acc_home=localStorage.getItem('accessibility')
 function fillhomeboard(){
-    var numerorighe = Math.floor(Math.random() * 8) + 1;
+   
+    var numerorighe = Math.floor(Math.random() * 6) + 3;
     // Use the randomNumber variable as needed
     for (let i = 0; i < 4; i++) {
         home_code.push(Math.floor(Math.random() * 8)+1);
