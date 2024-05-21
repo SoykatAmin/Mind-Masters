@@ -214,6 +214,7 @@
         function closeSidebar() {
             sidebar.style.marginLeft = '-264px'; // Chiudi la sidebar
             sidebar.style.boxShadow = 'none';
+            sidebar.style.pointerEvents = 'none';
             //main.style.marginLeft = '0';
             toggle = !toggle;
             closeSidebarButton.style.visibility = 'hidden';
@@ -241,6 +242,7 @@
         function openSidebar() {
             sidebar.style.boxShadow = '5px 10px 15px rgba(0, 0, 0, 0.5)';
             sidebar.style.marginLeft = '0'; // Apri la sidebar
+            sidebar.style.pointerEvents = 'auto';
             //main.style.marginLeft = '264px'; // Sposta il contenuto principale
             toggle = !toggle;
             //sidebar.removeAttribute('hidden');

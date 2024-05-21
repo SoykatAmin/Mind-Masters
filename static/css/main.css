@@ -178,7 +178,8 @@ border-radius: 50%;
     left: 0;
     width: 264px; /* Larghezza della sidebar */
     height: 100vh; /* Altezza della sidebar (100% dell'altezza del viewport) */
-    
+    pointer-events: none;
+
 }
 
 #sidebar {
@@ -194,6 +195,8 @@ border-radius: 50%;
 
 #sidebar-button {
     position: fixed;
+    pointer-events: auto;
+
   }
 
 /* Sidebar division */
