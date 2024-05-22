@@ -220,9 +220,8 @@
             closeSidebarButton.style.visibility = 'hidden';
             toggleSidebarButton.style.visibility = 'visible';
 
-            
-
             localStorage.setItem('sidebarCollapsed', 'true');
+
             $.ajax({
                 type: 'POST',
                 url: '/sidebar',
