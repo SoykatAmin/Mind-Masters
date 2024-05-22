@@ -53,48 +53,52 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
-
+    if(localStorage.getItem('accessibility') == 'true'){
+        console.log("ao")
+        const checkbox=document.getElementById("checkbox");
+        checkbox.setAttribute("checked","");
+    }
 });
 
 
 function accessibility() {
     if(localStorage.getItem('accessibility')==null){
         localStorage.setItem('accessibility', true);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:true}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:true}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
     
     }
     if(localStorage.getItem('accessibility') == 'false'){
         localStorage.setItem('accessibility', true);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:true}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:true}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
         
     }
     else{
         localStorage.setItem('accessibility', false);
-        $.ajax({
-            type: 'POST',
-            url: '/accessibility',
-            data: JSON.stringify({acc:false}),
-            contentType: 'application/json',
-            success: function(data) {
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/accessibility',
+        //     data: JSON.stringify({acc:false}),
+        //     contentType: 'application/json',
+        //     success: function(data) {
                 
-            }
-        });
+        //     }
+        // });
         
     }   
     console.log(localStorage.getItem('accessibility')); 
@@ -109,7 +113,7 @@ function toggleAcc(){
             targetDiv = document.getElementById(`text-ball-${i}-${j}`);
             if (targetDiv.innerHTML==''){
                 colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
-                if(colore_ball != ''){
+                if(colore_ball != '' && colore_ball != 'white'){
                     targetDiv.innerHTML=colori_home.indexOf(colore_ball);
                 }
                 
@@ -124,7 +128,8 @@ function toggleAcc(){
 var home_code=[];
 var acc_home=localStorage.getItem('accessibility')
 function fillhomeboard(){
-    var numerorighe = Math.floor(Math.random() * 8) + 1;
+   
+    var numerorighe = Math.floor(Math.random() * 6) + 3;
     // Use the randomNumber variable as needed
     for (let i = 0; i < 4; i++) {
         home_code.push(Math.floor(Math.random() * 8)+1);

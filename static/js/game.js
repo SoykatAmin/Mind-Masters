@@ -187,22 +187,17 @@ function suggerimenti(correct, color, x) {
             occ[r] = 2;
             var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
             suggestion.classList.add("popup");
-            suggestion.style.backgroundColor = "black";
-            suggestion.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-            
-            suggestion.style.borderBottom = "none";
+            suggestion.setAttribute("text", "Colore in posizione corretta");
+            suggestion.innerHTML = '<div class="trangolo"></div>';
+            suggestion.style.backgroundColor = "#7687AF";
+            suggestion.style.border = "0"
+            //mettimao un altro div dento per disegnare il triengolo e permettere di far apparire il popup
+            var content = suggestion.querySelector('.trangolo');
+            content.style.backgroundColor = "black";
+            content.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+            content.style.borderBottom = "none";
         
-            suggestion.setAttribute("text","Colore in posizione corretta");
-
-            const popup = document.getElementById(`suggestion-${x}-${r+1}`);
-
-            popup.addEventListener('mouseover', () => {
-                popup.querySelector('::after').style.opacity = 1; // Show the triangle on hover
-            });
-
-            popup.addEventListener('mouseout', () => {
-                popup.querySelector('::after').style.opacity = 0; // Hide the triangle on mouseout
-            });
+            
         } else {
             i--;
         }
