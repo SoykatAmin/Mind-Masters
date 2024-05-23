@@ -118,22 +118,26 @@
         <div class="rightpane">
             <div class="right-container">
                 <div class="right-toppane">
-                    <h1 id="motto">Play Mastermind online! {{msg}} </h3>
+                    {% if current_user.is_authenticated %}
+                        <h1 id="motto">Ciao {{current_user.username}}, Gioca a Mastermind!</h3>
+                    {% else %}
+                        <h1 id="motto">Ciao Guest, Gioca a Mastermind!</h3>
+                    {% endif %}
                 </div> 
                 
                 <div class="space"></div>
 
                 <div class="right-middlepane" >
-                    {% if session['username'] %}
+                    {% if current_user.is_authenticated %}
                         
                         <button class="play_button" id="online_button" onclick="callModal()">
-                            <h3 style="color: white; text-decoration: none;">Multiplayer</h3>
+                            <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Multiplayer</h3>
                         </button>
                     
                     {% else %}
                     <a class="link_play" href="{{ url_for('login') }}">
                         <button class="play_button" id="online_button_access">
-                            <h3 style="color: white; text-decoration: none;">Accedi per il multiplayer</h3>
+                            <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Accedi per il multiplayer</h3>
                         </button>
                     </a>
                     {% endif %}
@@ -145,7 +149,7 @@
                     <!--Sistemare si vede il link blu-->
                     <a href="{{ url_for('game') }}" class="link_play">
                         <button class="play_button" id="computer_button"> 
-                                <h3 style="color: white; text-decoration: none;">Singleplayer</h3> 
+                                <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Singleplayer</h3> 
                         </button>
                     </a> 
                 </div> 
