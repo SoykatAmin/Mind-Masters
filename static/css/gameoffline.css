@@ -7,6 +7,8 @@ body, html {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  z-index: 1 inherit;
+
 }
 
 .game_board{
@@ -92,14 +94,7 @@ body, html {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow */
 }
 
-.ball{
-  border: 1px solid;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;   
-  align-items: center; 
-  justify-content: center;
-}
+
 .ball-selected{
   border: 1px solid;
   background-color: white;
@@ -107,10 +102,7 @@ body, html {
   animation: blink 1s infinite;
 }
 
-.ball-text{
-  color: white;
-  text-shadow: 1px 1px 6px black;
-}
+
 
 /*animazione che fa lampaggiare l bordo della cella */
 @keyframes blink {

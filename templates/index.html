@@ -42,7 +42,6 @@
         <script>
             iserisciCodice();
             callModal();
-            
         </script>
         
     {% endif %}
@@ -77,7 +76,9 @@
                                     {% set ballCol = namespace(value=1) %}
                                     {% for v in range(1, 10) %}
                                         {% if z == 2 and (v == 2 or v == 4 or v == 6 or v == 8)  %}
-                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}"></div>
+                                            <div class="ball" id="ball-{{ ballRow.value }}-{{ ballCol.value }}">
+                                                <div class="ball-text" id="text-ball-{{ballRow.value}}-{{ballCol.value}}"></div>
+                                            </div>
                                             {% set ballCol.value = ballCol.value + 1 %}
                                             {% if v == 8 %}
                                                 {% set ballRow.value = ballRow.value + 1 %}
@@ -112,6 +113,9 @@
                 
                 </div>
         </div>
+        <script>
+            fillhomeboard()
+        </script>
 
         <!-- This part will persist even when the left pane disappears. Contains a catch-phrase and two buttons to play. -->
 
@@ -119,7 +123,7 @@
             <div class="right-container">
                 <div class="right-toppane">
                     {% if current_user.is_authenticated %}
-                        <h1 id="motto">Ciao {{current_user.username}}, Gioca a Mastermind!</h3>
+                        <h1 style="margin-bottom: 0;" id="motto">Ciao {{current_user.username}}, Gioca a Mastermind!</h3>
                     {% else %}
                         <h1 id="motto">Ciao Guest, Gioca a Mastermind!</h3>
                     {% endif %}
@@ -158,7 +162,6 @@
     </div>
     <!--modal per avviare la partita online permettendo di creare o entrare in una stanza-->
     <!--data-bs-backdrop='false' da errore ma se nonn lo metto su telefono non funziona nulla-->
-    
 
 {% endblock %}
 

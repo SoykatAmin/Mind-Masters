@@ -15,12 +15,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 #gestione accessibilità utente
-@app.route('/accessibility', methods=['GET', 'POST'])
-def accessibility():
-    data = request.json
-    session['acc'] = data.get('acc')
-    print(session['acc'])
-    return jsonify(data)
+# @app.route('/accessibility', methods=['GET', 'POST'])
+# def accessibility():
+#     data = request.json
+#     session['acc'] = data.get('acc')
+#     print(session['acc'])
+#     return jsonify(data)
 
 #gestione sidebar
 @app.route('/sidebar', methods=['GET', 'POST'])
@@ -228,6 +228,10 @@ def rules():
 @app.route('/about-us', methods=['GET', 'POST'])
 def about_us():
     return render_template('about_us.html')
+
+@app.route('/contact-us', methods=['GET', 'POST'])
+def contact_us():
+    return render_template('contact_us.html')
 
 @app.route('/gioco-computer', methods=['GET', 'POST'])
 def game():
@@ -621,6 +625,8 @@ def getSecretCode():
     print(id_game)
     print(code)
     return jsonify({'code': code})
+
+
 
 if __name__ == "__main__":
 

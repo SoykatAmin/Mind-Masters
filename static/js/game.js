@@ -186,9 +186,18 @@ function suggerimenti(correct, color, x) {
         if (occ[r] === 0) {
             occ[r] = 2;
             var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
-            suggestion.style.backgroundColor = "black";
-            suggestion.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-            suggestion.style.borderBottom = "none";
+            suggestion.classList.add("popup");
+            suggestion.setAttribute("text", "Colore in posizione corretta");
+            suggestion.innerHTML = '<div class="trangolo"></div>';
+            suggestion.style.backgroundColor = "#7687AF";
+            suggestion.style.border = "0"
+            //mettimao un altro div dento per disegnare il triengolo e permettere di far apparire il popup
+            var content = suggestion.querySelector('.trangolo');
+            content.style.backgroundColor = "black";
+            content.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+            content.style.borderBottom = "none";
+        
+            
         } else {
             i--;
         }
@@ -201,6 +210,8 @@ function suggerimenti(correct, color, x) {
             suggestion.style.backgroundColor = "black";
             suggestion.style.borderRadius = "50%";
             suggestion.style.border = "1px solid black";
+            suggestion.classList.add("popup");
+            suggestion.setAttribute("text","Colore giusto in posizione sbagliata");
         } else {
             i--;
         }
@@ -287,7 +298,7 @@ function game_timer() {
     var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
         if (timeleft <= 0) {
-            console.log("Tempo scaduto");
+            
             clearInterval(gameTimer);
             localStorage.setItem("timeleft", 0);
             // Chiama la funzione terminaPartita per indicare la fine del gioco
@@ -298,7 +309,7 @@ function game_timer() {
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
-            console.log("Tempo rimasto: " + timeleft);
+           
             // Calcola i minuti e i secondi rimanenti
             localStorage.setItem("timeleft", timeleft);
             
@@ -326,7 +337,7 @@ function changeColor(color) {
     }
     scrollWin();
     // Seleziona l'elemento div tramite il suo ID
-    var targetDiv=0;
+    var targetDiv;
     targetDiv = document.getElementById(`ball-${x}-${y}`);
     targetDiv.style.backgroundColor = color;
     if(accessibilita=='true'){
