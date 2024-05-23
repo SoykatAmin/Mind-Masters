@@ -201,9 +201,16 @@ function sug(correct,color,x){
         if (occupato[r] === 0) {
             occupato[r] = 2;
             var sug = document.getElementById(`suggestion-${x}-${r+1}`);
-            sug.style.backgroundColor = "black";
-            sug.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-            sug.style.borderBottom = "none";
+            sug.classList.add("popup");
+            sug.setAttribute("text", "Colore in posizione corretta");
+            sug.innerHTML = '<div class="trangolo"></div>';
+            sug.style.backgroundColor = "#7687AF";
+            sug.style.border = "0"
+            //mettimao un altro div dento per disegnare il triengolo e permettere di far apparire il popup
+            var triang = suggestion.querySelector('.trangolo');
+            triang.style.backgroundColor = "black";
+            triang.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+            triang.style.borderBottom = "none";
         } else {
             i--;
         }
