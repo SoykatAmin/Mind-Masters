@@ -152,27 +152,48 @@ li {
 /* Responsive layout */
 
 @media (max-width: 1080px) {
-    .container-fluid {
-      flex-direction: column-reverse; /* Switch to horizontal direction for smaller screens */
-      height: 100%; /* Make container span full page height */
-      margin-bottom: 100px;
-      padding-bottom: 100px;
-    }
-    .rightpane {
-        flex: 50%; /* Set flex basis to 35% */
-        margin: 0 10% 0 10% /* Set margins */
-    }
-    .leftpane {
-        flex: 50%; /* Set flex basis to 35% */
-        margin: 0 10% 0 10% /* Set margins */
-    }
+  .container-fluid {
+    flex-direction: column-reverse; /* Switch to horizontal direction for smaller screens */
+    height: 100%; /* Make container span full page height */
+    margin-bottom: 100px;
+    padding-bottom: 100px;
   }
+  .rightpane {
+      flex: 50%; /* Set flex basis to 35% */
+      margin: 0 10% 0 10% /* Set margins */
+  }
+  .leftpane {
+      flex: 50%; /* Set flex basis to 35% */
+      margin: 0 6% 0 6% /* Set margins */
+  }
+}
 
-@media (max-height: 900px) and (max-width: 383px){
+@media (max-width: 530px) {
+  .container-fluid {
+    flex-direction: column-reverse; /* Switch to horizontal direction for smaller screens */
+    height: 100%; /* Make container span full page height */
+  }
+  .rightpane {
+      flex: 50%; /* Set flex basis to 35% */
+      margin: 0 10% 0 10%; /* Set margins */
+      margin-bottom: 5%;
+  }
+  .leftpane {
+      flex: 50%; /* Set flex basis to 35% */
+      margin: 0 6% 0 6% /* Set margins */
+  }
+}
+
+@media (max-height: 857px){
+  h3{
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-height: 950px) and (max-width: 450px){
   .leftpane {
       flex: 40%
   }
-
   .rightpane{
       flex: 60%; /* Set flex basis to 45% */
   }

@@ -162,7 +162,7 @@ def index():
         EntraLobby.query.filter_by(user_id=current_user.username).delete()
         Lobby.query.filter_by(player1=current_user.username).delete()
         db.session.commit()
-        return render_template('index.html', msg=current_user.username)
+        return render_template('index.html', current_user=current_user)
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])

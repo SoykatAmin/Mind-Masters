@@ -344,9 +344,8 @@ a.sidebar-link {
     outline-offset: .1em;
     transition: background-size .4s, background-position 0s .4s;
     position: relative;
-
 }
-  
+
 .play_button::before {
     content: "";
     z-index: 1;
@@ -369,56 +368,56 @@ a.sidebar-link {
 }
 
 .play_button:active {
-box-shadow: 0 0 9e9q inset #0009; 
-background-color: var(--c);
-color: #fff;
+    box-shadow: 0 0 9e9q inset #0009; 
+    background-color: var(--c);
+    color: #fff;
 }
 
 .link_play{
-width: 100%;
-height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 #online_button, #online_button_access{
---c:  #ADADAD; 
+    --c:  #ADADAD; 
 }
 
 
 .contenitore-pulsanti-3 {
-display: grid;
-grid-template-columns: repeat(3, 1fr); /* Tre colonne con larghezza uguale */
-grid-gap: 10px; /* Spazio tra i pulsanti */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tre colonne con larghezza uguale */
+    grid-gap: 10px; /* Spazio tra i pulsanti */
 }
 
 .contenitore-pulsanti-2{
-display: grid;
-grid-template-columns: repeat(2, 1fr); /* due colonne con larghezza uguale */
-grid-gap: 10px; /* Spazio tra i pulsanti */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* due colonne con larghezza uguale */
+    grid-gap: 10px; /* Spazio tra i pulsanti */
 }
 
 .btn_ok{
-/*colore del testo bianco */
-color: white;
---c: #4c63e6;
-/*limita la larghezza */
-/* width: 40%; */
-/*padding */
-padding: 15px;
+    /*colore del testo bianco */
+    color: white;
+    --c: #4c63e6;
+    /*limita la larghezza */
+    /* width: 40%; */
+    /*padding */
+    padding: 15px;
 
-/*affianca i bottoni*/
-display: inline-block;
-}
-.bnt_err{
-/*colore del testo bianco */
-color: white;
---c: #fc1c1c;
-/*limita la larghezza */
-width: 20%;
-/*padding */
-padding: 15px;
+    /*affianca i bottoni*/
+    display: inline-block;
+    }
+    .bnt_err{
+    /*colore del testo bianco */
+    color: white;
+    --c: #fc1c1c;
+    /*limita la larghezza */
+    width: 20%;
+    /*padding */
+    padding: 15px;
 
-/*affianca i bottoni*/
-display: inline-block;
+    /*affianca i bottoni*/
+    display: inline-block;
 
 }
 /* Responsive */
