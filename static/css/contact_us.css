@@ -2,7 +2,8 @@ h1 {
     text-align: center;
 }
 
-.container {
+.containerContact {
+    margin: 6% 10%; /* 12% margin on left and right 0 margin on top and bottom*/
     margin-top: 3%;
 }
 
