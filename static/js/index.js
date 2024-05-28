@@ -115,6 +115,8 @@ function toggleAcc(){
                 colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
                 if(colore_ball != '' && colore_ball != 'white'){
                     targetDiv.innerHTML=colori_home.indexOf(colore_ball);
+                }else{
+                    targetDiv.innerHTML='';
                 }
                 
             }
