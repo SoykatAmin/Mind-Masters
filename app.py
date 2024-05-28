@@ -543,7 +543,6 @@ def hasEnded():
             # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
             print("asdasdasd")
             if maxRowMoves1 is None and maxRowMoves2 is None:
-                
                 data['winner'] = 'draw'
             elif maxRowMoves1 is None:
                 data['winner'] = partita.player2
@@ -554,7 +553,7 @@ def hasEnded():
 
                     print(online_game.oraFine1)
                     print(online_game.oraFine2)
-                    print("aaaaadsd")
+                   
                     print(online_game.oraFine1 < online_game.oraFine2)
                     print(online_game.oraFine1 > online_game.oraFine2)
  

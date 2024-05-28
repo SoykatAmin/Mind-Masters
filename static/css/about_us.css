@@ -3,6 +3,13 @@ h1 {
 }
 
 .containerParagraph {
-    margin: 6% 10%; /* 12% margin on left and right 0 margin on top and bottom*/
+    margin: 1% 12%;  /* 12% margin on left and right 0 margin on top and bottom*/
     text-align: justify;
+    padding: 5%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.title{
+    text-align: center;
+    margin-bottom: 5%;
 }
