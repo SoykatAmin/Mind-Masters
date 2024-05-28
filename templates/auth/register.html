@@ -4,6 +4,8 @@
   <title>Register</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/register.css') }}">
   <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+  
+
 {% endblock %}
 
 {% block body %}
@@ -30,11 +32,13 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              
+              <div class="password-container"></div>
               <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+              
               <p id="frase_pw" style="color: rgb(255, 51, 51);">La password deve contenere almeno:</p>
               <p id="char_pw" style="color: rgb(255, 51, 51);"> <span id="char_spunta">&#x2022</span> 8 caratteri</p>
-              <p id="maiusc_pw" style="color: rgb(255, 51, 51);"> <span id="maiusc_spunta">&#x2022</span> una lettera maiuscola e minuscola</p>
+              <p id="maiusc_pw" style="color: rgb(255, 51, 51);"> <span id="maiusc_spunta">&#x2022</span> una lettera maiuscola </p>
+              <p id="minus_pw" style="color: rgb(255, 51, 51);"> <span id="minus_spunta">&#x2022</span> una lettera minuscola</p>
               <p id="num_pw" style="color: rgb(255, 51, 51);"> <span id="num_spunta">&#x2022</span> un numero</p>
             </div>
             

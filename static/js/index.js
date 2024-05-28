@@ -13,10 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
         closeSidebarButton.style.visibility = 'visible';
         isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (isSidebarClosed) {
-            console.log('sidebar aperta al click del bottone');
             openSidebar();
         } else {
-            console.log('sidebar chiusa al click del bottone');
             closeSidebar();
         }
     });
@@ -25,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
     closeSidebarButton.addEventListener('click', function closeSidebarBtn() {
         isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
         if (!isSidebarClosed) {
-            console.log('sidebar chiusa al click del bottone');
             closeSidebar();
         }
     });
@@ -35,11 +32,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         screenWidth = window.innerWidth;
         isSidebarClosed = localStorage.getItem('sidebarCollapsed') === 'true';
-        // console.log(isSidebarCollapsed);
         if (window.innerWidth <= screenLimit) {
             // If the window is smaller than screenLimit
             if (!isSidebarClosed) {
-                console.log('sidebar chiusa al ridimensionamento della pagina');
                 closeSidebar();
             }
         } /* else {
@@ -54,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
     if(localStorage.getItem('accessibility') == 'true'){
-        console.log("ao")
+        
         const checkbox=document.getElementById("checkbox");
         checkbox.setAttribute("checked","");
     }
@@ -64,46 +59,23 @@ document.addEventListener("DOMContentLoaded", function() {
 function accessibility() {
     if(localStorage.getItem('accessibility')==null){
         localStorage.setItem('accessibility', true);
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '/accessibility',
-        //     data: JSON.stringify({acc:true}),
-        //     contentType: 'application/json',
-        //     success: function(data) {
-                
-        //     }
-        // });
-    
+
     }
     if(localStorage.getItem('accessibility') == 'false'){
         localStorage.setItem('accessibility', true);
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '/accessibility',
-        //     data: JSON.stringify({acc:true}),
-        //     contentType: 'application/json',
-        //     success: function(data) {
-                
-        //     }
-        // });
-        
+
     }
     else{
         localStorage.setItem('accessibility', false);
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '/accessibility',
-        //     data: JSON.stringify({acc:false}),
-        //     contentType: 'application/json',
-        //     success: function(data) {
-                
-        //     }
-        // });
+
         
     }   
-    console.log(localStorage.getItem('accessibility')); 
     /*funzione toggle per i numeri*/
-    toggleAcc();
+    const ifball=document.getElementById(`ball-1-1`)
+    if(ifball !=null){
+        toggleAcc();
+    }
+    
 }
 var colori_home = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 function toggleAcc(){
@@ -136,7 +108,6 @@ function fillhomeboard(){
     for (let i = 0; i < 4; i++) {
         home_code.push(Math.floor(Math.random() * 8)+1);
     }
-    console.log(home_code);
     var bord_code =[];
     for (let i = 1; i < numerorighe+1; i++) {
         for (let j=0;j<4;j++){
@@ -203,16 +174,9 @@ function sug(correct,color,x){
         if (occupato[r] === 0) {
             occupato[r] = 2;
             var sug = document.getElementById(`suggestion-${x}-${r+1}`);
-            sug.classList.add("popup");
-            sug.setAttribute("text", "Colore in posizione corretta");
-            sug.innerHTML = '<div class="trangolo"></div>';
-            sug.style.backgroundColor = "#7687AF";
-            sug.style.border = "0"
-            //mettimao un altro div dento per disegnare il triengolo e permettere di far apparire il popup
-            var triang = suggestion.querySelector('.trangolo');
-            triang.style.backgroundColor = "black";
-            triang.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
-            triang.style.borderBottom = "none";
+            sug.style.backgroundColor = "black";
+            sug.style.clipPath = "polygon(50% 0%, 100% 100%, 0% 100%)";
+            sug.style.borderBottom = "none";
         } else {
             i--;
         }
