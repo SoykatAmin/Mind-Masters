@@ -9,6 +9,16 @@
     
    
 {% endblock %}
+{% block modal %}
+<div id="md_msg_code" class="modal fade" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" >
+            <div class="modal-body text-center" id="md_body_code" style="font-size: 1.2em;">Codice inviato, attendi che lo inserisca anche l'altro giocatore</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
 
 {% block body %}
 
@@ -170,6 +180,8 @@
         avviaEventi()
         keyButton_code()
         timerCode();
+        const ball_start = document.getElementById("ball-1-1")
+        ball_start.classList.add("ball-selected")
         var idGame = "{{ id }}";
     </script>
 
