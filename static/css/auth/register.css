@@ -25,6 +25,11 @@
     margin: 1% 0; /* 5px margin on top and bottom 0 margin on left and right*/
 }
 
+p{
+    margin: 0;
+    padding-bottom: 0.4em;
+}
+
 #register-button{
     margin: 5px 0;
 }
