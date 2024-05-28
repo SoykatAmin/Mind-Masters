@@ -8,7 +8,7 @@ var Colorful = [0, 0, 0, 0];
 // Array per memorizzare il codice segreto
 var secret_code = [];
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = true;
+var debug = false;
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 // uguale a sopra pero in italiano pr stamparli a schermo
@@ -28,7 +28,7 @@ var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
 var game_started = false;
 //console.log(localStorage.getItem("acc"))
-var accessibilita=localStorage.getItem('accessibility')
+
 var modal_err;
 //variablie che tiene traccia della difficoltà del gioco(solo per la modalità PVE), sono tre F (facile), N (normale), D (difficile)
 var difficoltà_PVE;
@@ -340,6 +340,7 @@ function changeColor(color) {
     var targetDiv;
     targetDiv = document.getElementById(`ball-${x}-${y}`);
     targetDiv.style.backgroundColor = color;
+    var accessibilita=localStorage.getItem('accessibility')
     if(accessibilita=='true'){
         document.getElementById(`text-ball-${x}-${y}`).innerHTML=colors.indexOf(color);
     }
@@ -642,6 +643,7 @@ function sx(){
 function dellColor(){
     scrollWin();
     var itemElement = document.getElementById(`ball-${x}-${y}`);
+    var accessibilita=localStorage.getItem('accessibility')
     if(accessibilita=='true'){
         document.getElementById(`text-ball-${x}-${y}`).innerHTML="";
     }
