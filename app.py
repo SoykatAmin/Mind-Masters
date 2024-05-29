@@ -625,7 +625,16 @@ def getSecretCode():
     print(code)
     return jsonify({'code': code})
 
-
+@app.route('/clean', methods=['POST'])
+def clean():
+    if current_user.is_authenticated:
+        lobby = Lobby.query.filter_by(player1=current_user.username).first()
+        if lobby is not None:
+            EntraLobby.query.filter_by(lobby_id=lobby.id).delete()
+        EntraLobby.query.filter_by(user_id=current_user.username).delete()
+        Lobby.query.filter_by(player1=current_user.username).delete()
+        db.session.commit()
+        return render_template('index.html', current_user=current_user)
 
 if __name__ == "__main__":
 

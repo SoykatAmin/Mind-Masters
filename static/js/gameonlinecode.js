@@ -201,6 +201,7 @@ function disableButtons(){
 
 window.onload = function(){
     checkInsertion();
+    
 }
 
 function hasInsertedCode(){

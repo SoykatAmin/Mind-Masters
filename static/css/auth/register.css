@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center; /* Centra orizzontalmente */
     align-items: center;     /* Centra verticalmente */
-    height: 100vh;           /* Assicura che il contenitore copra tutta l'altezza della finestra */
+              /* Assicura che il contenitore copra tutta l'altezza della finestra */
 }
 
 .form-body {
@@ -37,5 +37,11 @@ p{
 @media (max-width: 720px){
     .form-body {
         width: 90%;
+    }
+}
+
+@media (min-height: 596px){
+    .container {
+        height: 100vh;
     }
 }

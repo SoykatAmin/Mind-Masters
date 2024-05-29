@@ -182,6 +182,19 @@ li {
       flex: 50%; /* Set flex basis to 35% */
       margin: 0 6% 0 6% /* Set margins */
   }
+  .suggestion-container {
+    -moz-border-radius: 10px; 
+    -webkit-border-radius: 10px; 
+    border-radius: 10px;
+  }
+  .balls-container {
+    -moz-border-radius: 10px; 
+    -webkit-border-radius: 10px; 
+    border-radius: 10px;
+  }
+  .ball-text{
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-height: 857px){

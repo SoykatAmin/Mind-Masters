@@ -193,8 +193,11 @@ function populateMoves() {
 // Inserisce il tempo di fine nel database se esce dalla pagina
 window.onbeforeunload = function() {
     endGame();
+    cleanup();
+};
+window.onload = function(){
+    console.log("onload");
 }
-
 
 
 // Inserisce il tempo di fine nel database
@@ -204,6 +207,16 @@ function endGame() {
         type: 'POST',
         url: '/endGame',
         data: JSON.stringify({gameID: gameID, winner: username, time: format}),
+        contentType: 'application/json',
+        success: function(data) {
+        }
+    });
+}
+function cleanup(){
+    $.ajax({
+        type: 'POST',
+        url: '/clean',
+        data: JSON.stringify(),
         contentType: 'application/json',
         success: function(data) {
         }
