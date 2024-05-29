@@ -155,19 +155,12 @@ def load_user(user_id):
 
 def index():
 
-    if current_user.is_authenticated:
-        lobby = Lobby.query.filter_by(player1=current_user.username).first()
-        if lobby is not None:
-            EntraLobby.query.filter_by(lobby_id=lobby.id).delete()
-        EntraLobby.query.filter_by(user_id=current_user.username).delete()
-        Lobby.query.filter_by(player1=current_user.username).delete()
-        db.session.commit()
-        return render_template('index.html', current_user=current_user)
+    clean()
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
-
 def register():
+    clean()
     msg = ''
     if request.method == 'POST':
         username = request.form['username']
@@ -194,6 +187,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 
 def login():
+    clean()
     msg = ''
     if request.method == 'POST':
         username = request.form['username']
@@ -216,6 +210,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    clean()
     session.pop('username', None)
     logout_user()
     return redirect(url_for('index'))
@@ -223,18 +218,22 @@ def logout():
 @app.route('/regole', methods=['GET', 'POST'])
 
 def rules():
+    clean()
     return render_template('rules.html')
 
 @app.route('/about-us', methods=['GET', 'POST'])
 def about_us():
+    clean()
     return render_template('about_us.html')
 
 @app.route('/contact-us', methods=['GET', 'POST'])
 def contact_us():
+    clean()
     return render_template('contact_us.html')
 
 @app.route('/gioco-computer', methods=['GET', 'POST'])
 def game():
+    clean()
     return render_template('gameoffline.html')
 
 @app.route('/online-game', methods=['GET', 'POST'])
@@ -538,8 +537,11 @@ def hasEnded():
     id_game = data.get('gameID')
     data = ({'ended': False, 'winner': ''})
     online_game = Partita_online.query.filter_by(id=id_game).first()
+
     if online_game is not None:
         # if both players have ended the game, either by winning or by leaving the game
+        print(online_game.oraFine1)
+        print(online_game.oraFine2)
         if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
             partita = Partita.query.filter_by(id=id_game).first()
             maxRowMoves1 = Mossa.query.filter_by(partita_id=id_game, user_id=online_game.player1).order_by(Mossa.riga.desc()).first()
@@ -629,16 +631,31 @@ def getSecretCode():
     print(code)
     return jsonify({'code': code})
 
-@app.route('/clean', methods=['POST'])
 def clean():
     if current_user.is_authenticated:
+        print("clean")
         lobby = Lobby.query.filter_by(player1=current_user.username).first()
         if lobby is not None:
-            EntraLobby.query.filter_by(lobby_id=lobby.id).delete()
-        EntraLobby.query.filter_by(user_id=current_user.username).delete()
+            print("creatore")
+            online_game = Partita_online.query.filter_by(id=lobby.idGame).first()
+            if online_game is not None:
+                if online_game.oraFine1 is None:
+                    online_game.oraFine1 = datetime.datetime.now()
+                    db.session.commit()
+        EntraLobby1 = EntraLobby.query.filter_by(user_id=current_user.username).first()
+        if EntraLobby1 is not None:
+            print("entrato")
+            lobby = Lobby.query.filter_by(id=EntraLobby1.lobby_id).first()
+            if lobby is not None:
+                online_game = Partita_online.query.filter_by(id=lobby.idGame).first()
+                if online_game is not None:
+                    if online_game.oraFine2 is None:
+                        online_game.oraFine2 = datetime.datetime.now()
+                        db.session.commit()
+            EntraLobby.query.filter_by(user_id=current_user.username).delete()
         Lobby.query.filter_by(player1=current_user.username).delete()
         db.session.commit()
-        return render_template('index.html', current_user=current_user)
+        return
 
 if __name__ == "__main__":
 

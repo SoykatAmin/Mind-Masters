@@ -37,11 +37,13 @@ function confrontaCodiciPVP() {
         if(modal_err!=null){
             modal_err.hide();
         }
-        modal_att = new bootstrap.Modal('#md_attesa');
-        modal_att.show();
+        
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
         endGame();
+        
+        modal_att = new bootstrap.Modal('#md_attesa');
+        modal_att.show();
         // Controlla ogni 500ms se l'avversario ha finito. Se ha finito mostra il risultato
         var endingInterval = setInterval(function() {
             
@@ -78,6 +80,7 @@ function confrontaCodiciPVP() {
         end_game = true;
         var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
         // Chiamata alla funzione terminaPartita
+        endGame();
         terminaPartita("Mi dispiace, hai perso. Il codice era " + str);
     } else {
         var ball_selected = document.getElementById(`ball-${x}-${y}`);
@@ -198,16 +201,6 @@ function populateMoves() {
     }
 };
 
-// Inserisce il tempo di fine nel database se esce dalla pagina
-window.onbeforeunload = function() {
-    endGame();
-    cleanup();
-};
-window.onload = function(){
-    console.log("onload");
-}
-
-
 // Inserisce il tempo di fine nel database
 function endGame() {
     format = timeFormat.format("YYYY-MM-DD HH:mm:ss");
@@ -220,13 +213,9 @@ function endGame() {
         }
     });
 }
-function cleanup(){
-    $.ajax({
-        type: 'POST',
-        url: '/clean',
-        data: JSON.stringify(),
-        contentType: 'application/json',
-        success: function(data) {
-        }
-    });
-}
+
+window.onbeforeunload = function(event) {
+    event.returnValue = "Write something clever here..";
+    // Here you can access the event object to see what the user has chosen
+    console.log(event);
+};

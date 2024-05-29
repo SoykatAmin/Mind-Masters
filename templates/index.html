@@ -52,15 +52,16 @@
             const modalBody = document.getElementById('md_err_body');
             modalBody.innerHTML = err;
             modal.show();
+            
         </script>
     {% endif %}
+
 
     <!-- This is the homepage of this project. It contains a game board, and two buttons that allow users to start a new game against another user or a computer -->
 
     <div class="container-fluid">
 
         <!-- Game board. It will disappear when width is reduced to a certain amount. -->
-
         
         <div class="leftpane">
             <div class="grid-container">
@@ -150,7 +151,7 @@
                 <div class="space"></div>
 
                 <div class="right-bottompane">
-                    <!--Sistemare si vede il link blu-->
+                    <!--Sistemare si v<div id="timer">Timer: 0 seconds</div>ede il link blu-->
                     <a href="{{ url_for('game') }}" class="link_play">
                         <button class="play_button" id="computer_button"> 
                                 <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Singleplayer</h3> 
