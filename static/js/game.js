@@ -556,6 +556,9 @@ function terminaPartita(msg){
         if(modal_err!=null){
             modal_err.hide();
         }
+        if(modal_att!=null){
+            modal_att.hide();
+        }
         console.log(msg);
         document.getElementById("md_body").innerHTML = msg;
         document.getElementById("md_bodyOnline").innerHTML = msg;

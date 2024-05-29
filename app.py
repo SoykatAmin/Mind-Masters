@@ -365,7 +365,7 @@ def replay():
                 return render_template('lobby.html', code=lobby.codice, creator=lobby.player1, msg='Sei entrato in una lobby', replay1=lobby.replay1, replay2=lobby.replay2)
     return render_template('index.html', stanzaErr='Il creatore ha abbandonato la stanza', replay1=False, replay2=False)
 # funzioni per il dialogo client-server
-@app.route('/isConnected')
+@app.route('/isConnected',methods=['GET', 'POST'])
 def isConnected():
     isCreator = False
     if current_user.is_authenticated:
@@ -379,7 +379,7 @@ def isConnected():
                 # if the creator has left the lobby
                 if lobby is None:
                     return jsonify({'disconnect': True})
-                else:
+                else: 
                     return jsonify({'connected': True, 'creator': isCreator})
             # should never happen, or the lobby has been deleted or the user has been removed from the lobby
             return jsonify({'connected': False, 'creator': isCreator})
@@ -394,6 +394,10 @@ def isConnected():
             return jsonify({'connected': False, 'creator': isCreator})
     # should never happen
     return jsonify({'connected': False})
+
+@app.route('/errmsg', methods=['GET', 'POST'])
+def errmsg():
+    return render_template('index.html', stanzaErr='Un giocatore ha abbandonato la stanza')
 
 @app.route('/isReplay')
 @login_required

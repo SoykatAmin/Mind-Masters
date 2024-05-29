@@ -3,6 +3,7 @@ var winnerUsername = "";
 // Tempo rimasto nel formato MM:SS
 var timeFormat;
 var formattedTime;
+var modal_att
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
@@ -31,6 +32,13 @@ function confrontaCodiciPVP() {
     // Verifica se il giocatore ha vinto o perso e passa al prossimo turno
     if (status === 1) {
         end_game = true;
+
+        document.getElementById("md_body_att").innerHTML = "Attendi che l'altro giocatore finisca la partita per sapere se hai vinto";
+        if(modal_err!=null){
+            modal_err.hide();
+        }
+        modal_att = new bootstrap.Modal('#md_attesa');
+        modal_att.show();
         // Inserisce nel database l'ora di fine del giocatore
         // TODO: In realtà controlla chi ha terminato prima e non guarda il tempo rimasto. Da cambiare
         endGame();

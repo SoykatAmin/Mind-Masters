@@ -1,6 +1,6 @@
 var secretCode;
 var timerCodeLeft = 30;
-
+var interval
 
 
 
@@ -97,7 +97,7 @@ function colorCasualCode(){
  */
 function timerCode(){
     var codeValid=true;
-    var interval=setInterval(()=> {
+    interval=setInterval(()=> {
         timerCodeLeft--;
 
         if(timerCodeLeft <= 0){
@@ -143,14 +143,14 @@ function sendCode(read=true){
     if(secretCode == null){
         return;
     }
-
+    clearInterval(interval);
     document.getElementById(`ball-1-${y}`).classList.remove("ball-selected");
     blockbutton();
-    document.getElementById("md_body_msg").innerHTML = msg;
+    document.getElementById("md_body_code").innerHTML = msg;
     if(modal_err!=null){
         modal_err.hide();
     }
-    var modal = new bootstrap.Modal('#md_msg');
+    var modal = new bootstrap.Modal('#md_msg_code');
     modal.show();
     var code = secretCode.join('');
     
@@ -230,7 +230,9 @@ function isConnected(){
             var connected = data.connected;
             console.log(disconnect);
             if(disconnect || !connected){
-                window.location.href = "/?err=1";
+                window.location.href = "/errmsg";
             }
     });
+
+
 }

@@ -72,21 +72,7 @@
             </div>
         </div>
     </div>
-    <div id="md_endOnline" class="modal fade" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header ">
-                    <h2 class="modal-title " id="md_titleOnline"></h2>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center" id="md_bodyOnline" style="font-size: 1.2em;"></div>
-                <div class="modal-footer contenitore-pulsanti-2">
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('replay') }}`">Nuova partita</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     {% block modal %}{% endblock %}
     
     <div class="wrapper">
