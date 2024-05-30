@@ -113,12 +113,14 @@ function timerCode(){
                 }
             }
             if(codeValid){
+                console.log("codice inserito");
                 sendCode()
             }else{
                 secretCode = createEasyCode();
                 colorCasualCode();
+                sendCode(false);
             }
-            sendCode(false);
+            
         }else{
             var minutes = Math.floor(timerCodeLeft / 60);
             var seconds = timerCodeLeft % 60;

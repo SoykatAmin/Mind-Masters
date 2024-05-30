@@ -300,7 +300,7 @@ function game_timer() {
         if (timeleft <= 0) {
             
             clearInterval(gameTimer);
-            localStorage.setItem("timeleft", 0);
+            
             // Chiama la funzione terminaPartita per indicare la fine del gioco
             end_game = true;
             //per il multiplayer
@@ -311,7 +311,7 @@ function game_timer() {
         } else {
            
             // Calcola i minuti e i secondi rimanenti
-            localStorage.setItem("timeleft", timeleft);
+            
             
             var minutes = Math.floor(timeleft / 60);
             var seconds = timeleft % 60;
@@ -530,7 +530,6 @@ Mostra un modal con il messaggio di vittoria o sconfitta*/
 function terminaPartita(msg){   
     end_game = true;
     console.log("termina partita");
-    localStorage.clear();
     blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");

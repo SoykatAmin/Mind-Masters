@@ -48,12 +48,22 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
+    
+    var accessiblita=localStorage.getItem("accessibility");
+    console.log(accessiblita);
+    localStorage.clear();
+    localStorage.setItem("accessibility",accessiblita);
+
     if(localStorage.getItem('accessibility') == 'true'){
         
         const checkbox=document.getElementById("checkbox");
         checkbox.setAttribute("checked","");
     }
 });
+
+
+
+
 
 
 function accessibility() {

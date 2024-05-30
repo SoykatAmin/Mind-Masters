@@ -227,7 +227,7 @@ window.onbeforeunload = function(event) {
     event.returnValue = "Perderai tutto";
     // Here you can access the event object to see what the user has chosen
     console.log(event);
-    localStorage.removeItem('end_timer');
+
 };
 
 function endTimer() {
