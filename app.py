@@ -247,7 +247,6 @@ def gameonline():
         lobby = Lobby.query.filter_by(idGame=game_id).first()
         online_game = Partita_online.query.filter_by(id=game_id).first()
         if lobby is not None:
-            print("Daaaaaaaaaaai")
             lobby.replay1 = False
             lobby.replay2 = False
             # if the current user is the creator of the lobby, update the code for the first player
@@ -275,6 +274,8 @@ def gameonline():
             lobby.replay2 = False
             db.session.commit()
         online_game = Partita_online.query.filter_by(id=id).first()
+
+        partita = Partita.query.filter_by(id=id).first()
         code = ''
         if online_game is not None:
             if current_user.username == online_game.player1:
@@ -282,7 +283,20 @@ def gameonline():
                 code = online_game.codice2
             else:
                 code = online_game.codice1
-
+            if current_user.username == online_game.player1:
+                if online_game.oraFine1 is not None:
+                    clean()
+                    return render_template('index.html', stanzaErr="Hai già giocato questa partita")
+            if current_user.username == partita.player2:
+                if online_game.oraFine2 is not None:
+                    clean()
+                    return render_template('index.html', stanzaErr="Hai già giocato questa partita")
+            if current_user.username != online_game.player1 and current_user.username != partita.player2:
+                clean()
+                return render_template('index.html', stanzaErr="Non puoi accedere a questa partita")
+        else:
+            clean()
+            return render_template('index.html', stanzaErr="Partita inesistente")
         return render_template('gameonline.html', id=id, code=code)
 
 @app.route('/lobby/', methods=['GET', 'POST'])
@@ -327,10 +341,10 @@ def lobby():
         if code == '':
             return render_template('index.html', code=code, err='Inserisci un codice')
         isCorrectLobby = Lobby.query.filter_by(codice = code).first()
-        isCorrectLobby.replay1 = True
-        isCorrectLobby.replay2 = True
         # if the lobby exists, add the user to the lobby
         if isCorrectLobby:
+            isCorrectLobby.replay1 = True
+            isCorrectLobby.replay2 = True
             isThereAnotherPlayer = EntraLobby.query.filter_by(lobby_id=isCorrectLobby.id).first()
             if isThereAnotherPlayer is not None:
                 return render_template('index.html', code=code, msg=current_user.username, err='Lobby piena')
@@ -395,8 +409,14 @@ def isConnected():
     return jsonify({'connected': False})
 
 @app.route('/errmsg', methods=['GET', 'POST'])
+@login_required
 def errmsg():
     return render_template('index.html', stanzaErr='Un giocatore ha abbandonato la stanza')
+
+@app.route('/leaveLobby', methods=['GET', 'POST'])
+@login_required
+def leaveLobby():
+    return render_template('index.html', stanzaErr='Il creatore ha abbandonato la stanza')
 
 @app.route('/isReplay')
 @login_required
@@ -636,7 +656,6 @@ def clean():
         print("clean")
         lobby = Lobby.query.filter_by(player1=current_user.username).first()
         if lobby is not None:
-            print("creatore")
             online_game = Partita_online.query.filter_by(id=lobby.idGame).first()
             if online_game is not None:
                 if online_game.oraFine1 is None:
@@ -644,7 +663,6 @@ def clean():
                     db.session.commit()
         EntraLobby1 = EntraLobby.query.filter_by(user_id=current_user.username).first()
         if EntraLobby1 is not None:
-            print("entrato")
             lobby = Lobby.query.filter_by(id=EntraLobby1.lobby_id).first()
             if lobby is not None:
                 online_game = Partita_online.query.filter_by(id=lobby.idGame).first()
@@ -657,6 +675,19 @@ def clean():
         db.session.commit()
         return
 
-if __name__ == "__main__":
+@app.route('/forceEndGame', methods=['POST'])
+@login_required
+def forceEndGame():
+    data = request.json
+    id_game = data.get('gameID')
+    online_game = Partita_online.query.filter_by(id=id_game).first()
+    if online_game is not None:
+        if online_game.oraFine1 is None:
+                online_game.oraFine1 = datetime.datetime.now()
+        if online_game.oraFine2 is None:
+                online_game.oraFine2 = datetime.datetime.now()
+        db.session.commit()
+    return jsonify(data)
 
+if __name__ == "__main__":
     app.run(debug=True)

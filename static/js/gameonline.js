@@ -4,6 +4,9 @@ var winnerUsername = "";
 var timeFormat;
 var formattedTime;
 var modal_att
+
+var end_timer = 30;
+
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
@@ -142,12 +145,9 @@ function game_timerPVP() {
             var str = `<span style="text-shadow: 0px 0px 5px black;"> <span style="color:${colors[secret_code[0]]}"><b>${colori[secret_code[0]]}</b></span>,<span style="color:${colors[secret_code[1]]}"><b>${colori[secret_code[1]]}</b></span>,<span style="color:${colors[secret_code[2]]}"><b>${colori[secret_code[2]]}</b></span>,<span style="color:${colors[secret_code[3]]}"><b>${colori[secret_code[3]]}</b></span></span>`;
             terminaPartita("Tempo scaduto. Il codice era " + str);
         } else {
-
             // Calcola i minuti e i secondi rimanenti
             localStorage.setItem("timeleft", timeleft);
-            
             getTime();
-            
             // Aggiorna l'elemento HTML con il tempo rimasto
             document.getElementById("countdown").innerHTML = "Tempo rimasto " + formattedTime;
         }
@@ -194,6 +194,10 @@ function populateMoves() {
                 avviaEventi();
             }
         });
+        var end_timerTEMP=localStorage.getItem("end_timer")
+        if(end_timerTEMP!=null){
+            end_timer = parseInt(end_timerTEMP);
+        }
         var timer_str=localStorage.getItem("timeleft");
         if(timer_str!=null){
             timeleft=parseInt(timer_str);
@@ -215,7 +219,39 @@ function endGame() {
 }
 
 window.onbeforeunload = function(event) {
+    
     event.returnValue = "Write something clever here..";
     // Here you can access the event object to see what the user has chosen
     console.log(event);
+    localStorage.clear();
 };
+
+function endTimer() {
+    var endTimer = setInterval(() => {
+        // Verifica se il tempo è scaduto
+        if (end_timer <= 0) {
+            clearInterval(endTimer);
+            localStorage.setItem("end_timer", 0);
+            $.ajax({
+                type: 'POST',
+                url: '/forceEndGame',
+                data: JSON.stringify({gameID: gameID}),
+                contentType: 'application/json',
+                success: function(data) {
+                }
+            });
+        } else {
+            // Calcola i minuti e i secondi rimanenti
+            localStorage.setItem("end_timer", end_timer);
+            
+            var minut = Math.floor(end_timer / 60);
+            var secon = end_timer % 60;
+            // Formatta il tempo rimasto come MM:SS
+            var formattedT = `${minut.toString().padStart(2, '0')}:${secon.toString().padStart(2, '0')}`;
+            
+            console.log(formattedT);
+        }
+        // Decrementa il tempo rimasto di un secondo
+        end_timer--;
+    }, 1000);
+}

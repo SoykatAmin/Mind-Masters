@@ -12,7 +12,8 @@
         var codice = "{{ code }}"
         var gameID = "{{ id }}"
         var username = "{{ current_user.username }}"
-        startPVP()
+        startPVP();
+        endTimer();
     </script>
 
 {% endblock %}
@@ -220,8 +221,6 @@
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
         keyButton();
-        
-        
     </script>
     <!-- Modal -->
     <!-- Button trigger modal -->
