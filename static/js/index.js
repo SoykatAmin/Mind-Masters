@@ -194,17 +194,3 @@ function sug(correct,color,x){
         }
     }
 }
-
-function leaveAlert() {
-    window.alert("Attenzione! Sei sicuro di voler abbandonare la partita? Perderai la partita automaticamente!");
-}
-
-function myFunction() {
-    let text = "Press a button!\nEither OK or Cancel.";
-    if (confirm(text) == true) {
-      text = "You pressed OK!";
-    } else {
-      text = "You canceled!";
-    }
-    
-  }

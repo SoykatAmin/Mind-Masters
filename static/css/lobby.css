@@ -20,16 +20,24 @@
 .frase {
     /*testo allneato al cdentro*/
     font-family: 'Play', sans-serif; /* Sets the font family of the footer */
-    min-height: 15vh;
+    min-height: 20vh;
     display: flex;
     justify-content: center; /* Centra orizzontalmente il contenuto */
     align-items: center; /* Centra verticalmente il contenuto */
-    font-size: 2em;
+    font-size: 1.8em;
     border-top: 1px solid white; /* Adds a white line on top of the footer */
     bottom: 0;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 .frase-in-out{
     animation: fade-in-out 7s linear infinite;
+}
+
+.page-container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 @keyframes fade-in-out {

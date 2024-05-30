@@ -5,7 +5,7 @@ var timeFormat;
 var formattedTime;
 var modal_att
 
-var end_timer = 30;
+var end_timer = 1060;
 
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
@@ -158,6 +158,7 @@ function game_timerPVP() {
             clearInterval(gameTimer);
         }
     }, 1000);
+    localStorage.removeItem('end_timer');
     populateMoves();
 }
 
@@ -226,7 +227,7 @@ window.onbeforeunload = function(event) {
     event.returnValue = "Perderai tutto";
     // Here you can access the event object to see what the user has chosen
     console.log(event);
-    localStorage.clear();
+    localStorage.removeItem('end_timer');
 };
 
 function endTimer() {

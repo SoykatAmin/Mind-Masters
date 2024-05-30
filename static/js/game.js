@@ -528,7 +528,6 @@ Aggiunge un ritardo di 500 millisecondi per mostrare il risultato
 Mostra un messaggio di vittoria o sconfitta a schermo in base al valore della variabile win
 Mostra un modal con il messaggio di vittoria o sconfitta*/
 function terminaPartita(msg){   
-    x=10
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
@@ -540,6 +539,8 @@ function terminaPartita(msg){
     setTimeout(()=> {
         // Mostra il titolo del modal in base al risultato
         console.log(win)
+        console.log(url)
+        console.log(url.includes("online-game"))
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
             if(url.includes("online-game")){
@@ -576,12 +577,14 @@ function terminaPartita(msg){
         var modal;
         
         if(url.includes("online-game")){
+            console.log("online");
             modal = new bootstrap.Modal('#md_endOnline');
         }else{
             modal = new bootstrap.Modal('#md_end');
         }
         modal.show();
     }, 500);
+    x=10;
 }
 
 function blockbutton(){
@@ -674,7 +677,11 @@ function dellColor(){
 }
 //attiva le lettura da input di tastiera
 function keyButton(){
+    
     document.addEventListener('keydown', function(event) {
+        if(end_game){
+            return;
+        }
         if(event.key != 'F12'){
             event.preventDefault();
         }

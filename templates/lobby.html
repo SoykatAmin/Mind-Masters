@@ -14,27 +14,28 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    
-    <div class="lobby-container">
-        <!-- List of games that are currently being played. -->
-        <h1 class="title">Lobby di {{ creator }}</h1>
-        <br>
-        <div class="lobby-element">
-            <div> <p> {{ msg }} </p></div>
-            <div>Codice stanza: <p> {{ code }} </p></div>
+    <div class="page-container">
+        <div class="lobby-container">
+            <!-- List of games that are currently being played. -->
+            <h1 class="title">Lobby di {{ creator }}</h1>
             <br>
-            <div>
-                <p id="players"></p>
+            <div class="lobby-element">
+                <div> <p> {{ msg }} </p></div>
+                <div>Codice stanza: <p> {{ code }} </p></div>
+                <br>
+                <div>
+                    <p id="players"></p>
+                </div>
+                <div id="timer">
+                </div>
+                <br>
             </div>
-            <div id="timer">
-            </div>
-            <br>
+            
         </div>
-        
+            <div class="frase">
+                <div class="frase-in-out" id="frasi"></div>
+            </div>      
     </div>
-        <div class="frase">
-            <div class="frase-in-out" id="frasi"></div>
-        </div>        
     <script>
         var replay1 = '{{ replay1 }}' == 'True' ? true : false;
         var replay2 = '{{ replay2 }}' == 'True' ? true : false;
