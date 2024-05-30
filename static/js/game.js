@@ -528,7 +528,7 @@ Aggiunge un ritardo di 500 millisecondi per mostrare il risultato
 Mostra un messaggio di vittoria o sconfitta a schermo in base al valore della variabile win
 Mostra un modal con il messaggio di vittoria o sconfitta*/
 function terminaPartita(msg){   
-    
+    x=10
     end_game = true;
     console.log("termina partita");
     localStorage.clear();
@@ -667,7 +667,7 @@ function keyButton(){
         if(event.key != 'F12'){
             event.preventDefault();
         }
-        if(!modal_aperto){
+        if(!modal_aperto || !end_game){
             if(event.key ==='Enter'){
                 if(window.location.href.includes("?id=")){
                     confrontaCodiciPVP();

@@ -113,7 +113,7 @@ function timerCode(){
                 }
             }
             if(codeValid){
-                readCode();
+                sendCode()
             }else{
                 secretCode = createEasyCode();
                 colorCasualCode();
