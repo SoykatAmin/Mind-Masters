@@ -1,13 +1,18 @@
 h1 {
     text-align: center;
 }
-
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;     /* Centra verticalmente */
+}
 .containerContact {
-    margin: 1% 12%;  /* 12% margin on left and right 0 margin on top and bottom*/
     text-align: justify;
     padding: 5%;
-    border: 1px solid #ccc;
+    background-color: #2F2F2F;
     border-radius: 5px;
+    width: 80%;
 }
 
 
@@ -41,4 +46,19 @@ img{
     border-radius: 50%;
     width: 150px;
     margin-bottom: 5px;
+}
+
+@media (max-width: 530px){
+    .containerContact {
+        text-align: justify;
+        padding: 5%;
+        background-color: #2F2F2F;
+        border-radius: 5px;
+        width: 95%;
+    }
+    img{
+        border-radius: 50%;
+        width: 100px;
+        margin-bottom: 5px;
+    }
 }

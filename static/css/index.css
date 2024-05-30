@@ -41,11 +41,10 @@ li {
   display: flex;
   justify-content: center; /* Centra orizzontalmente il contenuto */
   align-items: center; /* Centra verticalmente il contenuto */
-
+  background-color: #2F2F2F;
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px; 
   border-radius: 20px;
-
   border: 1px solid;
 }
 
