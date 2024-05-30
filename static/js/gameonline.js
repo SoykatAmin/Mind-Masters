@@ -219,8 +219,11 @@ function endGame() {
 }
 
 window.onbeforeunload = function(event) {
-    
-    event.returnValue = "Write something clever here..";
+
+    if (end_game) {
+        return;
+    }
+    event.returnValue = "Perderai tutto";
     // Here you can access the event object to see what the user has chosen
     console.log(event);
     localStorage.clear();
