@@ -49,10 +49,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
     
-    var accessiblita=localStorage.getItem("accessibility");
-    console.log(accessiblita);
-    localStorage.clear();
-    localStorage.setItem("accessibility",accessiblita);
+
+    // ---------------------------------------------MANAGING ACCESSIBILITY--------------------------------------------- //
+    
+    if (window.location.href.includes('lobby')||window.location.href.includes('replay')) {
+        var accessiblita=localStorage.getItem("accessibility");
+        var sidebar=localStorage.getItem("sidebarCollapsed");
+        localStorage.clear();
+        localStorage.setItem("accessibility",accessiblita);
+        localStorage.setItem("sidebarCollapsed",sidebar);
+    }
 
     if(localStorage.getItem('accessibility') == 'true'){
         

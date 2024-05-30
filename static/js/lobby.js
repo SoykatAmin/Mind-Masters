@@ -23,7 +23,6 @@ function randomFrasi(){
 
         
     }
-    console.log(frasiDisponibili);
     if(frasiDisponibili.length === 1 ){
         ultimaFrase = frasiDisponibili[0];
     }
