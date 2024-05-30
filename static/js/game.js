@@ -535,35 +535,46 @@ function terminaPartita(msg){
     blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
+    var url = window.location.href;
     // Aggiungi un ritardo per far vedere il risultato
     setTimeout(()=> {
         // Mostra il titolo del modal in base al risultato
         console.log(win)
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
-            document.getElementById("md_titleOnline").innerHTML = "Complimenti hai vinto";
+            if(url.includes("online-game")){
+                document.getElementById("md_titleOnline").innerHTML = "Complimenti hai vinto";
+            }
         }else if(draw){
             document.getElementById("md_title").innerHTML = "Pareggio";
-            document.getElementById("md_titleOnline").innerHTML = "Pareggio";
+            if(url.includes("online-game")){
+                document.getElementById("md_titleOnline").innerHTML = "Pareggio";
+            }
         }else {
             document.getElementById("md_title").innerHTML = "Mi dispiace hai perso";
-            document.getElementById("md_titleOnline").innerHTML = "Mi dispiace hai perso";
+            if(url.includes("online-game")){
+                document.getElementById("md_titleOnline").innerHTML = "Mi dispiace hai perso";
+            }
+           
         }
         // Mostra il messaggio nel corpo del modal
-        
-        
+ 
         // Mostra il modal
         if(modal_err!=null){
             modal_err.hide();
         }
-        if(modal_att!=null){
-            modal_att.hide();
+        if(url.includes("online-game")){
+            if(modal_att!=null){
+                modal_att.hide();
+            }
         }
         console.log(msg);
         document.getElementById("md_body").innerHTML = msg;
-        document.getElementById("md_bodyOnline").innerHTML = msg;
+        if(url.includes("online-game")){
+            document.getElementById("md_bodyOnline").innerHTML = msg;
+        }
         var modal;
-        var url = window.location.href;
+        
         if(url.includes("online-game")){
             modal = new bootstrap.Modal('#md_endOnline');
         }else{
