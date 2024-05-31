@@ -566,23 +566,11 @@ def hasEnded():
             partita = Partita.query.filter_by(id=id_game).first()
             maxRowMoves1 = Mossa.query.filter_by(partita_id=id_game, user_id=online_game.player1).order_by(Mossa.riga.desc()).first()
             maxRowMoves2 = Mossa.query.filter_by(partita_id=id_game, user_id=partita.player2).order_by(Mossa.riga.desc()).first()
-            # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
-            print("asdasdasd")
+            # if no player has played any move, the game is a lost for both
             if maxRowMoves1 is None and maxRowMoves2 is None:
-                data['winner'] = 'draw'
-            elif maxRowMoves1 is None:
-                data['winner'] = partita.player2
-            elif maxRowMoves2 is None:
-                data['winner'] = online_game.player1
-            else:
-                if maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
-
-                    print(online_game.oraFine1)
-                    print(online_game.oraFine2)
-                   
-                    print(online_game.oraFine1 < online_game.oraFine2)
-                    print(online_game.oraFine1 > online_game.oraFine2)
- 
+                data['winner'] = 'lost'
+            # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
+            elif maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
                     if maxRowMoves1.riga < maxRowMoves2.riga:
                         data['winner'] = online_game.player1
                     elif maxRowMoves1.riga > maxRowMoves2.riga:
@@ -590,22 +578,25 @@ def hasEnded():
                     else:
                         datetime1 = online_game.oraFine1
                         datetime2 = online_game.oraFine2
-                    
+
                         if datetime1 > datetime2:
                             data['winner'] = online_game.player1
                         elif datetime1 < datetime2:
                             data['winner'] = partita.player2
                         else:
-                            data['winner'] = 'draw'
-                # if only one player has won the game, the other player either lost or left the game
-                elif maxRowMoves1.colore == online_game.codice1:
-                    data['winner'] = online_game.player1
-                # if only one player has won the game, the other player either lost or left the game
-                elif maxRowMoves2.colore == online_game.codice2:
-                    data['winner'] = partita.player2
-                # if both players have lost the game, the game is a draw
-                else:
-                    data['winner'] = 'draw' 
+                            if datetime1.year != 2000 or datetime2.year != 2000:
+                                data['winner'] = 'error'
+                            else:
+                                data['winner'] = 'draw'
+            # if only one player has won the game, the other player either lost or left the game
+            elif maxRowMoves1.colore == online_game.codice1:
+                data['winner'] = online_game.player1
+            # if only one player has won the game, the other player either lost or left the game
+            elif maxRowMoves2.colore == online_game.codice2:
+                data['winner'] = partita.player2
+            # if both players have lost the game, the game is a lost for both
+            else:
+                data['winner'] = 'lost' 
             data['ended'] = True
     
     return jsonify(data)

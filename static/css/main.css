@@ -437,3 +437,23 @@ a.sidebar-link {
         min-height: 15%;
     }
 }
+
+@media (max-height: 590px) {
+    .h-80{
+        min-height: 80%;
+    }
+    
+    .h-20{
+        min-height: 20%;
+    }
+}
+
+@media (max-height: 450px) {
+    .h-80{
+        min-height: 75%;
+    }
+    
+    .h-20{
+        min-height: 25%;
+    }
+}
