@@ -311,9 +311,12 @@ def lobby():
     if mode == 'create':
         msg='Hai creato una lobby'
         # check if user has already created a lobby (if so, doesn't change the code)
-        if Lobby.query.filter_by(player1=current_user.username).first() is not None:
-            
-            code = Lobby.query.filter_by(player1=current_user.username).first().codice
+        lobby = Lobby.query.filter_by(player1=current_user.username).first()
+        if lobby is not None:
+            lobby.replay1 = True
+            lobby.replay2 = True
+            db.session.commit()
+            code = lobby.codice
 
         # create a new lobby
         else:
@@ -331,9 +334,14 @@ def lobby():
     elif mode == 'enter':
         msg='Sei entrato in una lobby'
         # check if user has already entered a lobby (if so, doesn't change the code)
-        if EntraLobby.query.filter_by(user_id=current_user.username).first() is not None:
-            lobby_id = EntraLobby.query.filter_by(user_id=current_user.username).first().lobby_id
-            code = Lobby.query.filter_by(id=lobby_id).first().codice
+        enterLobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
+        if enterLobby is not None:
+            lobby_id = enterLobby.lobby_id
+            lobby = Lobby.query.filter_by(id=lobby_id).first()
+            lobby.replay1 = True
+            lobby.replay2 = True
+            db.session.commit()
+            code = lobby.codice
             return render_template('lobby.html', code=code, creator=Lobby.query.filter_by(id=lobby_id).first().player1, msg=msg, replay1=True, replay2=True)
         
         # enter a lobby with the code provided by the user
