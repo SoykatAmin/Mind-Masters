@@ -284,11 +284,11 @@ def gameonline():
             else:
                 code = online_game.codice1
             if current_user.username == online_game.player1:
-                if online_game.oraFine1 is not None:
+                if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
                     clean()
                     return render_template('index.html', stanzaErr="Hai già giocato questa partita")
             if current_user.username == partita.player2:
-                if online_game.oraFine2 is not None:
+                if online_game.oraFine2 is not None and online_game.oraFine1 is not None:
                     clean()
                     return render_template('index.html', stanzaErr="Hai già giocato questa partita")
             if current_user.username != online_game.player1 and current_user.username != partita.player2:

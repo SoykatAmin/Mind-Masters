@@ -1,7 +1,7 @@
 var secretCode;
-var timerCodeLeft = 30;
+var timerCodeLeft ;
 var interval
-
+var block_tasti_tastira=false;
 
 
 function readCode(){
@@ -29,6 +29,11 @@ function keyButton_code(){
         if(event.key != 'F12'){
             event.preventDefault();
         }
+
+        if(block_tasti_tastira){
+            return;
+        }
+
         if(!modal_aperto){
             if(event.key ==='Enter'){
                 sendCode();
@@ -97,11 +102,22 @@ function colorCasualCode(){
  */
 function timerCode(){
     var codeValid=true;
+    if(localStorage.getItem('timerCode') != null){
+        timerCodeLeft = localStorage.getItem('timerCode');
+        console.log("timerCodeLeft: "+timerCodeLeft);
+    }else{
+        timerCodeLeft = 30;
+    }
+   
     interval=setInterval(()=> {
         timerCodeLeft--;
-
+        console.log("timerCodeLeft: a"+timerCodeLeft);
+        if(block_tasti_tastira){
+            clearInterval(interval);
+            return;
+        }
         if(timerCodeLeft <= 0){
-            
+            localStorage.setItem('timerCode', 0);
             document.getElementById("countdown").innerHTML = "Tempo scaduto!";
             clearInterval(interval);
             for(let i = 0; i < 4; i++){
@@ -122,6 +138,7 @@ function timerCode(){
             }
             
         }else{
+            localStorage.setItem('timerCode', timerCodeLeft);
             var minutes = Math.floor(timerCodeLeft / 60);
             var seconds = timerCodeLeft % 60;
             // Formatta il tempo rimasto come MM:SS
@@ -182,11 +199,16 @@ function checkInsertion(){
             code = response.code;
             if(code != ''){
                 disableButtons();
+                block_tasti_tastira=true;
                 var codeArray = code.split('').map(Number);
                 console.log(codeArray);
                 for (let j = 0; j < 4; j++) {
                     var codelm = document.getElementById(`ball-1-${j + 1}`);
                     codelm.style.backgroundColor = colors[codeArray[j]];
+                    var accessibilita=localStorage.getItem('accessibility')
+                    if(accessibilita=='true'){
+                        document.getElementById(`text-ball-1-${j+1}`).innerHTML=colors.indexOf(colors[codeArray[j]]);
+                    }
                 }
                 hasInsertedCode();
             }
@@ -196,8 +218,13 @@ function checkInsertion(){
 
 function disableButtons(){
     var buttons = document.getElementsByClassName("btn-manage");
+    var colors_buttons = document.getElementsByClassName("input-color-button");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].disabled = true;
+        
+    }
+    for (let i = 0; i < colors_buttons.length; i++) {
+        colors_buttons[i].disabled = true;
     }
 }
 

@@ -24,7 +24,9 @@
 
     
     <div class="main-container">
-      
+        <div class="title">
+            <h1>Inserisci il codice da far indovinare all'altro giacotore</h1>
+        </div>
         <div class="game_board">
             <div class="grid-container">
                 {% set ballRow = namespace(value=1) %}
@@ -177,6 +179,7 @@
 
     <script>
         //va messo alla fine senno i div non esistono e da errore undefined
+        
         avviaEventi()
         keyButton_code()
         timerCode();
