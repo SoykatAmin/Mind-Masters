@@ -343,6 +343,8 @@ def lobby():
         isCorrectLobby = Lobby.query.filter_by(codice = code).first()
         # if the lobby exists, add the user to the lobby
         if isCorrectLobby:
+            if isCorrectLobby.player1 == current_user.username:
+                return render_template('index.html', code=code, msg=current_user.username, err='Non puoi entrare nella tua lobby')
             isCorrectLobby.replay1 = True
             isCorrectLobby.replay2 = True
             isThereAnotherPlayer = EntraLobby.query.filter_by(lobby_id=isCorrectLobby.id).first()
