@@ -88,7 +88,7 @@
                 <div class="h-80">
                     <div class="sidebar-logo">
                         <div class="logo">
-                            <a href="{{ url_for('index') }}">Mind Masters</a>
+                            <a id="home_link"href="{{ url_for('index') }}">Mind Masters</a>
                         </div>
                         <div class="close-button">
                             <button type="button" class="btn-close btn-close-white" aria-label="Close" id="close-sidebar-button"></button>
@@ -99,7 +99,7 @@
                     <ul class="sidebar-nav">
                         
                         <li class="sidebar-item">
-                            <a href="{{ url_for('rules') }}" class="sidebar-link">
+                            <a id="regolie_link" href="{{ url_for('rules') }}" class="sidebar-link">
                                 <i class="fa-solid fa-list pe-2"></i>
                                 Regole
                             </a>
@@ -140,7 +140,7 @@
 
                         {% if session['username'] %}
                             <li class="sidebar-item">
-                                <a href="{{ url_for('logout') }}" class="sidebar-link">
+                                <a id="logout_link"href="{{ url_for('logout') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
                                     Logout
                                 </a>

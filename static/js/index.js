@@ -135,7 +135,7 @@ function fillhomeboard(){
             targetDiv = document.getElementById(`ball-${i}-${j}`);
             targetDiv.style.backgroundColor = colori_home[bord_code[j-1]];
             if (acc_home=='true'){
-                document.getElementById(`text-ball-${i}-${j}`).innerHTML=j-1;
+                document.getElementById(`text-ball-${i}-${j}`).innerHTML=colori_home.indexOf(colori_home[bord_code[j-1]]);
             }
         }
         corretti=coonf_cod(bord_code,home_code,i)

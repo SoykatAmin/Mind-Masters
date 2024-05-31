@@ -7,6 +7,37 @@ var modal_att
 
 var end_timer = 1060;
 
+
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    //--------------------------------Alert online players--------------------------------//
+    const links1 = document.getElementById('regolie_link');
+    const links2 = document.getElementById('home_link');
+    const links3 = document.getElementById('logout_link');
+
+    links1.addEventListener('click', esclink);
+    links2.addEventListener('click', esclink);
+    links3.addEventListener('click', esclink);
+});
+
+var uscendo_link=false;
+
+window.onbeforeunload = function(event){
+    if(uscendo_link){
+        uscendo_link=false;
+        event.preventDefault();
+        event.returnValue = "Se abbandoni la partita perderai";
+        return "Se abbandoni la partita perderai";
+    }
+    
+}
+
+
+function esclink(){
+    uscendo_link=true;
+}
+
 function confrontaCodiciPVP() {
     // Variabili per tenere traccia delle posizioni corrette e errate
     var posizioneCorretta = 0;
@@ -189,6 +220,11 @@ function populateMoves() {
                     for (let j = 0; j < 4; j++) {
                         var codelm = document.getElementById(`ball-${row+1}-${j + 1}`);
                         codelm.style.backgroundColor = colors[codeArray[j]];
+                    
+                        if(localStorage.getItem('accessibility')==='true'){
+                            var textlm = document.getElementById(`text-ball-${row+1}-${j + 1}`);
+                            textlm.innerHTML = colori.indexOf(colori[codeArray[j]]);
+                        }
                     }
                     confrontaCodiciPVP();
                 }
@@ -219,16 +255,6 @@ function endGame() {
     });
 }
 
-window.onbeforeunload = function(event) {
-
-    if (end_game) {
-        return;
-    }
-    event.returnValue = "Perderai tutto";
-    // Here you can access the event object to see what the user has chosen
-    console.log(event);
-
-};
 
 function endTimer() {
     var endTimer = setInterval(() => {
