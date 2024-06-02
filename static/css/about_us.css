@@ -2,10 +2,6 @@ h1 {
     text-align: center;
 }
 
-.container {
-    height: 100vh;
-}
-
 .containerParagraph {
     margin: 1% 12%;  /* 12% margin on left and right 0 margin on top and bottom*/
     text-align: justify;
@@ -22,19 +18,5 @@ h1 {
     .containerParagraph {
         width: 90%;
         margin: 1% 5%;
-    }
-}
-
-@media (min-height: 596px){
-    .container {
-        height: 100vh;
-    }
-}
-
-@media (max-width: 1000px){
-    .container{
-        display: flex;
-        justify-content: center; /* Centra orizzontalmente */
-        align-items: center;     /* Centra verticalmente */
     }
 }
