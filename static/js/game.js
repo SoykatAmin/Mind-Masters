@@ -8,7 +8,7 @@ var Colorful = [0, 0, 0, 0];
 // Array per memorizzare il codice segreto
 var secret_code = [];
 // Flag per abilitare/disabilitare la modalità di debug imposta il tempo da 15m --> 2m e imposta il codice fisso a rosso,rosso,verde,blu
-var debug = false;
+var debug = true;
 // Array di nomi dei colori, dove l'indice corrisponde al valore del colore nel codice
 var colors = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
 // uguale a sopra pero in italiano pr stamparli a schermo
@@ -135,7 +135,7 @@ function confrontaCodici() {
         // Chiamata alla funzione terminaPartita
         win = true;
         if (x == 1) {
-            terminaPartita("Che gigachad! Hai vinto al primo turno!");
+            terminaPartita("Assurdo! Hai vinto al primo turno!");
         } else {
             terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
         }

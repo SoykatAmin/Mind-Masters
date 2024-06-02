@@ -30,6 +30,11 @@
     margin-left: 5%;
     margin-right: 5%;
 }
+@media(max-width: 400px){
+    .frase{
+        font-size: 1.2em;
+    }
+}
 .frase-in-out{
     animation: fade-in-out 7s linear infinite;
 }
