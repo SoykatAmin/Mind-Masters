@@ -152,9 +152,7 @@ def load_user(user_id):
 
 #funzioni per la chiamata delle pagini html
 @app.route('/', methods=['GET', 'POST'])
-
 def index():
-
     clean()
     return render_template('index.html')
 
@@ -386,6 +384,7 @@ def replay():
                 lobby.replay2 = True
                 db.session.commit()
                 return render_template('lobby.html', code=lobby.codice, creator=lobby.player1, msg='Sei entrato in una lobby', replay1=lobby.replay1, replay2=lobby.replay2)
+    clean()
     return render_template('index.html', stanzaErr='Il creatore ha abbandonato la stanza', replay1=False, replay2=False)
 # funzioni per il dialogo client-server
 @app.route('/isConnected',methods=['GET', 'POST'])
@@ -421,11 +420,13 @@ def isConnected():
 @app.route('/errmsg', methods=['GET', 'POST'])
 @login_required
 def errmsg():
+    clean()
     return render_template('index.html', stanzaErr='Un giocatore ha abbandonato la stanza')
 
 @app.route('/leaveLobby', methods=['GET', 'POST'])
 @login_required
 def leaveLobby():
+    clean()
     return render_template('index.html', stanzaErr='Il creatore ha abbandonato la stanza')
 
 @app.route('/isReplay')

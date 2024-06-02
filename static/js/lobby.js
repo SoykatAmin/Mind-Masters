@@ -1,4 +1,10 @@
-var frasi=["Senza matematica; ma dove siamo?","SI È MESSO A FARE SELECTION SORTTT!!!","Nel complesso, sai cheee", "Il sito si trova alla versione: 1982783","Sapevi che i numeri da 1 a 8 da tastiera ti permettono di inserire i colori?"];
+var frasi=["Senza matematica; ma dove siamo?",
+"SI È MESSO A FARE SELECTION SORTTT!!!",
+"Nel complesso, sai cheee",
+"Il sito si trova alla versione: 1982783",
+"Sapevi che i numeri da 1 a 8 da tastiera ti permettono di inserire i colori?",
+
+];
 var frasiUsate = [];
 var ultimaFrase = "";
 
