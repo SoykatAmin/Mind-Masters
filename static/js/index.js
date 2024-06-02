@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }*/
     });
 
+
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
     
 
@@ -75,46 +76,73 @@ document.addEventListener("DOMContentLoaded", function() {
 function accessibility() {
     if(localStorage.getItem('accessibility')==null){
         localStorage.setItem('accessibility', true);
-
     }
     if(localStorage.getItem('accessibility') == 'false'){
         localStorage.setItem('accessibility', true);
-
     }
     else{
         localStorage.setItem('accessibility', false);
-
-        
     }   
     /*funzione toggle per i numeri*/
     const ifball=document.getElementById(`ball-1-1`)
     if(ifball !=null){
-        toggleAcc();
+        if(localStorage.getItem('accessibility') == 'true'){
+            attivaAcc();
+        }
+        else{
+            disattivaAcc();
+        }
+        // toggleAcc();
     }
     
 }
 var colori_home = ["white", "red", "darkgreen", "darkblue", "deeppink", "yellow","purple","aqua","sienna"];
-function toggleAcc(){
+
+function disattivaAcc(){
     for (let i = 1; i < 9; i++) {
         for (let j = 1; j < 5; j++) {
             var targetDiv;
             targetDiv = document.getElementById(`text-ball-${i}-${j}`);
-            if (targetDiv.innerHTML==''){
-                colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
-                if(colore_ball != '' && colore_ball != 'white'){
-                    targetDiv.innerHTML=colori_home.indexOf(colore_ball);
-                }else{
-                    targetDiv.innerHTML='';
-                }
-                
-            }
-            else{
-                targetDiv.innerHTML='';
-            }
+            targetDiv.innerHTML='';
         }
     }
 }
 
+function attivaAcc(){
+    for (let i = 1; i < 9; i++) {
+        for (let j = 1; j < 5; j++) {
+            var targetDiv;
+            targetDiv = document.getElementById(`text-ball-${i}-${j}`);
+            colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
+            if(colore_ball != '' && colore_ball != 'white'){
+                targetDiv.innerHTML=colori_home.indexOf(colore_ball);
+            }
+        }
+    }
+}
+// function toggleAcc(){
+//     for (let i = 1; i < 9; i++) {
+//         for (let j = 1; j < 5; j++) {
+//             var targetDiv;
+//             targetDiv = document.getElementById(`text-ball-${i}-${j}`);
+//             if (targetDiv.innerHTML==''){
+//                 colore_ball= document.getElementById(`ball-${i}-${j}`).style.backgroundColor;
+//                 if(colore_ball != '' && colore_ball != 'white'){
+//                     targetDiv.innerHTML=colori_home.indexOf(colore_ball);
+//                 }else{
+//                     targetDiv.innerHTML='';
+//                 }
+                
+//             }
+//             else{
+//                 targetDiv.innerHTML='';
+//             }
+//         }
+//     }
+// }
+
+
+//---------------------------------------------gestone partita nella home---------------------------------------------//
 var home_code=[];
 var acc_home=localStorage.getItem('accessibility')
 function fillhomeboard(){

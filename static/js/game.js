@@ -290,10 +290,6 @@ function createHardCode() {
  Se il tempo scade, chiama la funzione terminaPartita per indicare la fine del gioco.
  Aggiorna l'elemento HTML con il tempo rimasto.*/
 function game_timer() {
-    // Imposta il tempo rimasto in base alla modalità di debug
-    if (debug) {
-        timeleft = 240; // 4 minuti in secondi
-    }
     // Avvia un timer che si ripete ogni secondo
     var gameTimer = setInterval(() => {
         // Verifica se il tempo è scaduto
@@ -684,7 +680,9 @@ function keyButton(){
         if(event.key != 'F12'){
             event.preventDefault();
         }
-        if(!modal_aperto || !end_game){
+
+        if(!modal_aperto && !end_game){
+
             if(event.key ==='Enter'){
                 if(window.location.href.includes("?id=")){
                     confrontaCodiciPVP();
