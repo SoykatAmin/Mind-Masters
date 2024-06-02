@@ -152,6 +152,12 @@ body, html {
   z-index: 1000; /* Assicurarsi che sia sopra tutti gli altri elementi */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Aggiunge un'ombra intorno */
 }
+
+.btn-content{
+  font-size: 1.5em;
+}
+
+
 @media(max-width: 1000px){
   .timer{
     position: static;
