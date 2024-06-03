@@ -7,7 +7,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import datetime
 from flask_migrate import Migrate
 
-#classe per connessione partita  
 #variabili globali e inizializzazione
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -23,11 +22,11 @@ app.config['SECRET_KEY'] = 'your secret key'
 #     return jsonify(data)
 
 #gestione sidebar
-@app.route('/sidebar', methods=['GET', 'POST'])
-def sidebar():
-    data = request.json
-    session['side'] = data.get('side')
-    return jsonify(data)
+# @app.route('/sidebar', methods=['GET', 'POST'])
+# def sidebar():
+#     data = request.json
+#     session['side'] = data.get('side')
+#     return jsonify(data)
 
 
 

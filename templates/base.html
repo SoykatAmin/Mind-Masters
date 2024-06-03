@@ -208,15 +208,15 @@
 
             localStorage.setItem('sidebarCollapsed', 'true');
 
-            $.ajax({
-                type: 'POST',
-                url: '/sidebar',
-                data: JSON.stringify({side:true}),
-                contentType: 'application/json',
-                success: function(data) {
-                  console.log(data);
-                }
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/sidebar',
+            //     data: JSON.stringify({side:true}),
+            //     contentType: 'application/json',
+            //     success: function(data) {
+            //       console.log(data);
+            //     }
+            // });
 
             setTimeout(()=>{
                 sidebarContainer.style.zIndex = '0';
@@ -237,23 +237,18 @@
 
             sidebarContainer.style.zIndex = '999';
 
-            $.ajax({
-                type: 'POST',
-                url: '/sidebar',
-                data: JSON.stringify({side:false}),
-                contentType: 'application/json',
-                success: function(data) {
-                   console.log(data);
-                }
-            });
-        }
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/sidebar',
+            //     data: JSON.stringify({side:false}),
+            //     contentType: 'application/json',
+            //     success: function(data) {
+            //        console.log(data);
+            //     }
+            // });
+        }      
 
-        // if (!isSidebarClosed) {
-        //     closeSidebar();
-        // }else{
-        //     openSidebar();
-        // }
-      
+
     </script>
 
     

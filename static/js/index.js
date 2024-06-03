@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 
     
     screenWidth = window.innerWidth;
+    
  
     // Fuction for the sidebar toggle button
     toggleSidebarButton.addEventListener('click', function toggleSidebar() {
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }*/
     });
+    
 
 
     // ---------------------------------------------END MANAGING SIDEBAR--------------------------------------------- // 
