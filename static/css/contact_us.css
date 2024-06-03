@@ -45,9 +45,23 @@ h1 {
 img{
     border-radius: 50%;
     width: 150px;
+    height: 150px;
     margin-bottom: 5px;
 }
+/* gesione link contatti */
+.link_container {
+    display: inline-block; 
+    text-align: center;
+     
+  }
+.icon{
+    width: 45px;
+    height: 45px;
+    margin: 10px;
+    display: block; 
+    
 
+}
 @media (max-width: 530px){
     .containerContact {
         text-align: justify;
@@ -59,6 +73,16 @@ img{
     img{
         border-radius: 50%;
         width: 100px;
+        height: 100px;
         margin-bottom: 5px;
+    }
+    .link_container{
+        font-size: 0.8em;
+    }
+    .icon{
+        width: 30px;
+        height: 30px;
+        margin: 6px;
+        display: block; 
     }
 }

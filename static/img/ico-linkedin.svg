@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M500,500H0V0H500V499.981ZM292.076,248.547c17.813,0,27.638,12.487,27.638,35.175v79.837h55.3v-85.78c0-43.818-23.1-69.993-61.877-69.993a63.191,63.191,0,0,0-33.545,8.869,33.938,33.938,0,0,0-15,16.875V209.266h-54.77c.694,12.75,0,152.886,0,154.292h54.7V278.434a29.475,29.475,0,0,1,1.2-10.987,27.9,27.9,0,0,1,26.363-18.9ZM131.385,209.172V363.558H180V209.266Zm23.438-72.843a26.887,26.887,0,1,0-.694,53.531h.356a26.906,26.906,0,1,0,.337-53.531Z" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Linkedin_icon_bianco" transform="translate(-8514 2347)">
+    <g id="Mask_Group_6" data-name="Mask Group 6" transform="translate(8514 -2347)" clip-path="url(#clip-path)">
+      <g id="color_dark_grey" data-name="color/dark_grey" transform="translate(-250 -249.991)">
+        <rect id="Rectangle_5" data-name="Rectangle 5" width="1000.019" height="999.981" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>
