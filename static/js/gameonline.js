@@ -95,7 +95,7 @@ function confrontaCodiciPVP() {
                         if (username == winnerUsername) {
                             win = true;
                             if(x == 1) {
-                                terminaPartita("Che gigachad! Hai vinto al primo turno!");
+                                terminaPartita("Assurdo! Hai vinto al primo turno!");
                             } else {
                                 terminaPartita("Complimenti! Hai vinto in " + x + " turni!");
                             }
