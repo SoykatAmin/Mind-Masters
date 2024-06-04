@@ -1,17 +1,16 @@
-var frasi=["Senza matematica; ma dove siamo?",
-"SI È MESSO A FARE SELECTION SORTTT!!!",
-"Nel complesso, sai cheee",
+var frasi=["Senza matematica; ma dove siamo? - Fabrizio D'Amore",
+"SI È MESSO A FARE SELECTION SORTTT!!! - Maurizio Lenzerini",
 "Il sito si trova alla versione: 1982783",
 "Sapevi che i numeri da 1 a 8 sulla tastiera ti permettono di inserire i colori?",
 "Con il tasto Invio puoi confermare il codice inserito",
-"Prova a usare il tasto Canc per eliminare un colore",
+"Prova a usare il tasto Backspace per eliminare un colore",
 "Usa le frecce per spostare la cella selezionata",
 "Solo un giocatore su dieci riesce a vincere in modalità difficile",
 "Per vincere basta ragionare",
 "Non scoraggiarti se non riesci subito, la pratica ti rende un maestro del Mastermind!",
-"Un triangolo nero significa che il colore è giusto nella posizione giusta",
-"Un cerchio nero significa che il colore è giusto ma nella posizione sbagliata",
-"Se hai un quadrato vuoto, significa che il colore non è presente nel codice",
+"Un triangolo nero indica che il colore è giusto nella posizione giusta",
+"Un cerchio nero indica che il colore è giusto ma è nella posizione sbagliata",
+"Un quadrato bianco indica che un colore non è presente nel codice segreto",
 "Ricorda: vince chi indovina il codice con meno tentativi e in minor tempo"];
 var frasiUsate = [];
 var ultimaFrase = "";
