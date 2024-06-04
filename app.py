@@ -350,7 +350,7 @@ def lobby():
         if isCorrectLobby:
             if isCorrectLobby.player1 == current_user.username:
                 return render_template('index.html', code=code, msg=current_user.username, err='Non puoi entrare nella tua lobby')
-            isCorrectLobby.replay1 = True
+            # isCorrectLobby.replay1 = True
             isCorrectLobby.replay2 = True
             isThereAnotherPlayer = EntraLobby.query.filter_by(lobby_id=isCorrectLobby.id).first()
             if isThereAnotherPlayer is not None:
@@ -579,6 +579,16 @@ def hasEnded():
             # if no player has played any move, the game is a lost for both
             if maxRowMoves1 is None and maxRowMoves2 is None:
                 data['winner'] = 'lost'
+            elif maxRowMoves1 is not None and maxRowMoves2 is None:
+                if maxRowMoves1.colore == online_game.codice2:
+                    data['winner'] = online_game.player1
+                else:
+                    data['winner'] = 'lost'
+            elif maxRowMoves1 is None and maxRowMoves2 is not None:
+                if maxRowMoves2.colore == online_game.codice1:
+                    data['winner'] = partita.player2
+                else:
+                    data['winner'] = 'lost'
             # if both players have won the game, the winner is the one with the lowest tries. If the tries are the same, the winner is the one who finished the game first
             elif maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
                     if maxRowMoves1.riga < maxRowMoves2.riga:

@@ -82,6 +82,7 @@ function loadPage(){
                 }
                 if (creator) {
                     $('#players').html('In attesa di altri giocatori');
+                    $('#timer').html('');
                 }else{
                     $('#players').html('');
                 }
