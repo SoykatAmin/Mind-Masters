@@ -155,10 +155,7 @@ function getTime() {
 }
 
 function game_timerPVP() {
-    // Imposta il tempo rimasto in base alla modalità di debug
-    if (debug) {
-        timeleft = 240; // 4 minuti in secondi
-    }
+    
     getTime();
     // Avvia un timer che si ripete ogni secondo
     var gameTimer = setInterval(() => {
