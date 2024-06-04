@@ -199,6 +199,10 @@ function checkInsertion(){
             code = response.code;
             if(code != ''){
                 disableButtons();
+                msg="Codice inviato! Attendere che l'avversario inserisca il codice per iniziare la partita!";
+                document.getElementById("md_body_code").innerHTML = msg;
+                var modal = new bootstrap.Modal('#md_msg_code');
+                modal.show();
                 block_tasti_tastira=true;
                 var codeArray = code.split('').map(Number);
                 console.log(codeArray);
