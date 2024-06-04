@@ -111,7 +111,8 @@ function suggestion_aux(ex) {
             }
         }
     }
-    suggerimenti(posizioneCorretta, posizioneErrata, ex);
+    var sbagliati=4-posizioneCorretta-posizioneErrata;
+    suggerimenti(posizioneCorretta, posizioneErrata,sbagliati, ex);
     return posizioneCorretta;
 }
 
@@ -167,7 +168,7 @@ Se un colore è corretto e in posizione corretta, l'elemento corrispondente in o
 Gli altri elementi in occ rimangono a 0
 Successivamente, la funzione applica gli stili corretti agli elementi HTML dei suggerimenti in base ai valori
 in occ*/
-function suggerimenti(correct, color, x) {
+function suggerimenti(correct, color,sbagl, x) {
     var occ = [0, 0, 0, 0];
     if(debug){
         console.log("Correct: " + correct + " Color: " + color)
@@ -213,6 +214,17 @@ function suggerimenti(correct, color, x) {
             suggestion.classList.add("popup");
             suggestion.setAttribute("text","Colore giusto in posizione sbagliata");
         } else {
+            i--;
+        }
+    }
+    for (let i = 0; i < sbagl; i++) {
+        var r = Math.floor(Math.random() * 4);
+        if (occ[r] === 0) {
+            occ[r] = 3;
+            var suggestion = document.getElementById(`suggestion-${x}-${r+1}`);
+            suggestion.classList.add("popup");
+            suggestion.setAttribute("text","Un colore non è presente nel codice");
+        }else{
             i--;
         }
     }
