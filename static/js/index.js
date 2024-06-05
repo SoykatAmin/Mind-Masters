@@ -1,4 +1,4 @@
-
+var debug_print = false;/**variabile per attivare o disattivare i conole.log */
 
 document.addEventListener("DOMContentLoaded", function() {
     // ---------------------------------------------MANAGING SIDEBAR--------------------------------------------- // 

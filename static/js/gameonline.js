@@ -91,7 +91,9 @@ function confrontaCodiciPVP() {
                     var ended = data.ended;
                     if (ended) {
                         clearInterval(endingInterval);
-                        console.log(winnerUsername);
+                        if(debug_print){
+                            console.log(winnerUsername);
+                        }
                         if (username == winnerUsername) {
                             win = true;
                             if(x == 1) {
@@ -151,7 +153,9 @@ function getTime() {
     timeFormat.minute(minutes);
     timeFormat.second(seconds);
     timeFormat.millisecond(0);
-    console.log(timeFormat.format("YYYY-MM-DD HH:mm:ss:SSSSSS"));
+    if(debug_print){
+        console.log(timeFormat.format("YYYY-MM-DD HH:mm:ss:SSSSSS"));
+    }
 }
 
 function game_timerPVP() {
@@ -206,8 +210,10 @@ function populateMoves() {
             success: function(data) {
                 x = 1;
                 var length = data.length;
-                for (let i = 0; i < length; i++) {
-                    console.log(data[i]);
+                if(debug_print){
+                    for (let i = 0; i < length; i++) {
+                        console.log(data[i]);
+                    }
                 }
                 for (let i = 0; i < length; i++) {
                     var row = data[i].row;
@@ -275,8 +281,9 @@ function endTimer() {
             var secon = end_timer % 60;
             // Formatta il tempo rimasto come MM:SS
             var formattedT = `${minut.toString().padStart(2, '0')}:${secon.toString().padStart(2, '0')}`;
-            
-            console.log(formattedT);
+            if(debug_print){
+                console.log(formattedT);
+            }
         }
         // Decrementa il tempo rimasto di un secondo
         end_timer--;

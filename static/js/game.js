@@ -75,7 +75,10 @@ function getCode(x){
             color_code.push(codelm.style.backgroundColor);
         }
     }
-    console.log(color_code);
+    if(debug_print){
+        console.log(color_code);
+    }
+
     return color_code;
 }
 
@@ -90,7 +93,9 @@ function suggestion_aux(ex) {
         return -1;
     }
     player_code = stringToCodice(color_code);
-    console.log("Codice inserito " + player_code);
+    if(debug_print){
+        console.log("Codice segreto " + secret_code);
+    }
     // Confronta i valori inseriti dal giocatore con il codice segreto
     const copysc = [...secret_code]; // Crea una copia del codice segreto per evitare di modificarlo
     for (let i = 0; i < player_code.length; i++) {
@@ -171,7 +176,9 @@ in occ*/
 function suggerimenti(correct, color,sbagl, x) {
     var occ = [0, 0, 0, 0];
     if(debug){
-        console.log("Correct: " + correct + " Color: " + color)
+        if(debug_print){
+            console.log("Correct: " + correct + " Color: " + color)
+        }
     }
     
     // Riempimento dell'array occ con 1 per ogni colore corretto ma in posizione errata e 2 per ogni colore corretto e in posizione corretta
@@ -293,7 +300,9 @@ function createHardCode() {
     for (let i = 0; i < 4; i++) {
         secret_code.push(Math.floor(Math.random() * 9));
     }
-    console.log(secret_code);
+    if(debug_print){
+        console.log(secret_code);
+    }
     return secret_code;
 }
 /**Avvia un timer per il gioco.
@@ -378,7 +387,9 @@ function avviaEventi() {
     if(!game_started){
         return;
     }
-    console.log("avviaEventi");
+    if(debug_print){
+        console.log("avviaEventi");
+    }
     var xatt = x;
     y=1;
     var delItem1= document.getElementById(`delete-ball-${x}-1`);
@@ -505,7 +516,6 @@ function scrollWin() {
         // Se sì, seleziona l'elemento div target tramite il suo ID
         if(screenHeight <= 300){
             targetElement = document.getElementById(`rig-${x}`);
-            console.log("Ciaoooo");
         }else if(screenHeight <= 600){
             targetElement = document.getElementById(`rig-${x-1}`);
         }else{
@@ -537,7 +547,9 @@ Mostra un messaggio di vittoria o sconfitta a schermo in base al valore della va
 Mostra un modal con il messaggio di vittoria o sconfitta*/
 function terminaPartita(msg){   
     end_game = true;
-    console.log("termina partita");
+    if(debug_print){
+        console.log("termina partita");
+    }
     blockbutton();
     var prevBall = document.getElementById(`ball-${x}-${y}`);
     prevBall.classList.remove("ball-selected");
@@ -545,9 +557,11 @@ function terminaPartita(msg){
     // Aggiungi un ritardo per far vedere il risultato
     setTimeout(()=> {
         // Mostra il titolo del modal in base al risultato
-        console.log(win)
-        console.log(url)
-        console.log(url.includes("online-game"))
+        if(debug_print){
+            console.log(win)
+            console.log(url)
+            console.log(url.includes("online-game"))
+        }
         if(win){
             document.getElementById("md_title").innerHTML = "Complimenti hai vinto";
             if(url.includes("online-game")){
@@ -576,7 +590,9 @@ function terminaPartita(msg){
                 modal_att.hide();
             }
         }
-        console.log(msg);
+        if(debug_print){
+            console.log(msg);
+        }
         document.getElementById("md_body").innerHTML = msg;
         if(url.includes("online-game")){
             document.getElementById("md_bodyOnline").innerHTML = msg;
@@ -584,7 +600,9 @@ function terminaPartita(msg){
         var modal;
         
         if(url.includes("online-game")){
-            console.log("online");
+            if(debug_print){
+                console.log("online");
+            }
             modal = new bootstrap.Modal('#md_endOnline');
         }else{
             modal = new bootstrap.Modal('#md_end');

@@ -70,7 +70,9 @@ function loadPage(){
                     }
                     // console.log(data.disconnect);
                     if(data.disconnect){
-                        console.log("disconnesso");
+                        if(debug_print){
+                            console.log("disconnesso");
+                        }
                         disconnect = data.disconnect;
                     
                         window.location.href = '/leaveLobby';
@@ -105,7 +107,9 @@ function loadPage(){
                                 data: JSON.stringify({player2: secondPlayer}), // Dati da passare alla funzione
                                 success: function(response) {
                                     // Ricevi il risultato e visualizzalo nella pagina
-                                    console.log(response);
+                                    if(debug_print){
+                                        console.log(response);
+                                    }
                                     idGame = response.id;
                                     // Costruisci manualmente l'URL con i parametri
                                     window.location.href = "/game-online-code?id="+idGame;
@@ -121,9 +125,13 @@ function loadPage(){
                                     success: function(response) {
                                         // Ricevi il risultato e visualizzalo nella pagina
                                         var created = response.created;
-                                        console.log(created);
+                                        if(debug_print){
+                                            console.log(created);
+                                        }
                                         if(created){
-                                            console.log(response);
+                                            if(debug_print){
+                                                console.log(response);
+                                            }
                                             window.location.href = '/game-online-code?id=' + response.id;
                                         }
                                     }

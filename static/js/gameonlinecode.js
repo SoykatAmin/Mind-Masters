@@ -104,14 +104,18 @@ function timerCode(){
     var codeValid=true;
     if(localStorage.getItem('timerCode') != null){
         timerCodeLeft = localStorage.getItem('timerCode');
-        console.log("timerCodeLeft: "+timerCodeLeft);
+        if(debug_print){
+            console.log("timerCodeLeft: "+timerCodeLeft);
+        }
     }else{
         timerCodeLeft = 30;
     }
    
     interval=setInterval(()=> {
         timerCodeLeft--;
-        console.log("timerCodeLeft: a"+timerCodeLeft);
+        if(debug_print){
+            console.log("timerCodeLeft: a"+timerCodeLeft);
+        }
         if(block_tasti_tastira){
             clearInterval(interval);
             return;
@@ -129,7 +133,9 @@ function timerCode(){
                 }
             }
             if(codeValid){
-                console.log("codice inserito");
+                if(debug_print){
+                    console.log("codice inserito");
+                }
                 sendCode()
             }else{
                 secretCode = createEasyCode();
@@ -205,7 +211,9 @@ function checkInsertion(){
                 modal.show();
                 block_tasti_tastira=true;
                 var codeArray = code.split('').map(Number);
-                console.log(codeArray);
+                if(debug_print){
+                    console.log(codeArray);
+                }
                 for (let j = 0; j < 4; j++) {
                     var codelm = document.getElementById(`ball-1-${j + 1}`);
                     codelm.style.backgroundColor = colors[codeArray[j]];
@@ -261,7 +269,9 @@ function isConnected(){
     $.get('/isConnected', function(data) {
             var disconnect = data.disconnect;
             var connected = data.connected;
-            console.log(disconnect);
+            if(debug_print){
+                console.log("disconnesso");
+            }
             if(disconnect || !connected){
                 window.location.href = "/errmsg";
             }
