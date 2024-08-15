@@ -21,7 +21,7 @@
               {{ msg }}
             </div>
           {% endif %}
-          <form action="{{ url_for('register') }}" method="post">
+          <form action="{{ url_for('main.register') }}" method="post">
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
@@ -44,7 +44,7 @@
             
             <button type="submit" class="btn btn-primary" id="register-button" disabled>Registrati</button>
           </form>
-          <a href="{{ url_for('login') }}">Hai già un account? Accedi</a>
+          <a href="{{ url_for('main.login') }}">Hai già un account? Accedi</a>
         </div>
       </div>
     </div>

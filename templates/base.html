@@ -66,8 +66,8 @@
                 </div>
                 <div class="modal-body text-center" id="md_body" style="font-size: 1.2em;"></div>
                 <div class="modal-footer contenitore-pulsanti-2">
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('index') }}`">Torna alla home</button>
-                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('game') }}`">Nuova partita</button>
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('main.index') }}`">Torna alla home</button>
+                    <button class="play_button btn_ok" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('main.game') }}`">Nuova partita</button>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
                 <div class="h-80">
                     <div class="sidebar-logo">
                         <div class="logo">
-                            <a id="home_link"href="{{ url_for('index') }}">Mind Masters</a>
+                            <a id="home_link"href="{{ url_for('main.index') }}">Mind Masters</a>
                         </div>
                         <div class="close-button">
                             <button type="button" class="btn-close btn-close-white" aria-label="Close" id="close-sidebar-button"></button>
@@ -99,7 +99,7 @@
                     <ul class="sidebar-nav">
                         
                         <li class="sidebar-item">
-                            <a id="regolie_link" href="{{ url_for('rules') }}" class="sidebar-link">
+                            <a id="regolie_link" href="{{ url_for('main.rules') }}" class="sidebar-link">
                                 <i class="fa-solid fa-list pe-2"></i>
                                 Regole
                             </a>
@@ -123,13 +123,13 @@
                         <!-- If the user is not logged in, show the register and login buttons.-->
                         {% if not session['username'] %}
                             <li class="sidebar-item">
-                                <a href="{{ url_for('register') }}" class="sidebar-link">
+                                <a href="{{ url_for('main.register') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
                                     Registrati
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{ url_for('login') }}" class="sidebar-link">
+                                <a href="{{ url_for('main.login') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
                                     Accedi
                                 </a>
@@ -140,7 +140,7 @@
 
                         {% if session['username'] %}
                             <li class="sidebar-item">
-                                <a id="logout_link"href="{{ url_for('logout') }}" class="sidebar-link">
+                                <a id="logout_link"href="{{ url_for('main.logout') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
                                     Logout
                                 </a>
@@ -158,8 +158,8 @@
                             <div class="row">
                                 <!-- List of links -->
                                 <ul>
-                                    <li><a href="{{ url_for('contact_us') }}">Contattaci</a></li>
-                                    <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                                    <li><a href="{{ url_for('main.contact_us') }}">Contattaci</a></li>
+                                    <li><a href="{{ url_for('main.about_us') }}">About Us</a></li>
                                     <!-- <li><a href="#">Privacy Policy</a></li>
                                     <li><a href="#">Termini & Condizioni</a></li> -->
                                 </ul>

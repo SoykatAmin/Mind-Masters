@@ -19,17 +19,17 @@
                     
                     <h5 id="err" style="color: rgb(245, 75, 75);" >{{err}}</h5>
                     
-                    <form action="{{ url_for('lobby', mode='enter') }}" id="enterRoomForm" method="post">
+                    <form action="{{ url_for('main.lobby', mode='enter') }}" id="enterRoomForm" method="post">
                         <input type="text" class="form-control" placeholder="Inserisci il codice della lobby" id="codice" name="code"/>
                     </form>
                     
                 </div>
             </div>
             <div class="modal-footer contenitore-pulsanti-2">
-                <button class="play_button btn_ok"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('lobby', mode='create') }}`">Crea una lobby</button>
+                <button class="play_button btn_ok"  id="left_bn" data-bs-dismiss="modal" style="margin: 0 auto;" onclick="window.location.href = `{{ url_for('main.lobby', mode='create') }}`">Crea una lobby</button>
                 <button class=" play_button btn_ok"  id="right_bn" style="margin: 0 auto;" onclick="iserisciCodice()">Entra in una lobby</button>
                 <button hidden class="play_button btn_ok"  id="left_bn_code" data-bs-dismiss="modal" style="--c:#fc1c1c; margin: 0 auto;" onclick="annulla()">Annulla</button>
-                <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit" onclick="window.location.href = `{{ url_for('lobby', mode='enter') }}`">Entra</button>
+                <button form="enterRoomForm" hidden class="play_button btn_ok"  id="right_bn_code" style="margin: 0 auto;" type="submit" onclick="window.location.href = `{{ url_for('main.lobby', mode='enter') }}`">Entra</button>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
                         </button>
                     
                     {% else %}
-                    <a class="link_play" href="{{ url_for('login') }}">
+                    <a class="link_play" href="{{ url_for('main.login') }}">
                         <button class="play_button" id="online_button_access">
                             <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Accedi per il multiplayer</h3>
                         </button>
@@ -152,7 +152,7 @@
 
                 <div class="right-bottompane">
                     <!--Sistemare si v<div id="timer">Timer: 0 seconds</div>ede il link blu-->
-                    <a href="{{ url_for('game') }}" class="link_play">
+                    <a href="{{ url_for('main.game') }}" class="link_play">
                         <button class="play_button" id="computer_button"> 
                                 <h3 style="color: white; text-decoration: none; margin-bottom: 0;">Singleplayer</h3> 
                         </button>
