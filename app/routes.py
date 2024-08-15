@@ -274,3 +274,20 @@ def forceEndGame():
     success = force_end_game(id_game)
     
     return jsonify({'success': success})
+
+@main_bp.route('/resultOffline', methods=['POST'])
+def resultOffline():
+    data = request.json
+    difficoltà = data.get('difficoltà')
+    win = data.get('win')
+    time = datetime.datetime.now()
+
+    if difficoltà == 'facile':
+    
+    p_offline = Partita_computer(oraFine=time, player1=current_user.username)
+    creaPartita = CreaPartita(user_id=current_user.username, partita_id=p_offline.id)
+    db.session.add(p_offline)
+    db.session.add(creaPartita)
+    db.session.commit()
+    
+    return jsonify(result)

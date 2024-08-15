@@ -29,6 +29,7 @@ class Statistic(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True)
     id = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
     wins = db.Column(db.Integer, nullable=False, default=0)
+    draws = db.Column(db.Integer, nullable=False, default=0)
     losses = db.Column(db.Integer, nullable=False, default=0)
     p_gio_computer = db.Column(db.Integer, nullable=False, default=0)
 

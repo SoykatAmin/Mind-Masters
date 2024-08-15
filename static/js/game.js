@@ -610,6 +610,15 @@ function terminaPartita(msg){
         modal.show();
     }, 500);
     x=10;
+    
+    $.ajax({
+        type: 'POST',
+        url: '/resultOffline',
+        data: JSON.stringify({difficoltà: difficoltà_PVE, win: win}),
+        contentType: 'application/json',
+        success: function(data) {
+        }
+    });
 }
 
 function blockbutton(){

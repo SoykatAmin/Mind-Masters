@@ -45,12 +45,20 @@ def register_user(username, password, email):
     new_user = User(username=username, password=hashed_password, email=email)
     db.session.add(new_user)
     db.session.commit()
+
+    statistic = Statistic(user_id=username)
+    db.session.add(statistic)
+    db.session.commit()
     
     return None  # Nessun errore, registrazione avvenuta con successo
 
 def authenticate_user(username, password):
     user = User.query.filter_by(username=username).first()
-    
+    statistic = Statistic.query.filter_by(user_id=username).first()
+    if statistic is None:
+        statistic = Statistic(user_id=username)
+        db.session.add(statistic)
+        db.session.commit()
     if user:
         # Verifica la password
         if bcrypt.hashpw(password.encode('utf-8'), user.password) == user.password:
@@ -327,6 +335,8 @@ def check_game_status(id_game):
     """Controlla se il gioco è finito e determina il vincitore."""
     data = {'ended': False, 'winner': ''}
     online_game = Partita_online.query.filter_by(id=id_game).first()
+    statistic1 = Statistic.query.filter_by(user_id=online_game.player1).first()
+    statistic2 = Statistic.query.filter_by(user_id=online_game.player2).first()
 
     if online_game is not None:
         if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
@@ -338,31 +348,62 @@ def check_game_status(id_game):
             if maxRowMoves1 is None and maxRowMoves2 is None:
                 data['winner'] = 'lost'
             elif maxRowMoves1 is not None and maxRowMoves2 is None:
-                data['winner'] = online_game.player1 if maxRowMoves1.colore == online_game.codice2 else 'lost'
+                if maxRowMoves1.colore == online_game.codice2:
+                    data['winner'] = online_game.player1
+                    statistic1.wins += 1
+                    statistic2.losses += 1
+                else:
+                    data['winner'] = partita.player2
+                    statistic2.wins += 1
+                    statistic1.losses += 1
             elif maxRowMoves1 is None and maxRowMoves2 is not None:
-                data['winner'] = partita.player2 if maxRowMoves2.colore == online_game.codice1 else 'lost'
+                if maxRowMoves2.colore == online_game.codice1:
+                    data['winner'] = partita.player2
+                    statistic2.wins += 1
+                    statistic1.losses += 1
+                else:
+                    data['winner'] = online_game.player1
+                    statistic1.wins += 1
+                    statistic2.first().losses += 1
             elif maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
                 if maxRowMoves1.riga < maxRowMoves2.riga:
                     data['winner'] = online_game.player1
+                    statistic1.wins += 1
+                    statistic2.losses += 1
                 elif maxRowMoves1.riga > maxRowMoves2.riga:
                     data['winner'] = partita.player2
+                    statistic2.wins += 1
+                    statistic1.losses += 1
                 else:
                     datetime1 = online_game.oraFine1
                     datetime2 = online_game.oraFine2
                     if datetime1 > datetime2:
                         data['winner'] = online_game.player1
+                        statistic1.wins += 1
+                        statistic2.losses += 1
                     elif datetime1 < datetime2:
                         data['winner'] = partita.player2
+                        statistic2.wins += 1
+                        statistic1.losses += 1
                     else:
-                        data['winner'] = 'draw' if (datetime1.year == 2000 and datetime2.year == 2000) else 'error'
+                        if datetime1.year == 2000 and datetime2.year == 2000:
+                            data['winner'] = 'draw'
+                            statistic1.draws += 1
+                            statistic2.draws += 1
             elif maxRowMoves1.colore == online_game.codice1:
                 data['winner'] = online_game.player1
+                statistic1.wins += 1
+                statistic2.losses += 1
             elif maxRowMoves2.colore == online_game.codice2:
                 data['winner'] = partita.player2
+                statistic2.wins += 1
+                statistic1.losses += 1
             else:
                 data['winner'] = 'lost'
-            
+                statistic1.losses += 1
+                statistic2.losses += 1
             data['ended'] = True
+            db.session.commit()
 
     return data
 
@@ -403,6 +444,8 @@ def force_end_game(id_game):
         db.session.commit()
         return True
     return False
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
