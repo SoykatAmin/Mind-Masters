@@ -121,7 +121,7 @@
                             </a>
                         </li>
                         <!-- If the user is not logged in, show the register and login buttons.-->
-                        {% if not session['username'] %}
+                        {% if not current_user.is_authenticated %}
                             <li class="sidebar-item">
                                 <a href="{{ url_for('main.register') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
@@ -138,7 +138,13 @@
                         
                         <!-- If the user is logged in, show the logout button. -->
 
-                        {% if session['username'] %}
+                        {% if current_user.is_authenticated %}
+                            <li class="sidebar-item">
+                                <a id="statistics_link"href="{{ url_for('main.statistics') }}" class="sidebar-link">
+                                    <i class="fa-solid fa-list pe-2"></i>
+                                    Statistics
+                                </a>
+                            </li>
                             <li class="sidebar-item">
                                 <a id="logout_link"href="{{ url_for('main.logout') }}" class="sidebar-link">
                                     <i class="fa-solid fa-list pe-2"></i>
@@ -146,9 +152,6 @@
                                 </a>
                             </li>
                         {% endif %}
-                        
-                        
-                     
                     </ul>
 
                 </div>

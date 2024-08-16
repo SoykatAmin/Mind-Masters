@@ -54,11 +54,7 @@ def register_user(username, password, email):
 
 def authenticate_user(username, password):
     user = User.query.filter_by(username=username).first()
-    statistic = Statistic.query.filter_by(user_id=username).first()
-    if statistic is None:
-        statistic = Statistic(user_id=username)
-        db.session.add(statistic)
-        db.session.commit()
+    
     if user:
         # Verifica la password
         if bcrypt.hashpw(password.encode('utf-8'), user.password) == user.password:

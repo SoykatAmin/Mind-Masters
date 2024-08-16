@@ -23,6 +23,7 @@ var win = false;
 // Flag per indicare se il gioco è finito in pareggio
 var draw = false;
 
+var gameID = -1;
 
 var modal_aperto=false//flag per vcedere se c'è un modal aperto
 
@@ -259,6 +260,15 @@ function startPVE(dif) {
             createHardCode();
         }
     }
+    $.ajax({
+        type: 'POST',
+        url: '/startOffline',
+        data: JSON.stringify({difficoltà: difficoltà_PVE}),
+        contentType: 'application/json',
+        success: function(data) {
+            gameID = data.gameID;
+        }
+    });
     Colorful=[0,0,0,0];
     end_game = false;
     game_timer();
@@ -614,7 +624,7 @@ function terminaPartita(msg){
     $.ajax({
         type: 'POST',
         url: '/resultOffline',
-        data: JSON.stringify({difficoltà: difficoltà_PVE, win: win}),
+        data: JSON.stringify({gameID: gameID, difficoltà: difficoltà_PVE, win: win}),
         contentType: 'application/json',
         success: function(data) {
         }
@@ -764,4 +774,3 @@ function keyButton(){
         }
     });
 }
-

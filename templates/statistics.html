@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Statistiche Utente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/statistics.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="statistics-container">
+        <div class="title">
+            <h1>Statistiche di {{ username }}</h1>
+        </div>
+        <div class="statistics">
+            <div class="stat-section">
+                <h3>Vittorie</h3>
+                <p>{{ statistic.wins }}</p>
+            </div>
+            <div class="stat-section">
+                <h3>Pareggi</h3>
+                <p>{{ statistic.draws }}</p>
+            </div>
+            <div class="stat-section">
+                <h3>Sconfitte</h3>
+                <p>{{ statistic.losses }}</p>
+            </div>
+            <div class="stat-section">
+                <h3>Partite Giocate contro il Computer</h3>
+                <p>{{ statistic.p_gio_computer }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

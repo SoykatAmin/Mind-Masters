@@ -19,15 +19,14 @@ class Partita(db.Model):
     __tablename__ = 'games'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player2 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=True)
+    player2 = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=True)
     OraInizio = db.Column(db.DateTime, nullable=False)
 
 class Statistic(db.Model):
 
     __tablename__ = 'statistics'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True)
-    id = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
+    user_id = db.Column(db.String(255), db.ForeignKey('users.username'), primary_key=True)
     wins = db.Column(db.Integer, nullable=False, default=0)
     draws = db.Column(db.Integer, nullable=False, default=0)
     losses = db.Column(db.Integer, nullable=False, default=0)
@@ -44,7 +43,7 @@ class Obiettivo(db.Model):
 class SbloccaObiettivo(db.Model):
     __tablename__ = 'unlocked_objectives'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True)
+    user_id = db.Column(db.String(255), db.ForeignKey('users.username'), primary_key=True)
     obiettivo_id = db.Column(db.Integer, db.ForeignKey('objectives.id'), primary_key=True)
     data = db.Column(db.DateTime, nullable=False)
 
@@ -57,12 +56,12 @@ class Partita_online(db.Model):
     oraFine2 = db.Column(db.DateTime, nullable=True)
     codice1 = db.Column(db.String(4), nullable=True)        # codice per il primo giocatore (creatore)
     codice2 = db.Column(db.String(4), nullable=True)        # codice per il secondo giocatore
-    player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
+    player1 = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
 
 class Mossa(db.Model):
     __tablename__ = 'moves'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'), primary_key=True, nullable=False)
+    user_id = db.Column(db.String(255), db.ForeignKey('users.username'), primary_key=True, nullable=False)
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True, nullable=False)
     riga = db.Column(db.Integer, primary_key=True, nullable=False)
     colore = db.Column(db.String(4), nullable=False)
@@ -79,23 +78,23 @@ class CreaPartita(db.Model):
 
     __tablename__ = 'creations'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
     partita_id = db.Column(db.Integer, db.ForeignKey('games.id'), primary_key=True)
+    user_id = db.Column(db.String(255), db.ForeignKey('users.username'))
 
 class Lobby(db.Model):
     
-        __tablename__ = 'lobbies'
-    
-        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-        codice = db.Column(db.String(6), unique=True, nullable=False)
-        player1 = db.Column(db.Integer, db.ForeignKey('users.username'), nullable=False)
-        idGame = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=True)
-        replay1 = db.Column(db.Boolean, nullable=False, default=False)               #se è una partita da rigiocare o no. all'inizio è false, viene messa a true 
-        replay2 = db.Column(db.Boolean, nullable=False, default=False)
+    __tablename__ = 'lobbies'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    codice = db.Column(db.String(6), unique=True, nullable=False)
+    player1 = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
+    idGame = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=True)
+    replay1 = db.Column(db.Boolean, nullable=False, default=False)               #se è una partita da rigiocare o no. all'inizio è false, viene messa a true 
+    replay2 = db.Column(db.Boolean, nullable=False, default=False)
 
 class EntraLobby(db.Model):
         
-            __tablename__ = 'lobby_entries'
-        
-            user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
-            lobby_id = db.Column(db.Integer, db.ForeignKey('lobbies.id'), primary_key=True)
+    __tablename__ = 'lobby_entries'
+
+    user_id = db.Column(db.String(255), db.ForeignKey('users.username'))
+    lobby_id = db.Column(db.Integer, db.ForeignKey('lobbies.id'), primary_key=True)

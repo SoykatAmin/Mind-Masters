@@ -42,6 +42,11 @@ def login():
 
         if user:
             session['username'] = username  # Memorizza l'username nella sessione
+            statistic = Statistic.query.filter_by(user_id=username).first()
+            if statistic is None:
+                statistic = Statistic(user_id=current_user.username)
+                db.session.add(statistic)
+                db.session.commit()
             return redirect(url_for('main.index'))
 
     return render_template('auth/login.html', msg=msg)
@@ -275,19 +280,46 @@ def forceEndGame():
     
     return jsonify({'success': success})
 
+@main_bp.route('/startOffline', methods=['POST'])
+def startOffline():
+    
+    partita = Partita(player2=current_user.username, OraInizio=datetime.datetime.now())
+    db.session.add(partita)
+    db.session.commit()
+
+    results = { 'gameID': partita.id }
+    return jsonify(results)
+
 @main_bp.route('/resultOffline', methods=['POST'])
 def resultOffline():
     data = request.json
     difficoltà = data.get('difficoltà')
     win = data.get('win')
+    gameID = data.get('gameID')
     time = datetime.datetime.now()
 
-    if difficoltà == 'facile':
-    
-    p_offline = Partita_computer(oraFine=time, player1=current_user.username)
-    creaPartita = CreaPartita(user_id=current_user.username, partita_id=p_offline.id)
+    statistic = Statistic.query.filter_by(user_id=current_user.username).first()
+    statistic.p_gio_computer += 1
+
+    if difficoltà == 'F':
+        diff = 1
+    elif difficoltà == 'N':
+        diff = 2
+    else:
+        diff = 3
+
+    p_offline = Partita_computer(id=gameID, oraFine=time, difficolta=diff)
+    creaPartita = CreaPartita(partita_id=p_offline.id, user_id=current_user.username)
     db.session.add(p_offline)
     db.session.add(creaPartita)
     db.session.commit()
     
-    return jsonify(result)
+    return jsonify({'success': True})
+
+@main_bp.route('/statistics')
+def statistics():
+    # Recupera tutte le partite
+    statistic = Statistic.query.filter_by(user_id=current_user.username).first()
+
+    # Passa i dati al template
+    return render_template('statistics.html', username=current_user.username, statistic=statistic)

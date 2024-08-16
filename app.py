@@ -136,10 +136,10 @@ class Lobby(db.Model):
 
 class EntraLobby(db.Model):
         
-            __tablename__ = 'lobby_entries'
-        
-            user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
-            lobby_id = db.Column(db.Integer, db.ForeignKey('lobbies.id'), primary_key=True)
+        __tablename__ = 'lobby_entries'
+    
+        user_id = db.Column(db.Integer, db.ForeignKey('users.username'))
+        lobby_id = db.Column(db.Integer, db.ForeignKey('lobbies.id'), primary_key=True)
 
 # Create tables in database (if not exist)
 with app.app_context():
