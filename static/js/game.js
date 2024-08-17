@@ -620,7 +620,9 @@ function terminaPartita(msg){
         modal.show();
     }, 500);
     x=10;
-    
+    if(url.includes("online-game")){
+        return;
+    }
     $.ajax({
         type: 'POST',
         url: '/resultOffline',

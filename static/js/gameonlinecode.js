@@ -269,10 +269,12 @@ function isConnected(){
     $.get('/isConnected', function(data) {
             var disconnect = data.disconnect;
             var connected = data.connected;
+            console.log("disconnesso "+ disconnect);
+            console.log("connesso "+ connected);
             if(debug_print){
                 console.log("disconnesso");
             }
-            if(disconnect || !connected){
+            if(disconnect==true || connected==false){
                 window.location.href = "/errmsg";
             }
     });

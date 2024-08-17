@@ -186,7 +186,6 @@ def check_user_connection():
     isCreator = False
     if current_user.is_authenticated:
         lobby = Lobby.query.filter_by(player1=current_user.username).first()
-        
         if lobby is None:
             # L'utente non è il creatore della lobby, potrebbe essere il secondo giocatore o la lobby è stata abbandonata
             lobby = EntraLobby.query.filter_by(user_id=current_user.username).first()
@@ -331,73 +330,89 @@ def check_game_status(id_game):
     """Controlla se il gioco è finito e determina il vincitore."""
     data = {'ended': False, 'winner': ''}
     online_game = Partita_online.query.filter_by(id=id_game).first()
-    statistic1 = Statistic.query.filter_by(user_id=online_game.player1).first()
-    statistic2 = Statistic.query.filter_by(user_id=online_game.player2).first()
 
     if online_game is not None:
         if online_game.oraFine1 is not None and online_game.oraFine2 is not None:
             partita = Partita.query.filter_by(id=id_game).first()
             maxRowMoves1 = Mossa.query.filter_by(partita_id=id_game, user_id=online_game.player1).order_by(Mossa.riga.desc()).first()
             maxRowMoves2 = Mossa.query.filter_by(partita_id=id_game, user_id=partita.player2).order_by(Mossa.riga.desc()).first()
-            
+            statistic1 = Statistic.query.filter_by(user_id=online_game.player1).first()
+            statistic2 = Statistic.query.filter_by(user_id=partita.player2).first()
             # Determina il risultato basato sui movimenti e sul codice del gioco
             if maxRowMoves1 is None and maxRowMoves2 is None:
                 data['winner'] = 'lost'
             elif maxRowMoves1 is not None and maxRowMoves2 is None:
                 if maxRowMoves1.colore == online_game.codice2:
                     data['winner'] = online_game.player1
-                    statistic1.wins += 1
-                    statistic2.losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic1.wins += 1
+                        statistic2.losses += 1
                 else:
                     data['winner'] = partita.player2
-                    statistic2.wins += 1
-                    statistic1.losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic2.wins += 1
+                        statistic1.losses += 1
             elif maxRowMoves1 is None and maxRowMoves2 is not None:
                 if maxRowMoves2.colore == online_game.codice1:
                     data['winner'] = partita.player2
-                    statistic2.wins += 1
-                    statistic1.losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic2.wins += 1
+                        statistic1.losses += 1
                 else:
                     data['winner'] = online_game.player1
-                    statistic1.wins += 1
-                    statistic2.first().losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic1.wins += 1
+                        statistic2.first().losses += 1
             elif maxRowMoves1.colore == online_game.codice2 and maxRowMoves2.colore == online_game.codice1:
+                
                 if maxRowMoves1.riga < maxRowMoves2.riga:
                     data['winner'] = online_game.player1
-                    statistic1.wins += 1
-                    statistic2.losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic1.wins += 1
+                        statistic2.losses += 1
+                    
                 elif maxRowMoves1.riga > maxRowMoves2.riga:
                     data['winner'] = partita.player2
-                    statistic2.wins += 1
-                    statistic1.losses += 1
+                    if current_user.username == online_game.player1:
+                        statistic2.wins += 1
+                        statistic1.losses += 1
+                    
                 else:
                     datetime1 = online_game.oraFine1
                     datetime2 = online_game.oraFine2
                     if datetime1 > datetime2:
                         data['winner'] = online_game.player1
-                        statistic1.wins += 1
-                        statistic2.losses += 1
+                        if current_user.username == online_game.player1:
+                            statistic1.wins += 1
+                            statistic2.losses += 1
+                        
                     elif datetime1 < datetime2:
                         data['winner'] = partita.player2
-                        statistic2.wins += 1
-                        statistic1.losses += 1
+                        if current_user.username == online_game.player1:
+                            statistic2.wins += 1
+                            statistic1.losses += 1
+                        
                     else:
                         if datetime1.year == 2000 and datetime2.year == 2000:
                             data['winner'] = 'draw'
-                            statistic1.draws += 1
-                            statistic2.draws += 1
-            elif maxRowMoves1.colore == online_game.codice1:
+                            if current_user.username == online_game.player1:
+                                statistic1.draws += 1
+                                statistic2.draws += 1
+            elif maxRowMoves1.colore == online_game.codice1 and maxRowMoves2.colore != online_game.codice2:
                 data['winner'] = online_game.player1
-                statistic1.wins += 1
-                statistic2.losses += 1
-            elif maxRowMoves2.colore == online_game.codice2:
+                if current_user.username == online_game.player1:
+                    statistic1.wins += 1
+                    statistic2.losses += 1
+            elif maxRowMoves2.colore == online_game.codice2 and maxRowMoves1.colore != online_game.codice1:
                 data['winner'] = partita.player2
-                statistic2.wins += 1
-                statistic1.losses += 1
+                if current_user.username == online_game.player1:
+                    statistic2.wins += 1
+                    statistic1.losses += 1
             else:
                 data['winner'] = 'lost'
-                statistic1.losses += 1
-                statistic2.losses += 1
+                if current_user.username == online_game.player1:
+                    statistic1.losses += 1
+                    statistic2.losses += 1
             data['ended'] = True
             db.session.commit()
 

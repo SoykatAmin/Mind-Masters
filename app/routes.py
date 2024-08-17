@@ -82,8 +82,6 @@ def game():
 @main_bp.route('/online-game', methods=['GET', 'POST'])
 @login_required
 def gameonline():
-    clean()
-    
     if request.method == 'POST':
         data = request.json
         game_id = data.get('id')

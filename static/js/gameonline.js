@@ -110,7 +110,7 @@ function confrontaCodiciPVP() {
                     }
                 }
             });
-        }, 500);
+        }, 1000);
 
     } else if (status == 2) {
         end_game = true;
